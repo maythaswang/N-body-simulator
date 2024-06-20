@@ -5,8 +5,9 @@
 #include <glm/glm.hpp>
 #include <glfw/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <display.h>
 
 int main(int argc , char *argv[]){
 	std::cout << "Hello World";
-	return 12;
+	return 0;   
 }

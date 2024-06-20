@@ -42,14 +42,16 @@ FetchContent_MakeAvailable(glfw glm glew)
 
 set(PROJECT_SOURCES
     src/main.cpp
+    src/display/display.cpp
 )
 
-set(PROJECT_HEADERS
-
+set(INCLUDE_DIRS
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/include/
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/display/
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 add_dependencies(${PROJECT_NAME} glfw glm libglew_shared)
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} glfw glm libglew_shared)
