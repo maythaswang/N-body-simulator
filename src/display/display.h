@@ -2,7 +2,6 @@
 // Added guards just in case.
 #ifndef DISPLAY_H
 #define DISPLAY_H
-// #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 namespace Display
@@ -12,7 +11,13 @@ namespace Display
      *
      * @return GLFWwindow*
      */
-    GLFWwindow *CreateWindow(int, int, const char*);
+    GLFWwindow *CreateWindow(int, int, const char *);
+
+    /**
+     * @brief set the viewport size (this gets called automatically) 
+     * 
+     */
+    void framebuffer_size_callback(GLFWwindow *, int, int);
 }
 
 #endif

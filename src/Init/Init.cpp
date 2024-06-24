@@ -17,12 +17,11 @@ void Init::InitializeGLFW()
 
 void Init::InitalizeGLAD()
 {
-	// glad: load all OpenGL function pointers
-	// ---------------------------------------
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 		std::cout << "Failed to initialize GLAD" << std::endl;
-		// Throw Error
+		// TODO: THROW ERRORS
 	}
+
     // Maybe return something when error.
 }

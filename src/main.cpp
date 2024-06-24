@@ -1,9 +1,7 @@
-// #pragma comment(lib, "glew32.lib")
 #define GLFW_INCLUDE_NONE
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-// #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -23,16 +21,21 @@ int main(int argc, char *argv[])
 
 	// Initialize Window
 	GLFWwindow *window = Display::CreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_NAME);
+	
+	// Verify that the window has been created properly
 	if (!window)
 	{	
+		glfwTerminate();
 		return -1;
 	}
 
 	Init::InitalizeGLAD();
-
+	
+	
 	while (!glfwWindowShouldClose(window))
 	{
 		// Keep running
+		processInput(window); // Maybe make a namespace for this 
 	}
 
 	std::cout << "Hello World";
