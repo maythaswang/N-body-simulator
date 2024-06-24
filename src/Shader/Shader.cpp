@@ -18,8 +18,9 @@ GLuint Shader::CompileShader(std::string file_name, GLenum ShaderType)
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 
     // For Debugging Purposes
-    std::string shader_type_string = (ShaderType == GL_VERTEX_SHADER) ? "GL_VERTEX_SHADER" : (ShaderType == GL_FRAGMENT_SHADER) ? "GL_FRAGMENT_SHADER": "UNKNOWN_TYPE";
-    
+    std::string shader_type_string = (ShaderType == GL_VERTEX_SHADER) ? "GL_VERTEX_SHADER" : (ShaderType == GL_FRAGMENT_SHADER) ? "GL_FRAGMENT_SHADER"
+                                                                                                                                : "UNKNOWN_TYPE";
+
     if (!success)
     {
         glGetShaderInfoLog(shader, 512, NULL, infoLog);

@@ -47,23 +47,72 @@ int main(int argc, char *argv[])
 
 	GLuint shader_program = basic_shader.GetShaderID();
 
-	// TODO: Remove this later
+	// TODO: Implement the projections to handle camera movement from here forward.
+
+	// TODO: Remove this later when no longer needed and make one class to deal with creating Geometry, Transforming Geometry, and so on ...
 	// Simple Geometry for testing.
 	// ----------------------------------------------------------------------------
+
+	GLuint VAOs; // VAO for each object
+	GLuint VBOs; // Vertices, Indices, Colours
+	GLuint EBOs; // Store Indices (How they link)
+
+	GLfloat triangle_vert[3][3] = {
+		{-0.5f, -0.5f, 0.0f},
+		{0.5f, -0.5f, 0.0f},
+		{0.0f, 0.5f, 0.0f}};
+
+	GLuint triangle_inds[1][3] = {{0, 1, 2}};
+
+	glGenVertexArrays(1, &VAOs);
+	glGenBuffers(1, &VBOs);
+	glGenBuffers(1, &EBOs);
+
+	glBindVertexArray(VAOs);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBOs);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 9, &triangle_vert[0], GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOs);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 3, &triangle_inds[0], GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+	glEnableVertexAttribArray(0);
+
+	// Unbind VAOs, VBOs, EBOs
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
 
+	std::cout << glfwWindowShouldClose(window) << std::endl;
 	while (!glfwWindowShouldClose(window))
 	{
 		// Keep running
 		callback_manager.processInput(window); // Maybe have the window stored in it beforehand.
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glUseProgram(shader_program);
+
+		glBindVertexArray(VAOs);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		// glDrawElements(GL_TRIANGLES, 0, 3, GL_UNSIGNED_INT, 0);
+
+		glfwSwapBuffers(window);
+		glfwPollEvents();
 	}
 
-	std::cout << "Hello World";
+
 
 	// Termination Subroutine
 	// ----------------------------------------------------------------------------
+
+	// Delete Buffers
+	glDeleteVertexArrays(1, &VAOs);
+	glDeleteBuffers(1, &VBOs);
+	glDeleteBuffers(1, &EBOs);
+
 	basic_shader.DeleteShader();
 	glfwTerminate();
 	return 0;
