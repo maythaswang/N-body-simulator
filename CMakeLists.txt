@@ -12,11 +12,6 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_OUTPUT_DIRECTORY})
 set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_OUTPUT_DIRECTORY}/lib)
 set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_OUTPUT_DIRECTORY}/lib)
 
-# if(WIN32)
-#     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-#     set(BUILD_SHARED_LIBS TRUE)
-# endif()
-
 # Set fetch content directory
 set(FETCHCONTENT_BASE_DIR "${CMAKE_SOURCE_DIR}/packages")
 set(FETCHCONTENT_QUIET FALSE)
@@ -55,6 +50,7 @@ set(PROJECT_SOURCES
     src/Display/Display.cpp
     src/CallbackManager/CallbackManager.cpp
     src/Init/init.cpp
+    src/Shader/Shader.cpp
 )
 
 set(INCLUDE_DIRS
@@ -62,11 +58,10 @@ set(INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/display/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CallbackManager/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Init/
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Shader/
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
-
-# add_dependencies(${PROJECT_NAME} glfw glm glad)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} glfw glm glad)

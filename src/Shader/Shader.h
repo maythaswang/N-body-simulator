@@ -2,6 +2,7 @@
 #include <string>
 #include <GLAD/glad.h>
 
+// TODO: Maybe rename this class .... 
 class Shader
 {
 public:
@@ -9,7 +10,9 @@ public:
      * @brief Construct a new Shader object
      *
      */
-    Shader() {}
+    Shader() {
+        has_program = false;
+    }
 
     /**
      * @brief Create a Shader according to the shader type specified.
@@ -21,8 +24,29 @@ public:
      */
     GLuint CompileShader(std::string file_name, GLenum shaderType);
 
+    /**
+     * @brief Link shader that has been built by CompileShader
+     * 
+     * @param shader 
+     */
+    void LinkShader(GLuint shader);
+
+    /**
+     * @brief Get the ShaderID
+     * 
+     * @return GLuint 
+     */
+    GLuint GetShaderID();
+    
+    /**
+     * @brief Delete the shader program
+     * 
+     */
+    void DeleteShader();
+
 private:
-    uint64_t shader_id;
+    GLuint shader_id;
+    bool has_program; 
 
     /**
      * @brief Read the shader file
@@ -30,5 +54,5 @@ private:
      * @param file_name 
      * @return const char* 
      */
-    const char *ReadShaderFile(std::string file_name);
+    std::string ReadShaderFile(std::string file_name);
 };
