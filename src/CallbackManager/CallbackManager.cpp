@@ -1,6 +1,7 @@
-#include <GLFW/glfw3.h>
 #include <iostream> 
-void processInput(GLFWwindow *window)
+#include <CallbackManager.h>
+
+void CallbackManager::processInput(GLFWwindow *window)
 {
     // TODO: Maybe accept class like CameraController to control camera based on input.
 

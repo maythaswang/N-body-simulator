@@ -25,7 +25,8 @@ public:
     GLuint CompileShader(std::string file_name, GLenum shaderType);
 
     /**
-     * @brief Link shader that has been built by CompileShader
+     * @brief Link shader that has been built by CompileShader. 
+     * @note The shader that has been inputted will be deleted after this function call.
      * 
      * @param shader 
      */

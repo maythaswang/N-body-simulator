@@ -5,10 +5,10 @@
 
 GLuint Shader::CompileShader(std::string file_name, GLenum ShaderType)
 {
-    // Had to make a copy, otherwise .c_str() will throw out junk
+    // Had to make a copy, otherwise .c_str() will throw out junk since the reference is no longer valid.
     std::string file_content = ReadShaderFile(file_name);
-    const char * shader_src = file_content.c_str();
-    
+    const char *shader_src = file_content.c_str();
+
     unsigned int shader = glCreateShader(ShaderType);
     glShaderSource(shader, 1, &shader_src, NULL);
     glCompileShader(shader);
@@ -17,10 +17,13 @@ GLuint Shader::CompileShader(std::string file_name, GLenum ShaderType)
     char infoLog[512];
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 
+    // For Debugging Purposes
+    std::string shader_type_string = (ShaderType == GL_VERTEX_SHADER) ? "GL_VERTEX_SHADER" : (ShaderType == GL_FRAGMENT_SHADER) ? "GL_FRAGMENT_SHADER": "UNKNOWN_TYPE";
+    
     if (!success)
     {
         glGetShaderInfoLog(shader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::Shader type here::COMPILATION_FAILED\n"
+        std::cout << "ERROR::SHADER::" << shader_type_string << "::COMPILATION_FAILED\n"
                   << infoLog << std::endl;
     }
 
