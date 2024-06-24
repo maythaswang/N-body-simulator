@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 
 	Init::InitalizeGLAD();
 
-	CallbackManager callback_manager = CallbackManager::CallbackManager();
+	CallbackManager callback_manager = CallbackManager::CallbackManager(window);
 
 	// Preparing shader program
 	// ----------------------------------------------------------------------------
@@ -86,11 +86,10 @@ int main(int argc, char *argv[])
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
 
-	std::cout << glfwWindowShouldClose(window) << std::endl;
 	while (!glfwWindowShouldClose(window))
 	{
 		// Keep running
-		callback_manager.processInput(window); // Maybe have the window stored in it beforehand.
+		callback_manager.processInput(); // Maybe have the window stored in it beforehand.
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glUseProgram(shader_program);
@@ -102,8 +101,6 @@ int main(int argc, char *argv[])
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-
-
 
 	// Termination Subroutine
 	// ----------------------------------------------------------------------------

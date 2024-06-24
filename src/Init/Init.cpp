@@ -14,6 +14,9 @@ void Init::InitializeGLFW()
 
     // Maybe return something when error.
 }
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 
 void Init::InitalizeGLAD()
 {

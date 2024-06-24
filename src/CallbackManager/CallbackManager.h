@@ -4,14 +4,18 @@ class CallbackManager
 {
 public:
     /**
-     * @brief Construct a new Callback Manager object
-     *
+     * @brief Construct a new Callback Manager
+     * 
+     * @param window 
      */
-    CallbackManager(){};
+    CallbackManager(GLFWwindow *);
 
     /**
-     * @brief Main function for processing input 
-     * 
+     * @brief Main function for processing input
+     *
      */
-    void processInput(GLFWwindow *);
+    void processInput();
+
+private:
+    GLFWwindow *window;
 };

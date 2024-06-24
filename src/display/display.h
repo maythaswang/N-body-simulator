@@ -4,6 +4,8 @@
 #define DISPLAY_H
 #include <GLFW/glfw3.h>
 
+// TODO: Change this to class.
+
 namespace Display
 {
     /**

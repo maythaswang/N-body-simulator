@@ -10,6 +10,8 @@ GLFWwindow *Display::CreateWindow(int ScreenWidth, int ScreenHeight, const char 
     {
         // TODO: Throw errors
         std::cout << "Screen cannot be initialized!";
+        glfwTerminate();
+        return NULL;
     }
 
     glfwMakeContextCurrent(window);
