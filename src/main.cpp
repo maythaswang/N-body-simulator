@@ -1,14 +1,14 @@
-#define GLFW_INCLUDE_NONE
+#include <GLCommon.h>
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include <GLFW/glfw3.h>
 
 #include <Init.h>
-#include <Display.h>
 #include <CallbackManager.h>
 #include <Shader.h>
-#include <Camera.h>
+
+#include <DisplayManager.h>
+#include <WindowFactory.h>
 
 // For initialization
 const unsigned int SCREEN_WIDTH = 640;
@@ -21,10 +21,11 @@ int main(int argc, char *argv[])
 	// Initialization Subroutine
 	// ----------------------------------------------------------------------------
 	Init::InitializeGLFW();
+	WindowFactory window_factory = WindowFactory();
 
 	// Initialize Window
-	GLFWwindow *window = Display::CreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_NAME);
-
+	GLFWwindow *window = window_factory.CreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_NAME);
+	Camera camera = Camera();
 	// Verify that the window has been created properly
 	if (!window)
 	{

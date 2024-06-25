@@ -1,4 +1,4 @@
-#include <camera.h>
+#include <Camera.h>
 Camera::Camera()
 {
     this->eye = glm::vec3(0, 0, 5.0);

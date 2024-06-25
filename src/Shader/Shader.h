@@ -1,6 +1,6 @@
 #pragma once
+#include <GLCommon.h>
 #include <string>
-#include <GLAD/glad.h>
 
 // TODO: Maybe rename this class ....
 class Shader

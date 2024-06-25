@@ -1,5 +1,5 @@
 #pragma once
-#include <GLFW/glfw3.h>
+#include<GLCommon.h>
 class CallbackManager
 {
 public:

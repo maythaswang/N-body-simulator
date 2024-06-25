@@ -47,20 +47,24 @@ FetchContent_MakeAvailable(glfw glm glad)
 
 set(PROJECT_SOURCES
     src/main.cpp
-    src/Display/Display.cpp
+    src/DisplaySystem/DisplayManager/DisplayManager.cpp
+    src/DisplaySystem/WindowFactory/WindowFactory.cpp
+    src/DisplaySystem/Camera/Camera.cpp
     src/CallbackManager/CallbackManager.cpp
     src/Init/init.cpp
     src/Shader/Shader.cpp
-    src/Camera/Camera.cpp
 )
 
 set(INCLUDE_DIRS
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/include/
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/display/
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/DisplaySystem/
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/DisplaySystem/DisplayManager/
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/DisplaySystem/WindowFactory/
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/DisplaySystem/Camera/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CallbackManager/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Init/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Shader/
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Camera/
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})

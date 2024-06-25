@@ -1,6 +1,6 @@
 #pragma once
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include <GLCommon.h>
+
 namespace Init
 {
     /**
@@ -22,8 +22,8 @@ namespace Init
     void SetErrorCallback();
 
     /**
-     * @brief Function for GLFW error callback 
-     * 
+     * @brief Function for GLFW error callback
+     *
      */
-    void error_callback(int, const char*);
+    void error_callback(int, const char *);
 }

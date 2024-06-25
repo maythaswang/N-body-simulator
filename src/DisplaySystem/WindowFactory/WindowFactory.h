@@ -2,10 +2,18 @@
 // Added guards just in case.
 #ifndef display_h
 #define display_h
-#include <GLFW/glfw3.h>
 
-namespace Display
+#include <GLCommon.h>
+
+class WindowFactory
 {
+public:
+    /**
+     * @brief Construct a new Window Factory object
+     *
+     */
+    WindowFactory();
+    
     /**
      * @brief Create a Window object
      *
@@ -18,7 +26,6 @@ namespace Display
      *
      */
     void framebuffer_size_callback(GLFWwindow *, int, int);
-
 };
 
 #endif

@@ -1,5 +1,8 @@
 #pragma once
-#include <GLFW/glfw3.h>
+#ifndef camera_h
+#define camera_h
+
+#include <GLCommon.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 class Camera
@@ -118,3 +121,4 @@ private:
      */
     void buildProjectionMat();
 };
+#endif

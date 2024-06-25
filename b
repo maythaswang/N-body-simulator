@@ -1,9 +1,13 @@
-printf '\nBegin building!\n\n'
+printf '\nBegin building!\n'
 
 ./build.sh
 
-printf '\n\nBuild Finished!\nNow running the program.\n\n'
+printf '\nBuild finished! Now running the program.\n'
+printf %"$COLUMNS"s |tr " " "-"
+printf '\n'
 
 ./run.sh
-printf '\n\nexit code: '
+
+printf '\nexit code: '
+
 echo $?
