@@ -8,6 +8,8 @@
 #include <Display.h>
 #include <CallbackManager.h>
 #include <Shader.h>
+#include <Camera.h>
+#include <CameraController.h>
 
 // For initialization
 const unsigned int SCREEN_WIDTH = 640;

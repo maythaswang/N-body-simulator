@@ -2,10 +2,10 @@
 #include <Display.h>
 #include <iostream>
 
-GLFWwindow *Display::CreateWindow(int ScreenWidth, int ScreenHeight, const char *ScreenName)
+GLFWwindow *Display::CreateWindow(int screenWidth, int screenHeight, const char *screenName)
 {
 
-    GLFWwindow *window = glfwCreateWindow(ScreenWidth, ScreenHeight, ScreenName, NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(screenWidth, screenHeight, screenName, NULL, NULL);
     if (!window)
     {
         // TODO: Throw errors
@@ -18,7 +18,7 @@ GLFWwindow *Display::CreateWindow(int ScreenWidth, int ScreenHeight, const char 
 
     // set to call framebuffer_size_callback everytime the screen gets resized
     glfwSetFramebufferSizeCallback(window, Display::framebuffer_size_callback);
-    glfwSetWindowAspectRatio(window, ScreenWidth, ScreenHeight);
+    glfwSetWindowAspectRatio(window, screenWidth, screenHeight);
 
     return window;
 }

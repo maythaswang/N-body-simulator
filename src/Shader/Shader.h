@@ -2,7 +2,7 @@
 #include <string>
 #include <GLAD/glad.h>
 
-// TODO: Maybe rename this class .... 
+// TODO: Maybe rename this class ....
 class Shader
 {
 public:
@@ -10,50 +10,52 @@ public:
      * @brief Construct a new Shader object
      *
      */
-    Shader() {
-        has_program = false;
+    Shader()
+    {
+        hasProgram = false;
+        shaderID = 0;
     }
 
     /**
      * @brief Create a Shader according to the shader type specified.
      * For instance, you can create fragment and vertex shader.
      *
-     * @param file_name
-     * @param shaderType
+     * @param fileName
+     * @param SHADER_TYPE
      * @return status of shader creation
      */
-    GLuint CompileShader(std::string file_name, GLenum shaderType);
+    GLuint CompileShader(std::string, GLenum);
 
     /**
-     * @brief Link shader that has been built by CompileShader. 
+     * @brief Link shader that has been built by CompileShader.
      * @note The shader that has been inputted will be deleted after this function call.
-     * 
-     * @param shader 
+     *
+     * @param shader
      */
-    void LinkShader(GLuint shader);
+    void LinkShader(GLuint);
 
     /**
      * @brief Get the ShaderID
-     * 
-     * @return GLuint 
+     *
+     * @return GLuint
      */
     GLuint GetShaderID();
-    
+
     /**
      * @brief Delete the shader program
-     * 
+     *
      */
     void DeleteShader();
 
 private:
-    GLuint shader_id;
-    bool has_program; 
+    GLuint shaderID;
+    bool hasProgram;
 
     /**
      * @brief Read the shader file
-     * 
-     * @param file_name 
-     * @return const char* 
+     *
+     * @param fileName
+     * @return const char*
      */
-    std::string ReadShaderFile(std::string file_name);
+    std::string ReadShaderFile(std::string);
 };

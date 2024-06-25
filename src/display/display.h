@@ -1,10 +1,8 @@
 #pragma once
 // Added guards just in case.
-#ifndef DISPLAY_H
-#define DISPLAY_H
+#ifndef display_h
+#define display_h
 #include <GLFW/glfw3.h>
-
-// TODO: Change this to class.
 
 namespace Display
 {

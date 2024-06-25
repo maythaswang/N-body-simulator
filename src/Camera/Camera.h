@@ -4,6 +4,10 @@
 class Camera
 {
 public:
+    /**
+     * @brief Construct a new Camera object
+     * 
+     */
     Camera();
 private:
     glm::vec3 eye; 
