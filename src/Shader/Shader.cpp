@@ -3,6 +3,12 @@
 #include <fstream>
 #include <sstream>
 
+Shader::Shader()
+{
+    this->hasProgram = false;
+    this->shaderID = 0;
+}
+
 GLuint Shader::CompileShader(std::string fileName, GLenum SHADER_TYPE)
 {
     // Had to make a copy, otherwise .c_str() will throw out junk since the reference is no longer valid.
@@ -77,4 +83,52 @@ void Shader::DeleteShader()
 
     // We no longer have the shader program.
     this->hasProgram = false;
+}
+
+// Utilities Setter for Uniform Variables
+// ----------------------------------------------------------------------------
+
+void Shader::SetBool(const std::string &name, bool value)
+{
+    glUniform1i(glGetUniformLocation(this->shaderID, name.c_str()), (int)value);
+};
+
+void Shader::SetInt(const std::string &name, int value)
+{
+    glUniform1i(glGetUniformLocation(this->shaderID, name.c_str()), value);
+}
+
+void Shader::SetFloat(const std::string &name, float value)
+{
+    glUniform1f(glGetUniformLocation(this->shaderID, name.c_str()), value);
+}
+
+void Shader::SetVec2(const std::string &name, const glm::vec2 &value)
+{
+    glUniform2fv(glGetUniformLocation(this->shaderID, name.c_str()), 1, &value[0]);
+}
+
+void Shader::SetVec3(const std::string &name, const glm::vec3 &value)
+{
+    glUniform3fv(glGetUniformLocation(this->shaderID, name.c_str()), 1, &value[0]);
+}
+
+void Shader::SetVec4(const std::string &name, const glm::vec4 &value)
+{
+    glUniform4fv(glGetUniformLocation(this->shaderID, name.c_str()), 1, &value[0]);
+}
+
+void Shader::SetMat2(const std::string &name, const glm::mat2 &value)
+{
+    glUniformMatrix2fv(glGetUniformLocation(this->shaderID, name.c_str()), 1, GL_FALSE, &value[0][0]);
+}
+
+void Shader::SetMat3(const std::string &name, const glm::mat3 &value)
+{
+    glUniformMatrix3fv(glGetUniformLocation(this->shaderID, name.c_str()), 1, GL_FALSE, &value[0][0]);
+}
+
+void Shader::SetMat4(const std::string &name, const glm::mat4 &value)
+{
+    glUniformMatrix4fv(glGetUniformLocation(this->shaderID, name.c_str()), 1, GL_FALSE, &value[0][0]);
 }
