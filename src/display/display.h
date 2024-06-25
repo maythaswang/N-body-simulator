@@ -14,10 +14,11 @@ namespace Display
     GLFWwindow *CreateWindow(int, int, const char *);
 
     /**
-     * @brief set the viewport size (this gets called automatically) 
-     * 
+     * @brief set the viewport size (this gets called automatically)
+     *
      */
     void framebuffer_size_callback(GLFWwindow *, int, int);
-}
+
+};
 
 #endif

@@ -2,6 +2,7 @@
 #include <Display.h>
 #include <iostream>
 
+// FIXME: make this a class instead
 GLFWwindow *Display::CreateWindow(int screenWidth, int screenHeight, const char *screenName)
 {
 
@@ -23,6 +24,7 @@ GLFWwindow *Display::CreateWindow(int screenWidth, int screenHeight, const char 
     return window;
 }
 
+// FIXME: Find a way to allow display to perform non-uniform resizing while retaining the correct aspect ratio of the object drawn
 void Display::framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
     glViewport(0, 0, width, height);

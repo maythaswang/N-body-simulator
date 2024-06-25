@@ -52,7 +52,6 @@ set(PROJECT_SOURCES
     src/Init/init.cpp
     src/Shader/Shader.cpp
     src/Camera/Camera.cpp
-    src/CameraController/CameraController.cpp
 )
 
 set(INCLUDE_DIRS
@@ -62,7 +61,6 @@ set(INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Init/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Shader/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Camera/
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/CameraController/
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
