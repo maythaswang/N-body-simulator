@@ -13,4 +13,7 @@ void CallbackManager::processInput()
     GLFWwindow * window = this->window;
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    
+    
 }

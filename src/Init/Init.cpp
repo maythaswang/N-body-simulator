@@ -12,6 +12,8 @@ void Init::InitializeGLFW()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+    glfwSetErrorCallback(error_callback);
+
     // Maybe return something when error.
 }
 #ifdef __APPLE__
@@ -27,4 +29,8 @@ void Init::InitalizeGLAD()
 	}
 
     // Maybe return something when error.
+}
+
+void Init::error_callback(int error, const char* description) {
+    fprintf(stderr, "Error %s\n", description);
 }
