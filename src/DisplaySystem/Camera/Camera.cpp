@@ -6,8 +6,11 @@ Camera::Camera()
     this->up = glm::vec3(0, 1.0, 0);
 
     this->fovy = 90;
-    this->aspectW = 640; // TODO: Get the display's width and height.
+
+    // TODO: Get the display's width and height.
+    this->aspectW = 640;
     this->aspectH = 480;
+    
     this->zNear = 0.1;
     this->zFar = 99.0;
 

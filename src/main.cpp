@@ -4,8 +4,9 @@
 #include <stdlib.h>
 
 #include <Init.h>
-#include <CallbackManager.h>
 #include <Shader.h>
+#include <Particle.h>
+#include <CallbackManager.h>
 
 #include <DisplayManager.h>
 #include <WindowFactory.h>
