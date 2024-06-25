@@ -1,7 +1,6 @@
 #include <WindowFactory.h>
 #include <iostream>
 
-// FIXME: make this a class instead
 WindowFactory::WindowFactory()
 {
 }
@@ -20,15 +19,14 @@ GLFWwindow *WindowFactory::CreateWindow(int screenWidth, int screenHeight, const
 
     glfwMakeContextCurrent(window);
 
-    // set to call framebuffer_size_callback everytime the screen gets resized
-    // glfwSetFramebufferSizeCallback(window, Display::framebuffer_size_callback); // TODO: make this usable again somewhere
+    // set to call this lambda function everytime the screen gets resized
+    glfwSetFramebufferSizeCallback(window, [](GLFWwindow *window, int width, int height)
+                                   { 
+        // set the viewport size (this gets called automatically
+        // This can be made as a function if it was a static function. (Since we're using class so we'll do it this way).
+        glViewport(0, 0, width, height); });
+
     glfwSetWindowAspectRatio(window, screenWidth, screenHeight);
 
     return window;
-}
-
-// FIXME: Find a way to allow display to perform non-uniform resizing while retaining the correct aspect ratio of the object drawn
-void WindowFactory::framebuffer_size_callback(GLFWwindow *window, int width, int height)
-{
-    glViewport(0, 0, width, height);
 }

@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 
 	// Initialize Window
 	GLFWwindow *window = window_factory.CreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_NAME);
-	Camera camera = Camera();
+	
 	// Verify that the window has been created properly
 	if (!window)
 	{
@@ -35,7 +35,9 @@ int main(int argc, char *argv[])
 
 	Init::InitalizeGLAD();
 
+	Camera camera = Camera();
 	CallbackManager callback_manager = CallbackManager::CallbackManager(window);
+	DisplayManager display_manager = DisplayManager::DisplayManager(window, camera);
 
 	// Preparing shader program
 	// ----------------------------------------------------------------------------
