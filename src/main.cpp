@@ -53,10 +53,6 @@ int main(int argc, char *argv[])
 	Camera* p_camera = &camera; 
 	CallbackManager callback_manager = CallbackManager::CallbackManager(window, p_camera);
 
-	glm::mat4 modelview = camera.GetViewMat() * camera.GetModelMat();
-	shader_program.SetMat4("modelview", modelview);
-	shader_program.SetMat4("projection", camera.GetProjectionMat());
-
 	// TODO: Remove this later when no longer needed and make one class to deal with creating Geometry, Transforming Geometry, and so on ...
 	// Simple Geometry for testing.
 	// ----------------------------------------------------------------------------
@@ -97,10 +93,10 @@ int main(int argc, char *argv[])
 	while (!glfwWindowShouldClose(window))
 	{
 		callback_manager.ProcessInput();
+		shader_program.SetMat4("modelview", camera.GetViewMat() * camera.GetModelMat());
+		shader_program.SetMat4("projection", camera.GetProjectionMat());
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		shader_program.SetMat4("modelview", modelview);
-		shader_program.SetMat4("projection", camera.GetProjectionMat());
 		glUseProgram(shader_id);
 		glBindVertexArray(VAOs);
 		glDrawArrays(GL_TRIANGLES, 0, 3);

@@ -15,6 +15,14 @@ public:
     Camera();
 
     /**
+     * @brief Zoom In-Out
+     * @param newY y position in reference to the original point
+     */
+    void Zoom(double);
+
+    void Rotate(double, double);
+
+    /**
      * @brief Set eye value
      *
      * @param eye vector of eye position
@@ -99,6 +107,8 @@ private:
     glm::mat4 modelMat;
     glm::mat4 viewMat;
     glm::mat4 projectionMat;
+
+    GLfloat rotationSensitivity;
 
     /**
      * @brief Build model matrix.

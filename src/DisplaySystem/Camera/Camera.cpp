@@ -12,10 +12,32 @@ Camera::Camera()
     this->zNear = 0.1;
     this->zFar = 99.0;
 
+    this->rotationSensitivity = 0.05;
+
     BuildModelMat();
     BuildViewMat();
     BuildProjectionMat();
 }
+
+void Camera::Rotate(double mouseDeltaX, double mouseDeltaY)
+{
+    glm::vec3 right = glm::normalize(glm::cross(this->eye, this->up));
+
+    GLfloat yaw = mouseDeltaX * rotationSensitivity; // along the center-axis
+    GLfloat pitch = mouseDeltaY * rotationSensitivity; // along the right-axis
+    // roll: along the eye-axis direction
+    
+    glm::mat4 rotationYaw = glm::rotate(glm::mat4(1.0f), yaw, this->center);
+    glm::mat4 rotationPitch = glm::rotate(glm::mat4(1.0f), pitch, right);
+    
+    glm::mat3 rotation = glm::mat3(rotationPitch * rotationYaw);
+    this->eye = rotation * this->eye;
+    this->up = rotation * this->up;
+
+    this->BuildViewMat();
+}
+
+// The only mutator method avaliable for use as of now is SetAspect.
 
 void Camera::SetEye(glm::vec3 eye)
 {
