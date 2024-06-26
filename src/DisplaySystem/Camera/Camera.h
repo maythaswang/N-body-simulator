@@ -121,6 +121,8 @@ private:
     glm::mat4 projectionMat;
 
     GLfloat rotationSensitivity;
+    GLfloat translationSensitivity;
+    GLfloat zoomSensitivity;
 
     /**
      * @brief Build model matrix.

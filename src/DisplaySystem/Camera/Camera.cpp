@@ -14,6 +14,8 @@ Camera::Camera()
     this->zFar = 99.0;
 
     this->rotationSensitivity = 0.9;
+    this->zoomSensitivity = 0.01;
+    this->translationSensitivity = 0.05;
 
     BuildModelMat();
     BuildViewMat();
@@ -45,9 +47,17 @@ void Camera::Rotate(GLfloat mouseDeltaX, GLfloat mouseDeltaY)
 
 void Camera::Zoom(GLfloat mouseDeltaY)
 {
-    // Translation Matrix
-    GLfloat zoom_power = mouseDeltaY * rotationSensitivity; // Use rotation sensitivity for now
-    // glm::mat4 translationMat
+    glm::vec3 direction = glm::normalize(this->center - this->eye);
+    GLfloat zoom_power = -mouseDeltaY * zoomSensitivity;
+    
+    // Set zoom limit
+    glm::vec3 new_eye = this->eye + direction*zoom_power;
+    glm::vec3 dtc = new_eye - this->center; // distance to center
+    if ((dtc[0] > 0.005 || dtc[0] < -0.005)   | (dtc[1] > 0.005 || dtc[1] < -0.005  )|( dtc[2] > 0.005 || dtc[2] < -0.005)){
+        this->eye = new_eye;
+        this->BuildViewMat();
+    }
+    
 }
 
 void Camera::Translate(GLfloat mouseDeltaX, GLfloat mouseDeltaY)
@@ -55,8 +65,8 @@ void Camera::Translate(GLfloat mouseDeltaX, GLfloat mouseDeltaY)
     glm::vec3 direction = glm::normalize(this->center - this->eye);
     glm::vec3 right = glm::normalize(glm::cross(direction, this->up));
 
-    GLfloat x_translate = -mouseDeltaX * rotationSensitivity* 0.1;
-    GLfloat y_translate = mouseDeltaY * rotationSensitivity * 0.1;
+    GLfloat x_translate = -mouseDeltaX * translationSensitivity;
+    GLfloat y_translate = mouseDeltaY * translationSensitivity;
     glm::vec3 translation_vector = glm::normalize(right) * x_translate + glm::normalize(this->up) * y_translate;
 
     this->eye += translation_vector;
