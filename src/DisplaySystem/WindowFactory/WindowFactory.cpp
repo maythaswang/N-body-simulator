@@ -18,7 +18,6 @@ GLFWwindow *WindowFactory::CreateWindow(int screenWidth, int screenHeight, const
     }
 
     glfwMakeContextCurrent(window);
-
     glfwSetWindowAspectRatio(window, screenWidth, screenHeight);
 
     return window;

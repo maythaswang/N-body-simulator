@@ -7,8 +7,7 @@
 #include <Shader.h>
 #include <Particle.h>
 #include <CallbackManager.h>
-
-#include <DisplayManager.h>
+#include <Camera.h>
 #include <WindowFactory.h>
 
 // For initialization
@@ -37,8 +36,7 @@ int main(int argc, char *argv[])
 	Init::InitalizeGLAD();
 
 	Camera camera = Camera();
-	CallbackManager callback_manager = CallbackManager::CallbackManager(window);
-	DisplayManager display_manager = DisplayManager::DisplayManager(window, camera);
+	CallbackManager callback_manager = CallbackManager::CallbackManager(window, camera);
 
 	// Preparing shader program
 	// ----------------------------------------------------------------------------
@@ -51,9 +49,6 @@ int main(int argc, char *argv[])
 	basic_shader.LinkShader(fragmentShader);
 
 	GLuint shader_program = basic_shader.GetShaderID();
-
-
-	// TODO: Maybe move the screen resizing here so we can update each camera accordingly since we use the global scope here.
 
 	// TODO: Implement the projections to handle camera movement from here forward.
 

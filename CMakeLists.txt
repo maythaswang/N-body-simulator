@@ -47,7 +47,6 @@ FetchContent_MakeAvailable(glfw glm glad)
 
 set(PROJECT_SOURCES
     src/main.cpp
-    src/DisplaySystem/DisplayManager/DisplayManager.cpp
     src/DisplaySystem/WindowFactory/WindowFactory.cpp
     src/DisplaySystem/Camera/Camera.cpp
     src/CallbackManager/CallbackManager.cpp
@@ -60,7 +59,6 @@ set(INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/include/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/DisplaySystem/
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/DisplaySystem/DisplayManager/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/DisplaySystem/WindowFactory/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/DisplaySystem/Camera/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ParticleSystem/Particle/

@@ -1,5 +1,6 @@
 #pragma once
 #include<GLCommon.h>
+#include <Camera.h>
 class CallbackManager
 {
 public:
@@ -8,7 +9,7 @@ public:
      * 
      * @param window 
      */
-    CallbackManager(GLFWwindow *);
+    CallbackManager(GLFWwindow *, Camera);
 
     /**
      * @brief Main function for processing input
@@ -18,4 +19,11 @@ public:
 
 private:
     GLFWwindow *window;
+    Camera camera;
+
+    /**
+     * @brief Set the window and camera aspect ratio when framebuffer gets resized.
+     * 
+     */
+    void SetWindowResizeCallback();
 };
