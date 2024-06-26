@@ -15,12 +15,24 @@ public:
     Camera();
 
     /**
-     * @brief Zoom In-Out
+     * @brief Zoom In-Out based on mouse drag.
      * @param newY y position in reference to the original point
      */
-    void Zoom(double);
+    void Zoom(GLfloat);
 
+    /**
+     * @brief Rotate camera based on mouse drag.
+     * @param 
+     * @param
+     * 
+     */
     void Rotate(GLfloat, GLfloat);
+
+    /**
+     * @brief Translate the camera based on mouse drag.
+     * @note The translation is done in the direction of up and right only.
+     */
+    void Translate(GLfloat, GLfloat);
 
     /**
      * @brief Set eye value

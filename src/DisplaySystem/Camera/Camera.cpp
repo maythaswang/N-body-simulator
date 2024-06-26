@@ -22,7 +22,8 @@ Camera::Camera()
 
 void Camera::Rotate(GLfloat mouseDeltaX, GLfloat mouseDeltaY)
 {
-    glm::vec3 right = glm::normalize(glm::cross(this->eye, this->up));
+    glm::vec3 direction = glm::normalize(this->center - this->eye);
+    glm::vec3 right = glm::normalize(glm::cross(direction, this->up));
     GLfloat yaw = -mouseDeltaX * rotationSensitivity;  // along up-axis
     GLfloat pitch = mouseDeltaY * rotationSensitivity; // along right-axis
     // roll: along the center-axis
@@ -32,15 +33,36 @@ void Camera::Rotate(GLfloat mouseDeltaX, GLfloat mouseDeltaY)
     if (pitch < -89.0f)
         pitch = -89.0f;
 
-    glm::mat4 rotationYaw = glm::rotate(glm::mat4(1.0f), glm::radians(yaw), this->up); // TODO: Maybe have to change this up later.
-    glm::mat4 rotationPitch = glm::rotate(rotationYaw, glm::radians(pitch), right);    // TODO: Maybe have to change this up later.
+    // Rotation Matrix
+    glm::mat4 rotationYaw = glm::rotate(glm::mat4(1.0f), glm::radians(yaw), this->up); 
+    glm::mat4 rotationPitch = glm::rotate(rotationYaw, glm::radians(pitch), right);    
+    glm::mat3 rotation = glm::mat3(rotationPitch);
 
-    glm::mat3 rotation = glm::mat3(rotationPitch * rotationYaw);
-    
     this->eye = rotation * this->eye;
     this->up = rotation * this->up;
     this->BuildViewMat();
 }
+
+void Camera::Zoom(GLfloat mouseDeltaY)
+{
+    // Translation Matrix
+    GLfloat zoom_power = mouseDeltaY * rotationSensitivity; // Use rotation sensitivity for now
+    // glm::mat4 translationMat
+}
+
+void Camera::Translate(GLfloat mouseDeltaX, GLfloat mouseDeltaY)
+{
+    glm::vec3 direction = glm::normalize(this->center - this->eye);
+    glm::vec3 right = glm::normalize(glm::cross(direction, this->up));
+
+    GLfloat x_translate = -mouseDeltaX * rotationSensitivity* 0.1;
+    GLfloat y_translate = mouseDeltaY * rotationSensitivity * 0.1;
+    glm::vec3 translation_vector = glm::normalize(right) * x_translate + glm::normalize(this->up) * y_translate;
+
+    this->eye += translation_vector;
+    this->center += translation_vector;
+    this->BuildViewMat();
+}   
 
 // The only mutator method avaliable for use as of now is SetAspect.
 

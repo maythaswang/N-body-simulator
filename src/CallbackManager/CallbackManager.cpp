@@ -46,17 +46,17 @@ void CallbackManager::UpdateCameraMode()
         this->old_mouse_pos_y = this->mousePosY;
     }
 
-    if (this->cameraMode == CAMERA_IDLE & middleMouseDown)
+    if (this->cameraMode == CAMERA_IDLE)
     {
-        if (leftCtrlDown)
+        if (leftCtrlDown & middleMouseDown)
         {
             this->cameraMode = CAMERA_ZOOM;
         }
-        else if (leftShiftDown)
+        else if (leftShiftDown & middleMouseDown)
         {
             this->cameraMode = CAMERA_TRANSLATE;
         }
-        else
+        else if(middleMouseDown)
         {
             this->cameraMode = CAMERA_ROTATE;
         }
@@ -80,6 +80,7 @@ void CallbackManager::UpdateCameraPosition()
         camera->Rotate( (GLfloat)delta_mouse_pos_x,(GLfloat) delta_mouse_pos_y);
         break;
     case CAMERA_TRANSLATE:
+        camera->Translate( delta_mouse_pos_x, delta_mouse_pos_y);
         break;
     default:
         break;
