@@ -15,4 +15,6 @@ public:
 private:
     GLFWwindow *window;
     Camera camera;
+
+    void AllowResizable();
 };

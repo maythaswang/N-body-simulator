@@ -52,6 +52,9 @@ int main(int argc, char *argv[])
 
 	GLuint shader_program = basic_shader.GetShaderID();
 
+
+	// TODO: Maybe move the screen resizing here so we can update each camera accordingly since we use the global scope here.
+
 	// TODO: Implement the projections to handle camera movement from here forward.
 
 	// TODO: Remove this later when no longer needed and make one class to deal with creating Geometry, Transforming Geometry, and so on ...
