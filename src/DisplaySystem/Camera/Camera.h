@@ -19,28 +19,28 @@ public:
      *
      * @param eye vector of eye position
      */
-    void setEye(glm::vec3);
+    void SetEye(glm::vec3);
 
     /**
      * @brief Set center value
      *
      * @param center vector of center position
      */
-    void setCenter(glm::vec3);
+    void SetCenter(glm::vec3);
 
     /**
      * @brief Set up value
      *
      * @param up vector of up position
      */
-    void setUp(glm::vec3);
+    void SetUp(glm::vec3);
 
     /**
      * @brief Set fovy value
      *
      * @param fovy
      */
-    void setFovy(GLfloat);
+    void SetFovy(GLfloat);
 
     /**
      * @brief Set height and width value for calculating the aspect ratio.
@@ -48,42 +48,42 @@ public:
      * @param height
      * @param width
      */
-    void setAspect(GLfloat, GLfloat);
+    void SetAspect(GLfloat, GLfloat);
 
     /**
      * @brief Set zNear value
      *
      * @param zNear
      */
-    void setZnear(GLfloat);
+    void SetZnear(GLfloat);
 
     /**
      * @brief Set zFar value
      *
      * @param zFar
      */
-    void setZfar(GLfloat);
+    void SetZfar(GLfloat);
 
     /**
      * @brief Get the Model Matrix
      *
      * @return Model Matrix
      */
-    glm::mat4 getModelMat();
+    glm::mat4 GetModelMat();
 
     /**
      * @brief Get the View Matrix
      *
      * @return View Matrix
      */
-    glm::mat4 getViewMat();
+    glm::mat4 GetViewMat();
 
     /**
      * @brief Get the Projection Matrix
      *
      * @return Projection Matrix
      */
-    glm::mat4 getProjectionMat();
+    glm::mat4 GetProjectionMat();
 
 private:
     glm::vec3 eye;
@@ -105,20 +105,20 @@ private:
      *
      * @return Model Matrix
      */
-    void buildModelMat();
+    void BuildModelMat();
 
     /**
      * @brief Build view matrix based on (eye, center, up) that has been previously stored.
      *
      * @return View Matrix
      */
-    void buildViewMat();
+    void BuildViewMat();
 
     /**
      * @brief Build projection matrix based on (fovy, aspectW, aspectH, zNear, zFar) that has been previously stored.
      *
      * @return Projection Matrix
      */
-    void buildProjectionMat();
+    void BuildProjectionMat();
 };
 #endif

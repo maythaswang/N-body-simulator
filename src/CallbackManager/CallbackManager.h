@@ -16,7 +16,7 @@ public:
      * @brief Main function for processing input
      *
      */
-    void processInput();
+    void ProcessInput();
 
 private:
     GLFWwindow *window;
