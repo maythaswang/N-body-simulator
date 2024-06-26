@@ -1,4 +1,5 @@
 #include <Camera.h>
+#include <iostream>
 
 Camera::Camera()
 {
@@ -12,28 +13,32 @@ Camera::Camera()
     this->zNear = 0.1;
     this->zFar = 99.0;
 
-    this->rotationSensitivity = 0.05;
+    this->rotationSensitivity = 0.9;
 
     BuildModelMat();
     BuildViewMat();
     BuildProjectionMat();
 }
 
-void Camera::Rotate(double mouseDeltaX, double mouseDeltaY)
+void Camera::Rotate(GLfloat mouseDeltaX, GLfloat mouseDeltaY)
 {
     glm::vec3 right = glm::normalize(glm::cross(this->eye, this->up));
+    GLfloat yaw = -mouseDeltaX * rotationSensitivity;  // along up-axis
+    GLfloat pitch = mouseDeltaY * rotationSensitivity; // along right-axis
+    // roll: along the center-axis
 
-    GLfloat yaw = mouseDeltaX * rotationSensitivity; // along the center-axis
-    GLfloat pitch = mouseDeltaY * rotationSensitivity; // along the right-axis
-    // roll: along the eye-axis direction
-    
-    glm::mat4 rotationYaw = glm::rotate(glm::mat4(1.0f), yaw, this->center);
-    glm::mat4 rotationPitch = glm::rotate(glm::mat4(1.0f), pitch, right);
-    
+    if (pitch > 89.0f)
+        pitch = 89.0f;
+    if (pitch < -89.0f)
+        pitch = -89.0f;
+
+    glm::mat4 rotationYaw = glm::rotate(glm::mat4(1.0f), glm::radians(yaw), this->up); // TODO: Maybe have to change this up later.
+    glm::mat4 rotationPitch = glm::rotate(rotationYaw, glm::radians(pitch), right);    // TODO: Maybe have to change this up later.
+
     glm::mat3 rotation = glm::mat3(rotationPitch * rotationYaw);
+    
     this->eye = rotation * this->eye;
     this->up = rotation * this->up;
-
     this->BuildViewMat();
 }
 

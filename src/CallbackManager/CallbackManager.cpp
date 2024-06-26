@@ -68,23 +68,20 @@ void CallbackManager::UpdateCameraPosition()
     double delta_mouse_pos_x = this->mousePosX - this->old_mouse_pos_x;
     double delta_mouse_pos_y = this->mousePosY - this->old_mouse_pos_y;
 
+    // std::cout << delta_mouse_pos_x << ' ' << delta_mouse_pos_y << std::endl;
+
     switch (this->cameraMode)
     {
     case CAMERA_IDLE:
-        std::cout << "Wait Mode" << std::endl;
         break;
     case CAMERA_ZOOM:
-        std::cout << "Smooth Zoom Mode" << std::endl;
         break;
     case CAMERA_ROTATE:
-        std::cout << "Rotate Mode" << std::endl;
-        camera->Rotate(delta_mouse_pos_x, delta_mouse_pos_y);
+        camera->Rotate( (GLfloat)delta_mouse_pos_x,(GLfloat) delta_mouse_pos_y);
         break;
     case CAMERA_TRANSLATE:
-        std::cout << "Translate Mode" << std::endl;
         break;
     default:
-        std::cout << "Wait Mode Default" << std::endl;
         break;
     }
 

@@ -20,7 +20,7 @@ public:
      */
     void Zoom(double);
 
-    void Rotate(double, double);
+    void Rotate(GLfloat, GLfloat);
 
     /**
      * @brief Set eye value
