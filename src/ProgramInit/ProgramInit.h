@@ -1,7 +1,7 @@
 #pragma once
 #include <GLCommon.h>
 
-namespace Init
+namespace ProgramInit
 {
     /**
      * @brief Initialize GLFW
@@ -14,12 +14,6 @@ namespace Init
      *
      */
     void InitalizeGLAD();
-
-    /**
-     * @brief Set the Error Callback for GLFW
-     *
-     */
-    void SetErrorCallback();
 
     /**
      * @brief Function for GLFW error callback

@@ -1,7 +1,7 @@
-#include <Init.h>
+#include <ProgramInit.h>
 #include <iostream>
 
-void Init::InitializeGLFW()
+void ProgramInit::InitializeGLFW()
 {
     if (!glfwInit())
     {
@@ -20,7 +20,7 @@ void Init::InitializeGLFW()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-void Init::InitalizeGLAD()
+void ProgramInit::InitalizeGLAD()
 {
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -31,6 +31,6 @@ void Init::InitalizeGLAD()
     // Maybe return something when error.
 }
 
-void Init::error_callback(int error, const char* description) {
+void ProgramInit::error_callback(int error, const char* description) {
     fprintf(stderr, "Error %s\n", description);
 }

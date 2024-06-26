@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <Init.h>
+#include <ProgramInit.h>
 #include <Shader.h>
 #include <Particle.h>
 #include <CallbackManager.h>
@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
 	// Initialization Subroutine
 	// ----------------------------------------------------------------------------
-	Init::InitializeGLFW();
+	ProgramInit::InitializeGLFW();
 	WindowFactory window_factory = WindowFactory();
 
 	// Initialize Window
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	Init::InitalizeGLAD();
+	ProgramInit::InitalizeGLAD();
 
 
 	// Preparing shader program
