@@ -39,8 +39,9 @@ void Camera::setFovy(GLfloat fovy)
 
 void Camera::setAspect(GLfloat width, GLfloat height)
 {
-    this->aspectW = aspectW;
-    this->aspectH = aspectH;
+    this->aspectW = width;
+    this->aspectH = height;
+    this->buildProjectionMat();
 }
 
 void Camera::setZnear(GLfloat zNear)
@@ -80,5 +81,5 @@ void Camera::buildViewMat()
 
 void Camera::buildProjectionMat()
 {
-    this->projectionMat = glm::perspective(glm::radians(this->fovy), this->aspectH / this->aspectW, this->zNear, this->zFar);
+    this->projectionMat = glm::perspective(glm::radians(this->fovy), this->aspectW / this->aspectH, this->zNear, this->zFar);
 }

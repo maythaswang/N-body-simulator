@@ -1,7 +1,7 @@
 #include <iostream>
 #include <CallbackManager.h>
 
-CallbackManager::CallbackManager(GLFWwindow *window, Camera camera)
+CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera)
 {
     this->window = window;
     this->camera = camera;
@@ -27,8 +27,8 @@ void CallbackManager::SetWindowResizeCallback()
         
         // Set the camera aspect ratio
         CallbackManager * callback_manager = reinterpret_cast<CallbackManager *> ( glfwGetWindowUserPointer ( window ));
-        if (callback_manager) callback_manager->camera.setAspect( width, height );
-        
+        if (callback_manager) callback_manager->camera->setAspect( width, height );
+
         // set the viewport size
         glViewport(0, 0, width, height); });
 }

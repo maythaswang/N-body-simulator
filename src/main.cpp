@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 
 	// Initialize Window
 	GLFWwindow *window = window_factory.CreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_NAME);
-	
+
 	// Verify that the window has been created properly
 	if (!window)
 	{
@@ -35,22 +35,27 @@ int main(int argc, char *argv[])
 
 	Init::InitalizeGLAD();
 
-	Camera camera = Camera();
-	CallbackManager callback_manager = CallbackManager::CallbackManager(window, camera);
 
 	// Preparing shader program
 	// ----------------------------------------------------------------------------
 
-	Shader basic_shader = Shader::Shader();
+	Shader shader_program = Shader::Shader();
 	// The dir depends on where you call it so if you call it from root, do it as if the current working directory is in root.
-	GLuint vertexShader = basic_shader.CompileShader("./shader_source/light.vert.glsl", GL_VERTEX_SHADER);
-	GLuint fragmentShader = basic_shader.CompileShader("./shader_source/light.frag.glsl", GL_FRAGMENT_SHADER);
-	basic_shader.LinkShader(vertexShader);
-	basic_shader.LinkShader(fragmentShader);
+	GLuint vertexShader = shader_program.CompileShader("./shader_source/light.vert.glsl", GL_VERTEX_SHADER);
+	GLuint fragmentShader = shader_program.CompileShader("./shader_source/light.frag.glsl", GL_FRAGMENT_SHADER);
+	shader_program.LinkShader(vertexShader);
+	shader_program.LinkShader(fragmentShader);
 
-	GLuint shader_program = basic_shader.GetShaderID();
+	GLuint shader_id = shader_program.GetShaderID();
 
 	// TODO: Implement the projections to handle camera movement from here forward.
+	Camera camera = Camera();
+	Camera* p_camera = &camera; 
+	CallbackManager callback_manager = CallbackManager::CallbackManager(window, p_camera);
+
+	glm::mat4 modelview = camera.getViewMat() * camera.getModelMat();
+	shader_program.SetMat4("modelview", modelview);
+	shader_program.SetMat4("projection", camera.getProjectionMat());
 
 	// TODO: Remove this later when no longer needed and make one class to deal with creating Geometry, Transforming Geometry, and so on ...
 	// Simple Geometry for testing.
@@ -91,12 +96,12 @@ int main(int argc, char *argv[])
 
 	while (!glfwWindowShouldClose(window))
 	{
-		// Keep running
-		callback_manager.processInput(); // Maybe have the window stored in it beforehand.
+		callback_manager.processInput();
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		glUseProgram(shader_program);
-
+		shader_program.SetMat4("modelview", modelview);
+		shader_program.SetMat4("projection", camera.getProjectionMat());
+		glUseProgram(shader_id);
 		glBindVertexArray(VAOs);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		// glDrawElements(GL_TRIANGLES, 0, 3, GL_UNSIGNED_INT, 0);
@@ -113,7 +118,7 @@ int main(int argc, char *argv[])
 	glDeleteBuffers(1, &VBOs);
 	glDeleteBuffers(1, &EBOs);
 
-	basic_shader.DeleteShader();
+	shader_program.DeleteShader();
 	glfwTerminate();
 	return 0;
 }

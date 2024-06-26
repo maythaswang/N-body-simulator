@@ -8,8 +8,9 @@ public:
      * @brief Construct a new Callback Manager
      * 
      * @param window 
+     * @param camera
      */
-    CallbackManager(GLFWwindow *, Camera);
+    CallbackManager(GLFWwindow *, Camera *);
 
     /**
      * @brief Main function for processing input
@@ -19,7 +20,7 @@ public:
 
 private:
     GLFWwindow *window;
-    Camera camera;
+    Camera *camera;
 
     /**
      * @brief Set the window and camera aspect ratio when framebuffer gets resized.

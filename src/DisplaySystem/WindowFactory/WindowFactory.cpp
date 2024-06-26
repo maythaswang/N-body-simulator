@@ -11,14 +11,11 @@ GLFWwindow *WindowFactory::CreateWindow(int screenWidth, int screenHeight, const
     GLFWwindow *window = glfwCreateWindow(screenWidth, screenHeight, screenName, NULL, NULL);
     if (!window)
     {
-        // TODO: Throw errors
         std::cout << "Screen cannot be initialized!";
-        glfwTerminate();
         return NULL;
     }
 
     glfwMakeContextCurrent(window);
     glfwSetWindowAspectRatio(window, screenWidth, screenHeight);
-
     return window;
 }
