@@ -18,7 +18,7 @@ public:
      * @brief Zoom In-Out based on mouse drag.
      * @param newY y position in reference to the original point
      */
-    void Zoom(GLfloat);
+    void zoom(GLfloat);
 
     /**
      * @brief Rotate camera based on mouse drag.
@@ -26,41 +26,41 @@ public:
      * @param
      * 
      */
-    void Rotate(GLfloat, GLfloat);
+    void rotate(GLfloat, GLfloat);
 
     /**
      * @brief Translate the camera based on mouse drag.
      * @note The translation is done in the direction of up and right only.
      */
-    void Translate(GLfloat, GLfloat);
+    void translate(GLfloat, GLfloat);
 
     /**
      * @brief Set eye value
      *
      * @param eye vector of eye position
      */
-    void SetEye(glm::vec3);
+    void set_eye(glm::vec3);
 
     /**
      * @brief Set center value
      *
      * @param center vector of center position
      */
-    void SetCenter(glm::vec3);
+    void set_center(glm::vec3);
 
     /**
      * @brief Set up value
      *
      * @param up vector of up position
      */
-    void SetUp(glm::vec3);
+    void set_up(glm::vec3);
 
     /**
      * @brief Set fovy value
      *
      * @param fovy
      */
-    void SetFovy(GLfloat);
+    void set_fovy(GLfloat);
 
     /**
      * @brief Set height and width value for calculating the aspect ratio.
@@ -68,42 +68,42 @@ public:
      * @param height
      * @param width
      */
-    void SetAspect(GLfloat, GLfloat);
+    void set_aspect(GLfloat, GLfloat);
 
     /**
      * @brief Set zNear value
      *
      * @param zNear
      */
-    void SetZnear(GLfloat);
+    void set_z_near(GLfloat);
 
     /**
      * @brief Set zFar value
      *
      * @param zFar
      */
-    void SetZfar(GLfloat);
+    void set_z_far(GLfloat);
 
     /**
      * @brief Get the Model Matrix
      *
      * @return Model Matrix
      */
-    glm::mat4 GetModelMat();
+    glm::mat4 get_model_matrix();
 
     /**
      * @brief Get the View Matrix
      *
      * @return View Matrix
      */
-    glm::mat4 GetViewMat();
+    glm::mat4 get_view_matrix();
 
     /**
      * @brief Get the Projection Matrix
      *
      * @return Projection Matrix
      */
-    glm::mat4 GetProjectionMat();
+    glm::mat4 get_projection_matrix();
 
 private:
     glm::vec3 eye;
@@ -111,38 +111,38 @@ private:
     glm::vec3 up;
 
     GLfloat fovy;
-    GLfloat aspectW;
-    GLfloat aspectH;
-    GLfloat zNear;
-    GLfloat zFar;
+    GLfloat aspect_w;
+    GLfloat aspect_h;
+    GLfloat z_near;
+    GLfloat z_far;
 
-    glm::mat4 modelMat;
-    glm::mat4 viewMat;
-    glm::mat4 projectionMat;
+    glm::mat4 model_mat;
+    glm::mat4 view_mat;
+    glm::mat4 projection_mat;
 
-    GLfloat rotationSensitivity;
-    GLfloat translationSensitivity;
-    GLfloat zoomSensitivity;
+    GLfloat rotation_sensitivity;
+    GLfloat translation_sensitivity;
+    GLfloat zoom_sensitivity;
 
     /**
      * @brief Build model matrix.
      *
      * @return Model Matrix
      */
-    void BuildModelMat();
+    void build_model_matrix();
 
     /**
      * @brief Build view matrix based on (eye, center, up) that has been previously stored.
      *
      * @return View Matrix
      */
-    void BuildViewMat();
+    void build_view_matrix();
 
     /**
      * @brief Build projection matrix based on (fovy, aspectW, aspectH, zNear, zFar) that has been previously stored.
      *
      * @return Projection Matrix
      */
-    void BuildProjectionMat();
+    void build_projection_matrix();
 };
 #endif

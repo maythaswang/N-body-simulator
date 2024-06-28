@@ -8,26 +8,26 @@ Camera::Camera()
     this->up = glm::vec3(0, 1.0, 0);
 
     this->fovy = 90;
-    this->aspectW = 640;
-    this->aspectH = 480;
-    this->zNear = 0.1;
-    this->zFar = 99.0;
+    this->aspect_w = 640;
+    this->aspect_h = 480;
+    this->z_near = 0.1;
+    this->z_far = 99.0;
 
-    this->rotationSensitivity = 0.9;
-    this->zoomSensitivity = 0.01;
-    this->translationSensitivity = 0.05;
+    this->rotation_sensitivity = 0.9;
+    this->zoom_sensitivity= 0.01;
+    this->translation_sensitivity = 0.05;
 
-    BuildModelMat();
-    BuildViewMat();
-    BuildProjectionMat();
+    this ->build_model_matrix();
+    this-> build_view_matrix();
+    this-> build_projection_matrix();
 }
 
-void Camera::Rotate(GLfloat mouseDeltaX, GLfloat mouseDeltaY)
+void Camera::rotate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
 {
     glm::vec3 direction = glm::normalize(this->center - this->eye);
     glm::vec3 right = glm::normalize(glm::cross(direction, this->up));
-    GLfloat yaw = -mouseDeltaX * rotationSensitivity;  // along up-axis
-    GLfloat pitch = mouseDeltaY * rotationSensitivity; // along right-axis
+    GLfloat yaw = -mouse_delta_x * rotation_sensitivity;  // along up-axis
+    GLfloat pitch = mouse_delta_y * rotation_sensitivity; // along right-axis
     // roll: along the center-axis
 
     if (pitch > 89.0f)
@@ -42,13 +42,13 @@ void Camera::Rotate(GLfloat mouseDeltaX, GLfloat mouseDeltaY)
 
     this->eye = rotation * this->eye;
     this->up = rotation * this->up;
-    this->BuildViewMat();
+    this->build_view_matrix();
 }
 
-void Camera::Zoom(GLfloat mouseDeltaY)
+void Camera::zoom(GLfloat mouse_delta_y)
 {
     glm::vec3 direction = glm::normalize(this->center - this->eye);
-    GLfloat zoom_power = -mouseDeltaY * zoomSensitivity;
+    GLfloat zoom_power = -mouse_delta_y * zoom_sensitivity;
     GLfloat zoom_limit = 0.005;
 
     // Set zoom limit
@@ -56,90 +56,90 @@ void Camera::Zoom(GLfloat mouseDeltaY)
     glm::vec3 dtc = new_eye - this->center; // distance to center
     if ((dtc[0] > zoom_limit || dtc[0] < -zoom_limit)   | (dtc[1] > zoom_limit || dtc[1] < -zoom_limit  )|( dtc[2] > zoom_limit || dtc[2] < -zoom_limit)){
         this->eye = new_eye;
-        this->BuildViewMat();
+        this->build_view_matrix();
     }
     
 }
 
-void Camera::Translate(GLfloat mouseDeltaX, GLfloat mouseDeltaY)
+void Camera::translate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
 {
     glm::vec3 direction = glm::normalize(this->center - this->eye);
     glm::vec3 right = glm::normalize(glm::cross(direction, this->up));
 
-    GLfloat x_translate = -mouseDeltaX * translationSensitivity;
-    GLfloat y_translate = mouseDeltaY * translationSensitivity;
+    GLfloat x_translate = -mouse_delta_x * this-> translation_sensitivity;
+    GLfloat y_translate = mouse_delta_y * this -> translation_sensitivity;
     glm::vec3 translation_vector = glm::normalize(right) * x_translate + glm::normalize(this->up) * y_translate;
 
     this->eye += translation_vector;
     this->center += translation_vector;
-    this->BuildViewMat();
+    this->build_view_matrix();
 }   
 
 // The only mutator method avaliable for use as of now is SetAspect.
 
-void Camera::SetEye(glm::vec3 eye)
+void Camera::set_eye(glm::vec3 eye)
 {
     this->eye = eye;
 }
 
-void Camera::SetCenter(glm::vec3 center)
+void Camera::set_center(glm::vec3 center)
 {
     this->center = center;
 }
 
-void Camera::SetUp(glm::vec3 up)
+void Camera::set_up(glm::vec3 up)
 {
     this->up = up;
 }
 
-void Camera::SetFovy(GLfloat fovy)
+void Camera::set_fovy(GLfloat fovy)
 {
     this->fovy = fovy;
 }
 
-void Camera::SetAspect(GLfloat width, GLfloat height)
+void Camera::set_aspect(GLfloat width, GLfloat height)
 {
-    this->aspectW = width;
-    this->aspectH = height;
-    this->BuildProjectionMat();
+    this->aspect_w = width;
+    this->aspect_h = height;
+    this->build_projection_matrix();
 }
 
-void Camera::SetZnear(GLfloat zNear)
+void Camera::set_z_near(GLfloat z_near)
 {
-    this->zNear = zNear;
+    this->z_near = z_near;
 }
 
-void Camera::SetZfar(GLfloat zFar)
+void Camera::set_z_far(GLfloat z_far)
 {
-    this->zFar = zFar;
+    this->z_far = z_far;
 }
 
-glm::mat4 Camera::GetModelMat()
+glm::mat4 Camera::get_model_matrix()
 {
-    return this->modelMat;
+    return this->model_mat;
 }
 
-glm::mat4 Camera::GetViewMat()
+glm::mat4 Camera::get_view_matrix()
 {
-    return this->viewMat;
+    return this->view_mat;
 }
 
-glm::mat4 Camera::GetProjectionMat()
+glm::mat4 Camera::get_projection_matrix()
 {
-    return this->projectionMat;
+    return this->projection_mat;
 }
 
-void Camera::BuildModelMat()
+void Camera::build_model_matrix()
 {
-    this->modelMat = glm::mat4(1.0f);
+    this->model_mat = glm::mat4(1.0f);
 }
 
-void Camera::BuildViewMat()
+void Camera::build_view_matrix()
 {
-    this->viewMat = glm::lookAt(this->eye, this->center, this->up);
+    this->view_mat = glm::lookAt(this->eye, this->center, this->up);
 }
 
-void Camera::BuildProjectionMat()
+void Camera::build_projection_matrix()
 {
-    this->projectionMat = glm::perspective(glm::radians(this->fovy), this->aspectW / this->aspectH, this->zNear, this->zFar);
+    this->projection_mat = glm::perspective(glm::radians(this->fovy), this->aspect_w / this->aspect_h, this->z_near, this->z_far);
 }

@@ -75,13 +75,13 @@ void CallbackManager::UpdateCameraPosition()
     case CAMERA_IDLE:
         break;
     case CAMERA_ZOOM:
-        this->camera->Zoom(delta_mouse_pos_y);
+        this->camera->zoom(delta_mouse_pos_y);
         break;
     case CAMERA_ROTATE:
-        camera->Rotate(delta_mouse_pos_x, delta_mouse_pos_y);
+        camera->rotate(delta_mouse_pos_x, delta_mouse_pos_y);
         break;
     case CAMERA_TRANSLATE:
-        camera->Translate(delta_mouse_pos_x, delta_mouse_pos_y);
+        camera->translate(delta_mouse_pos_x, delta_mouse_pos_y);
         break;
     default:
         break;
@@ -116,7 +116,7 @@ void CallbackManager::SetWindowResizeCallback()
         
         // Set the camera aspect ratio
         CallbackManager * callback_manager = reinterpret_cast<CallbackManager *> ( glfwGetWindowUserPointer ( window ));
-        if (callback_manager) callback_manager->camera->SetAspect( width, height );
+        if (callback_manager) callback_manager->camera->set_aspect( width, height );
 
         // set the viewport size
         glViewport(0, 0, width, height); });

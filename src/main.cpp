@@ -93,8 +93,8 @@ int main(int argc, char *argv[])
 	while (!glfwWindowShouldClose(window))
 	{
 		callback_manager.ProcessInput();
-		shader_program.SetMat4("modelview", camera.GetViewMat() * camera.GetModelMat());
-		shader_program.SetMat4("projection", camera.GetProjectionMat());
+		shader_program.SetMat4("modelview", camera.get_view_matrix() * camera.get_model_matrix());
+		shader_program.SetMat4("projection", camera.get_projection_matrix());
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glUseProgram(shader_id);
