@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
 	// Initialization Subroutine
 	// ----------------------------------------------------------------------------
-	ProgramInit::InitializeGLFW();
+	ProgramInit::initialize_glfw();
 	WindowFactory window_factory = WindowFactory();
 
 	// Initialize Window
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	ProgramInit::InitalizeGLAD();
+	ProgramInit::initialize_glad();
 
 
 	// Preparing shader program

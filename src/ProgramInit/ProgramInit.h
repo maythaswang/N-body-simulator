@@ -7,13 +7,13 @@ namespace ProgramInit
      * @brief Initialize GLFW
      *
      */
-    void InitializeGLFW();
+    void initialize_glfw();
 
     /**
      * @brief Load all function pointers using GLAD
      *
      */
-    void InitalizeGLAD();
+    void initialize_glad();
 
     /**
      * @brief Function for GLFW error callback

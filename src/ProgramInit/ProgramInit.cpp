@@ -1,7 +1,7 @@
 #include <ProgramInit.h>
 #include <iostream>
 
-void ProgramInit::InitializeGLFW()
+void ProgramInit::initialize_glfw()
 {
     if (!glfwInit())
     {
@@ -20,7 +20,7 @@ void ProgramInit::InitializeGLFW()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-void ProgramInit::InitalizeGLAD()
+void ProgramInit::initialize_glad()
 {
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
