@@ -17,6 +17,7 @@ const unsigned int SCREEN_WIDTH = 640;
 const unsigned int SCREEN_HEIGHT = 480;
 const char *SCREEN_NAME = "N-BODY-SIMULATION";
 const bool WIREFRAME_ON = true;
+const bool POINT_SIZE_ON = false;
 
 int main(int argc, char *argv[])
 {
@@ -42,7 +43,7 @@ int main(int argc, char *argv[])
 	// ----------------------------------------------------------------------------
 
 	Shader shader_program = Shader::Shader();
-	
+
 	// The dir depends on where you call it so if you call it from root, do it as if the current working directory is in root.
 	GLuint vertexShader = shader_program.compile_shader("./shader_source/light.vert.glsl", GL_VERTEX_SHADER);
 	GLuint fragmentShader = shader_program.compile_shader("./shader_source/light.frag.glsl", GL_FRAGMENT_SHADER);
@@ -64,11 +65,14 @@ int main(int argc, char *argv[])
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 
-	glPointSize(10);
+	if (POINT_SIZE_ON)
+	{
+		glPointSize(1);
+	}
 
 	SamplePolygon sample_polygon = SamplePolygon();
 	GLuint VAO, VBO, EBO;
-	sample_polygon.init_cube(&VAO,&VBO,&EBO);
+	sample_polygon.init_cube(&VAO, &VBO, &EBO);
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
@@ -83,8 +87,8 @@ int main(int argc, char *argv[])
 		glUseProgram(shader_id);
 		glBindVertexArray(VAO);
 
-		glDrawElements(GL_TRIANGLES, 12*3, GL_UNSIGNED_INT, 0);
-		glDrawElements(GL_POINT, 12*3, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_POINTS, 8 * 3, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
