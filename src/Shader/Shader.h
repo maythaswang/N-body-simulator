@@ -23,7 +23,7 @@ public:
      * @param SHADER_TYPE
      * @return status of shader creation
      */
-    GLuint CompileShader(std::string, GLenum);
+    GLuint compile_shader(std::string, GLenum);
 
     /**
      * @brief Link shader that has been built by CompileShader.
@@ -31,37 +31,37 @@ public:
      *
      * @param shader
      */
-    void LinkShader(GLuint);
+    void link_shader(GLuint);
 
     /**
      * @brief Get the ShaderID
      *
      * @return GLuint
      */
-    GLuint GetShaderID();
+    GLuint get_shader_id();
 
     /**
      * @brief Delete the shader program
      *
      */
-    void DeleteShader();
+    void delete_shader();
 
     // Utility Setter for Uniform Variable
     // ----------------------------------------------------------------------------
 
-    void SetBool(const std::string &name, bool value);
-    void SetInt(const std::string &name, int value);
-    void SetFloat(const std::string &name, float value);
-    void SetVec2(const std::string &name, const glm::vec2 &value);
-    void SetVec3(const std::string &name, const glm::vec3 &value);
-    void SetVec4(const std::string &name, const glm::vec4 &value);
-    void SetMat2(const std::string &name, const glm::mat2 &);
-    void SetMat3(const std::string &name, const glm::mat3 &);
-    void SetMat4(const std::string &name, const glm::mat4 &);
+    void set_bool(const std::string &name, bool value);
+    void set_int(const std::string &name, int value);
+    void set_float(const std::string &name, float value);
+    void set_vec2(const std::string &name, const glm::vec2 &value);
+    void set_vec3(const std::string &name, const glm::vec3 &value);
+    void set_vec4(const std::string &name, const glm::vec4 &value);
+    void set_mat2(const std::string &name, const glm::mat2 &);
+    void set_mat3(const std::string &name, const glm::mat3 &);
+    void set_mat4(const std::string &name, const glm::mat4 &);
 
 private:
-    GLuint shaderID;
-    bool hasProgram;
+    GLuint shader_id;
+    bool has_program;
 
     /**
      * @brief Read the shader file
@@ -69,5 +69,5 @@ private:
      * @param fileName
      * @return const char*
      */
-    std::string ReadShaderFile(std::string);
+    std::string read_shader_file(std::string);
 };

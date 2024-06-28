@@ -41,12 +41,12 @@ int main(int argc, char *argv[])
 
 	Shader shader_program = Shader::Shader();
 	// The dir depends on where you call it so if you call it from root, do it as if the current working directory is in root.
-	GLuint vertexShader = shader_program.CompileShader("./shader_source/light.vert.glsl", GL_VERTEX_SHADER);
-	GLuint fragmentShader = shader_program.CompileShader("./shader_source/light.frag.glsl", GL_FRAGMENT_SHADER);
-	shader_program.LinkShader(vertexShader);
-	shader_program.LinkShader(fragmentShader);
+	GLuint vertexShader = shader_program.compile_shader("./shader_source/light.vert.glsl", GL_VERTEX_SHADER);
+	GLuint fragmentShader = shader_program.compile_shader("./shader_source/light.frag.glsl", GL_FRAGMENT_SHADER);
+	shader_program.link_shader(vertexShader);
+	shader_program.link_shader(fragmentShader);
 
-	GLuint shader_id = shader_program.GetShaderID();
+	GLuint shader_id = shader_program.get_shader_id();
 
 	// TODO: Implement the projections to handle camera movement from here forward.
 	Camera camera = Camera();
@@ -93,8 +93,8 @@ int main(int argc, char *argv[])
 	while (!glfwWindowShouldClose(window))
 	{
 		callback_manager.process_input();
-		shader_program.SetMat4("modelview", camera.get_view_matrix() * camera.get_model_matrix());
-		shader_program.SetMat4("projection", camera.get_projection_matrix());
+		shader_program.set_mat4("modelview", camera.get_view_matrix() * camera.get_model_matrix());
+		shader_program.set_mat4("projection", camera.get_projection_matrix());
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glUseProgram(shader_id);
@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
 	glDeleteBuffers(1, &VBOs);
 	glDeleteBuffers(1, &EBOs);
 
-	shader_program.DeleteShader();
+	shader_program.delete_shader();
 	glfwTerminate();
 	return 0;
 }
