@@ -53,6 +53,7 @@ set(PROJECT_SOURCES
     src/ParticleSystem/Particle/Particle.cpp
     src/ProgramInit/ProgramInit.cpp
     src/Shader/Shader.cpp
+    src/Polygon/SamplePolygon/SamplePolygon.cpp
 )
 
 set(INCLUDE_DIRS
@@ -65,6 +66,7 @@ set(INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/CallbackManager/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ProgramInit/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Shader/
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Polygon/SamplePolygon/
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})

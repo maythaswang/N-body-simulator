@@ -10,10 +10,13 @@
 #include <Camera.h>
 #include <WindowFactory.h>
 
+#include <SamplePolygon.h>
+
 // For initialization
 const unsigned int SCREEN_WIDTH = 640;
 const unsigned int SCREEN_HEIGHT = 480;
 const char *SCREEN_NAME = "N-BODY-SIMULATION";
+const bool WIREFRAME_ON = true;
 
 int main(int argc, char *argv[])
 {
@@ -35,7 +38,6 @@ int main(int argc, char *argv[])
 
 	ProgramInit::initialize_glad();
 
-
 	// Preparing shader program
 	// ----------------------------------------------------------------------------
 
@@ -50,42 +52,54 @@ int main(int argc, char *argv[])
 
 	// TODO: Implement the projections to handle camera movement from here forward.
 	Camera camera = Camera();
-	Camera* p_camera = &camera; 
+	Camera *p_camera = &camera;
 	CallbackManager callback_manager = CallbackManager::CallbackManager(window, p_camera);
 
 	// TODO: Remove this later when no longer needed and make one class to deal with creating Geometry, Transforming Geometry, and so on ...
 	// Simple Geometry for testing.
 	// ----------------------------------------------------------------------------
 
-	GLuint VAOs; // VAO for each object
-	GLuint VBOs; // Vertices, Indices, Colours
-	GLuint EBOs; // Store Indices (How they link)
+	if (WIREFRAME_ON)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
 
-	GLfloat triangle_vert[3][3] = {
-		{-0.5f, -0.5f, 0.0f},
-		{0.5f, -0.5f, 0.0f},
-		{0.0f, 0.5f, 0.0f}};
+	glPointSize(10);
 
-	GLuint triangle_inds[1][3] = {{0, 1, 2}};
+	SamplePolygon sample_polygon = SamplePolygon();
+	GLuint VAO, VBO, EBO;
+	// sample_polygon.init_triangle(&VAO,&VBO,&EBO);
+	sample_polygon.init_cube(&VAO,&VBO,&EBO);
 
-	glGenVertexArrays(1, &VAOs);
-	glGenBuffers(1, &VBOs);
-	glGenBuffers(1, &EBOs);
+	// GLuint VAOs; // VAO for each object
+	// GLuint VBOs; // Vertices, Indices, Colours
+	// GLuint EBOs; // Store Indices (How they link)
 
-	glBindVertexArray(VAOs);
+	// GLfloat triangle_vert[3][3] = {
+	// 	{-0.5f, -0.5f, 0.0f},
+	// 	{0.5f, -0.5f, 0.0f},
+	// 	{0.0f, 0.5f, 0.0f}};
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBOs);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 9, &triangle_vert[0], GL_STATIC_DRAW);
+	// GLuint triangle_inds[1][3] = {{0, 1, 2}};
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOs);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 3, &triangle_inds[0], GL_STATIC_DRAW);
+	// glGenVertexArrays(1, &VAOs);
+	// glGenBuffers(1, &VBOs);
+	// glGenBuffers(1, &EBOs);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-	glEnableVertexAttribArray(0);
+	// glBindVertexArray(VAOs);
 
-	// Unbind VAOs, VBOs, EBOs
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
+	// glBindBuffer(GL_ARRAY_BUFFER, VBOs);
+	// glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 9, &triangle_vert[0], GL_STATIC_DRAW);
+
+	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOs);
+	// glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 3, &triangle_inds[0], GL_STATIC_DRAW);
+
+	// glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+	// glEnableVertexAttribArray(0);
+
+	// // Unbind VAOs, VBOs, EBOs
+	// glBindBuffer(GL_ARRAY_BUFFER, 0);
+	// glBindVertexArray(0);
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
@@ -98,9 +112,12 @@ int main(int argc, char *argv[])
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glUseProgram(shader_id);
-		glBindVertexArray(VAOs);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-		// glDrawElements(GL_TRIANGLES, 0, 3, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(VAO);
+		// glDrawArrays(GL_TRIANGLES, 0, 3);
+		// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_POINT, 36, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -110,9 +127,9 @@ int main(int argc, char *argv[])
 	// ----------------------------------------------------------------------------
 
 	// Delete Buffers
-	glDeleteVertexArrays(1, &VAOs);
-	glDeleteBuffers(1, &VBOs);
-	glDeleteBuffers(1, &EBOs);
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
 
 	shader_program.delete_shader();
 	glfwTerminate();
