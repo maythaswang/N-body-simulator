@@ -5,72 +5,68 @@ CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera)
 {
     this->window = window;
     this->camera = camera;
-    this->cameraMode = CAMERA_IDLE;
+    this->camera_mode = CAMERA_IDLE;
 
     // TODO: Maybe make a map or array to handle mouse/keyboard state.
-    // Personal note: GLFW_PRESS: 1, GLFW_RELEASE: 0
-
-    this->middleMouseDown = false;
-    this->leftShiftDown = false;
-    this->leftCtrlDown = false;
+    this->middle_mouse_down = false;
+    this->left_shift_down = false;
+    this->left_ctrl_down = false;
 
     // Set callbacks
-    this->SetWindowResizeCallback();
-    this->SetCursorPositionCallback();
+    this->set_window_resize_callback();
+    this->set_cursor_position_callback();
 };
 
-void CallbackManager::ProcessInput()
+void CallbackManager::process_input()
 {
     if (glfwGetKey(this->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    leftCtrlDown = glfwGetKey(this->window, GLFW_KEY_LEFT_CONTROL);
-    leftShiftDown = glfwGetKey(this->window, GLFW_KEY_LEFT_SHIFT);
-    middleMouseDown = glfwGetMouseButton(this->window, GLFW_MOUSE_BUTTON_MIDDLE);
+    this->left_ctrl_down = glfwGetKey(this->window, GLFW_KEY_LEFT_CONTROL);
+    this->left_shift_down = glfwGetKey(this->window, GLFW_KEY_LEFT_SHIFT);
+    this->middle_mouse_down = glfwGetMouseButton(this->window, GLFW_MOUSE_BUTTON_MIDDLE);
 
-    this->HandleInput();
+    this->handle_input();
 }
 
-void CallbackManager::HandleInput()
+void CallbackManager::handle_input()
 {
-    this->UpdateCameraMode();
-    this->UpdateCameraPosition();
+    this->update_camera_mode();
+    this->update_camera_position();
 }
 
-void CallbackManager::UpdateCameraMode()
+void CallbackManager::update_camera_mode()
 {
-    if (!middleMouseDown)
+    if (!this->middle_mouse_down)
     {
-        this->cameraMode = CAMERA_IDLE;
-        this->old_mouse_pos_x = this->mousePosX;
-        this->old_mouse_pos_y = this->mousePosY;
+        this->camera_mode = CAMERA_IDLE;
+        this->old_mouse_pos_x = this->mouse_pos_x;
+        this->old_mouse_pos_y = this->mouse_pos_y;
     }
 
-    if (this->cameraMode == CAMERA_IDLE)
+    if (this->camera_mode == CAMERA_IDLE)
     {
-        if (leftCtrlDown & middleMouseDown)
+        if (this->left_ctrl_down & this->middle_mouse_down)
         {
-            this->cameraMode = CAMERA_ZOOM;
+            this->camera_mode = CAMERA_ZOOM;
         }
-        else if (leftShiftDown & middleMouseDown)
+        else if (this->left_shift_down & this->middle_mouse_down)
         {
-            this->cameraMode = CAMERA_TRANSLATE;
+            this->camera_mode = CAMERA_TRANSLATE;
         }
-        else if (middleMouseDown)
+        else if (this->middle_mouse_down)
         {
-            this->cameraMode = CAMERA_ROTATE;
+            this->camera_mode = CAMERA_ROTATE;
         }
     }
 }
 
-void CallbackManager::UpdateCameraPosition()
+void CallbackManager::update_camera_position()
 {
-    double delta_mouse_pos_x = this->mousePosX - this->old_mouse_pos_x;
-    double delta_mouse_pos_y = this->mousePosY - this->old_mouse_pos_y;
+    double delta_mouse_pos_x = this->mouse_pos_x - this->old_mouse_pos_x;
+    double delta_mouse_pos_y = this->mouse_pos_y - this->old_mouse_pos_y;
 
-    // std::cout << delta_mouse_pos_x << ' ' << delta_mouse_pos_y << std::endl;
-
-    switch (this->cameraMode)
+    switch (this->camera_mode)
     {
     case CAMERA_IDLE:
         break;
@@ -87,11 +83,11 @@ void CallbackManager::UpdateCameraPosition()
         break;
     }
 
-    this->old_mouse_pos_x = mousePosX;
-    this->old_mouse_pos_y = mousePosY;
+    this->old_mouse_pos_x = mouse_pos_x;
+    this->old_mouse_pos_y = mouse_pos_y;
 }
 
-void CallbackManager::SetCursorPositionCallback()
+void CallbackManager::set_cursor_position_callback()
 {
     glfwSetWindowUserPointer(this->window, reinterpret_cast<void *>(this));
 
@@ -100,12 +96,12 @@ void CallbackManager::SetCursorPositionCallback()
         CallbackManager *callback_manager = reinterpret_cast<CallbackManager *>(glfwGetWindowUserPointer(window));
         if (callback_manager)
         {
-            callback_manager->mousePosX = posX;
-            callback_manager->mousePosY = posY;
+            callback_manager->mouse_pos_x = posX;
+            callback_manager->mouse_pos_y = posY;
         } });
 }
 
-void CallbackManager::SetWindowResizeCallback()
+void CallbackManager::set_window_resize_callback()
 {
     glfwSetWindowUserPointer(this->window, reinterpret_cast<void *>(this));
 

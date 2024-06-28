@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 
 	while (!glfwWindowShouldClose(window))
 	{
-		callback_manager.ProcessInput();
+		callback_manager.process_input();
 		shader_program.SetMat4("modelview", camera.get_view_matrix() * camera.get_model_matrix());
 		shader_program.SetMat4("projection", camera.get_projection_matrix());
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
