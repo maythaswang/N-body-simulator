@@ -19,7 +19,7 @@ public:
      *
      * @return GLFWwindow*
      */
-    GLFWwindow *CreateWindow(int, int, const char *);
+    GLFWwindow *create_window(int, int, const char *);
 };
 
 #endif

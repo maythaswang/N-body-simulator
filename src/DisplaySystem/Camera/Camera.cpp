@@ -49,11 +49,12 @@ void Camera::Zoom(GLfloat mouseDeltaY)
 {
     glm::vec3 direction = glm::normalize(this->center - this->eye);
     GLfloat zoom_power = -mouseDeltaY * zoomSensitivity;
-    
+    GLfloat zoom_limit = 0.005;
+
     // Set zoom limit
     glm::vec3 new_eye = this->eye + direction*zoom_power;
     glm::vec3 dtc = new_eye - this->center; // distance to center
-    if ((dtc[0] > 0.005 || dtc[0] < -0.005)   | (dtc[1] > 0.005 || dtc[1] < -0.005  )|( dtc[2] > 0.005 || dtc[2] < -0.005)){
+    if ((dtc[0] > zoom_limit || dtc[0] < -zoom_limit)   | (dtc[1] > zoom_limit || dtc[1] < -zoom_limit  )|( dtc[2] > zoom_limit || dtc[2] < -zoom_limit)){
         this->eye = new_eye;
         this->BuildViewMat();
     }
@@ -108,7 +109,7 @@ void Camera::SetZnear(GLfloat zNear)
     this->zNear = zNear;
 }
 
-void Camera::SetZfar(GLfloat)
+void Camera::SetZfar(GLfloat zFar)
 {
     this->zFar = zFar;
 }

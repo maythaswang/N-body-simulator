@@ -5,10 +5,10 @@ WindowFactory::WindowFactory()
 {
 }
 
-GLFWwindow *WindowFactory::CreateWindow(int screenWidth, int screenHeight, const char *screenName)
+GLFWwindow *WindowFactory::create_window(int screen_width, int screen_height, const char *screen_name)
 {
 
-    GLFWwindow *window = glfwCreateWindow(screenWidth, screenHeight, screenName, NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(screen_width, screen_height, screen_name, NULL, NULL);
     if (!window)
     {
         std::cout << "Screen cannot be initialized!";
@@ -16,6 +16,6 @@ GLFWwindow *WindowFactory::CreateWindow(int screenWidth, int screenHeight, const
     }
 
     glfwMakeContextCurrent(window);
-    glfwSetWindowAspectRatio(window, screenWidth, screenHeight);
+    glfwSetWindowAspectRatio(window, screen_width, screen_height);
     return window;
 }

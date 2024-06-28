@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 	WindowFactory window_factory = WindowFactory();
 
 	// Initialize Window
-	GLFWwindow *window = window_factory.CreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_NAME);
+	GLFWwindow *window = window_factory.create_window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_NAME);
 
 	// Verify that the window has been created properly
 	if (!window)
