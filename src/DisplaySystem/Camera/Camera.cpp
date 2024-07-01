@@ -49,7 +49,7 @@ void Camera::zoom(GLfloat mouse_delta_y)
 {
     glm::vec3 direction = glm::normalize(this->center - this->eye);
     GLfloat zoom_power = -mouse_delta_y * zoom_sensitivity;
-    GLfloat zoom_limit = 0.005;
+    GLfloat zoom_limit = 0.5;
 
     // Set zoom limit
     glm::vec3 new_eye = this->eye + direction*zoom_power;
