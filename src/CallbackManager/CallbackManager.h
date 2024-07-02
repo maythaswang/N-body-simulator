@@ -54,8 +54,6 @@ private:
      */
     void set_cursor_position_callback();
 
-    // TODO: Maybe create a camera controller class.
-
     /**
      * @brief Update the camera mode accordingly
      *
