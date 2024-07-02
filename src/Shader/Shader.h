@@ -46,6 +46,12 @@ public:
      */
     void delete_shader();
 
+    /**
+     * @brief Use the shader program.
+     * 
+     */
+    void use();
+
     // Utility Setter for Uniform Variable
     // ----------------------------------------------------------------------------
 

@@ -11,6 +11,7 @@
 #include <WindowFactory.h>
 
 #include <SamplePolygon.h>
+#include <Simulator.h>
 
 // For initialization
 const unsigned int SCREEN_WIDTH = 640;
@@ -70,9 +71,15 @@ int main(int argc, char *argv[])
 		glPointSize(1);
 	}
 
-	SamplePolygon sample_polygon = SamplePolygon();
-	GLuint VAO, VBO, EBO;
-	sample_polygon.init_cube(&VAO, &VBO, &EBO);
+	// Simulator
+	GLuint VAO, VBO;
+	Simulator sim = Simulator::Simulator(1000, 0.01, 0.01, 0.001);
+	sim.initialize_particles(&VAO, &VBO);
+
+	// // SamplePolygon
+	// SamplePolygon sample_polygon = SamplePolygon();
+	// GLuint VAO, VBO, EBO;
+	// sample_polygon.init_cube(&VAO, &VBO, &EBO);
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
@@ -84,11 +91,13 @@ int main(int argc, char *argv[])
 		shader_program.set_mat4("projection", camera.get_projection_matrix());
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		glUseProgram(shader_id);
-		glBindVertexArray(VAO);
+		shader_program.use();
 
-		glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, 0);
-		glDrawElements(GL_POINTS, 8 * 3, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(VAO);
+		// glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, 0);
+		// glDrawElements(GL_POINTS, 8 * 3, GL_FLOAT, 0);
+		glDrawArrays(GL_POINTS, 0, 1000);
+		sim.next_step();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -100,7 +109,7 @@ int main(int argc, char *argv[])
 	// Delete Buffers
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
+	// glDeleteBuffers(1, &EBO);
 
 	shader_program.delete_shader();
 	glfwTerminate();

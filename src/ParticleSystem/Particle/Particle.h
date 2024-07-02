@@ -6,7 +6,8 @@
 class Particle
 {
 public:
-    Particle(glm::vec3);
+    Particle();
+    Particle(glm::vec3 position, glm::vec3 velocity, GLfloat mass);
     void print_information();
 
     GLfloat get_mass();
@@ -18,7 +19,6 @@ public:
     void set_mass(GLfloat);
     void set_velocity(glm::vec3);
     void set_acceleration(glm::vec3);
-
 
 private:
     GLfloat mass;

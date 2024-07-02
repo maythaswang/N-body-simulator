@@ -1,7 +1,10 @@
 #include <Particle.h>
 #include <iostream>
 
-Particle::Particle(glm::vec3 position)
+Particle::Particle(){
+}
+
+Particle::Particle(glm::vec3 position, glm::vec3 velocity, GLfloat mass)
 {
     this->position = position;
     this->velocity = glm::vec3();

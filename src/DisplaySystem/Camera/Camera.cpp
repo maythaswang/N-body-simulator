@@ -11,10 +11,10 @@ Camera::Camera()
     this->aspect_w = 640;
     this->aspect_h = 480;
     this->z_near = 0.1;
-    this->z_far = 99.0;
+    this->z_far = 5000.0;
 
     this->rotation_sensitivity = 0.9;
-    this->zoom_sensitivity= 0.01;
+    this->zoom_sensitivity= 1;
     this->translation_sensitivity = 0.05;
 
     this ->build_model_matrix();

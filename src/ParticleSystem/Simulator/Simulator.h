@@ -1,7 +1,7 @@
 #include <GLCommon.h>
-#include <Particle.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/random.hpp>
 #include <math.h>
 #include <vector>
 
@@ -28,8 +28,12 @@ public:
      */
     void next_step();
 
+    void initialize_particles(GLuint *, GLuint *);
+
 private:
-    std::vector<Particle> particle;
+    std::vector<glm::vec3> particle_position;
+    std::vector<glm::vec3> particle_velocity;
+    std::vector<GLfloat> particle_mass;
     GLfloat gravitational_constant;
     GLfloat softening_factor;
     GLfloat timestep_size;
@@ -46,7 +50,7 @@ private:
      * @param other
      * @return acceleration of the particle "current" based on force being exerted from the particle "other"
      */
-    glm::vec3 calculate_acceleration(Particle, Particle);
+    glm::vec3 calculate_acceleration(uint32_t, uint32_t);
 
     /**
      * @brief Update the position of each particle using euler method
@@ -55,4 +59,6 @@ private:
      * @note x_n+1 = x_n + h * dx, v_n+1 = v_n + h * dv
      */
     void update_position_euler();
+
+    void spawn_globular_cluster(GLfloat);
 };

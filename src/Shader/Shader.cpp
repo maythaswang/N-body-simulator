@@ -85,6 +85,11 @@ void Shader::delete_shader()
     this->has_program = false;
 }
 
+void Shader::use()
+{   
+	glUseProgram(this->shader_id);
+}
+
 // Utilities Setter for Uniform Variables
 // ----------------------------------------------------------------------------
 
