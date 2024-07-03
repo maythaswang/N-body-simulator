@@ -33,12 +33,15 @@ public:
 private:
     std::vector<glm::vec3> particle_position;
     std::vector<glm::vec3> particle_velocity;
+    std::vector<glm::vec3> particle_acceleration;
     std::vector<GLfloat> particle_mass;
     GLfloat gravitational_constant;
     GLfloat softening_factor;
     GLfloat timestep_size;
     GLfloat current_time;
     GLfloat n_particle;
+    GLuint *VAO;
+    GLuint *VBO;
 
     /**
      * @brief Calculate acceleration between the two particles
