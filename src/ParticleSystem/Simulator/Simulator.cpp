@@ -1,6 +1,8 @@
 #include <Simulator.h>
 #include <iostream>
 
+//TODO: Create Enumerator for Swapping Integrator midway (Make sure this can only happen during paused state.)
+
 Simulator::Simulator(GLfloat n_particle, GLfloat gravitational_constant, GLfloat softening_factor, GLfloat timestep_size)
 {   
     this->gravitational_constant = gravitational_constant;

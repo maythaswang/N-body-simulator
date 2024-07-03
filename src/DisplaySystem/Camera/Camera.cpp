@@ -52,9 +52,13 @@ void Camera::zoom(GLfloat mouse_delta_y)
 
     // Set zoom limit
     glm::vec3 new_eye = this->eye + direction * zoom_power; 
-    bool x_in_bound = this->eye[0] * new_eye[0] > 0 || !this->eye[0];
-    bool y_in_bound = this->eye[1] * new_eye[1] > 0 || !this->eye[1];
-    bool z_in_bound = this->eye[2] * new_eye[2] > 0 || !this->eye[2];
+
+    glm::vec3 etc = this->eye - this->center;
+    glm::vec3 netc = new_eye - this->center;
+
+    bool x_in_bound = etc[0] * netc[0] > 0 || !this->eye[0];
+    bool y_in_bound = etc[1] * netc[1] > 0 || !this->eye[1];
+    bool z_in_bound = etc[2] * netc[2] > 0 || !this->eye[2];
 
     if(x_in_bound && y_in_bound && z_in_bound)
     {
