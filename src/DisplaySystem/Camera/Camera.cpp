@@ -3,7 +3,7 @@
 
 Camera::Camera()
 {
-    this->eye = glm::vec3(0, 0, 5.0);
+    this->eye = glm::vec3(0, 0, 200.0);
     this->center = glm::vec3(0, 0, 0);
     this->up = glm::vec3(0, 1.0, 0);
 

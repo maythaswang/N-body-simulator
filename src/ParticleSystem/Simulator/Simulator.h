@@ -64,4 +64,5 @@ private:
     void update_position_euler();
 
     void spawn_globular_cluster(GLfloat, GLfloat, GLfloat);
+    void spawn_sphere(GLfloat, GLfloat, GLfloat);
 };

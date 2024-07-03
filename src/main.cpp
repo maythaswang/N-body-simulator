@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 
 	// Simulator
 	GLuint VAO, VBO;
-	Simulator sim = Simulator::Simulator(1000, 0.8, 5, 0.001);
+	Simulator sim = Simulator::Simulator(1000, 0.8, 15, 0.001);
 	sim.initialize_particles(&VAO, &VBO);
 
 	// // SamplePolygon
