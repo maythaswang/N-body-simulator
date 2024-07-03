@@ -2,7 +2,7 @@
 #include <iostream>
 
 Simulator::Simulator(GLfloat n_particle, GLfloat gravitational_constant, GLfloat softening_factor, GLfloat timestep_size)
-{
+{   
     this->gravitational_constant = gravitational_constant;
     this->softening_factor = softening_factor;
     this->timestep_size = timestep_size;
@@ -56,7 +56,7 @@ void Simulator::update_position_euler()
 
 void Simulator::initialize_particles(GLuint *VAO, GLuint *VBO)
 {
-    this->spawn_globular_cluster(500);
+    this->spawn_globular_cluster(500,100, 100000);
 
     glGenVertexArrays(1, VAO);
     glGenBuffers(1, VBO);
@@ -74,15 +74,15 @@ void Simulator::initialize_particles(GLuint *VAO, GLuint *VBO)
     this->VBO = VBO;
 }
 
-// TODO: Accept min,max mass and velocity as input
-void Simulator::spawn_globular_cluster(GLfloat radius)
+// TODO: Accept min,max velocity as input
+void Simulator::spawn_globular_cluster(GLfloat radius, GLfloat min_mass, GLfloat max_mass)
 {
+    GLfloat tmp_radius = radius;
     for (int i = 0; i < this->n_particle; i++)
     {
-        // TODO: Increase the density near the center of the cluster.
-        glm::vec3 tmp_position = glm::sphericalRand(radius);
+        glm::vec3 tmp_position = glm::sphericalRand(tmp_radius * glm::linearRand(0,1) + 25); // This will ensure that at least the center will be a bit more dense.
         glm::vec3 tmp_velocity = glm::vec3(0.0f); // TODO: Maybe make it possible to select a range of initial velocity.
-        GLfloat tmp_mass = glm::linearRand(100, 100000);
+        GLfloat tmp_mass = glm::linearRand(min_mass, max_mass);
         particle_position[i] = tmp_position;
         particle_velocity[i] = tmp_velocity;
         particle_mass[i] = tmp_mass;
