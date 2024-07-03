@@ -14,12 +14,12 @@ Camera::Camera()
     this->z_far = 5000.0;
 
     this->rotation_sensitivity = 0.9;
-    this->zoom_sensitivity= 1;
-    this->translation_sensitivity = 0.05;
+    this->zoom_sensitivity = 1;
+    this->translation_sensitivity = 0.7;
 
-    this ->build_model_matrix();
-    this-> build_view_matrix();
-    this-> build_projection_matrix();
+    this->build_model_matrix();
+    this->build_view_matrix();
+    this->build_projection_matrix();
 }
 
 void Camera::rotate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
@@ -36,8 +36,8 @@ void Camera::rotate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
         pitch = -89.0f;
 
     // Rotation Matrix
-    glm::mat4 rotationYaw = glm::rotate(glm::mat4(1.0f), glm::radians(yaw), this->up); 
-    glm::mat4 rotationPitch = glm::rotate(rotationYaw, glm::radians(pitch), right);    
+    glm::mat4 rotationYaw = glm::rotate(glm::mat4(1.0f), glm::radians(yaw), this->up);
+    glm::mat4 rotationPitch = glm::rotate(rotationYaw, glm::radians(pitch), right);
     glm::mat3 rotation = glm::mat3(rotationPitch);
 
     this->eye = rotation * this->eye;
@@ -49,16 +49,18 @@ void Camera::zoom(GLfloat mouse_delta_y)
 {
     glm::vec3 direction = glm::normalize(this->center - this->eye);
     GLfloat zoom_power = -mouse_delta_y * zoom_sensitivity;
-    GLfloat zoom_limit = 0.5;
 
     // Set zoom limit
-    glm::vec3 new_eye = this->eye + direction*zoom_power;
-    glm::vec3 dtc = new_eye - this->center; // distance to center
-    if ((dtc[0] > zoom_limit || dtc[0] < -zoom_limit)   | (dtc[1] > zoom_limit || dtc[1] < -zoom_limit  )|( dtc[2] > zoom_limit || dtc[2] < -zoom_limit)){
+    glm::vec3 new_eye = this->eye + direction * zoom_power; 
+    bool x_in_bound = this->eye[0] * new_eye[0] > 0 || !this->eye[0];
+    bool y_in_bound = this->eye[1] * new_eye[1] > 0 || !this->eye[1];
+    bool z_in_bound = this->eye[2] * new_eye[2] > 0 || !this->eye[2];
+
+    if(x_in_bound && y_in_bound && z_in_bound)
+    {
         this->eye = new_eye;
         this->build_view_matrix();
     }
-    
 }
 
 void Camera::translate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
@@ -66,14 +68,14 @@ void Camera::translate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
     glm::vec3 direction = glm::normalize(this->center - this->eye);
     glm::vec3 right = glm::normalize(glm::cross(direction, this->up));
 
-    GLfloat x_translate = -mouse_delta_x * this-> translation_sensitivity;
-    GLfloat y_translate = mouse_delta_y * this -> translation_sensitivity;
+    GLfloat x_translate = -mouse_delta_x * this->translation_sensitivity;
+    GLfloat y_translate = mouse_delta_y * this->translation_sensitivity;
     glm::vec3 translation_vector = glm::normalize(right) * x_translate + glm::normalize(this->up) * y_translate;
 
     this->eye += translation_vector;
     this->center += translation_vector;
     this->build_view_matrix();
-}   
+}
 
 // The only mutator method avaliable for use as of now is SetAspect.
 

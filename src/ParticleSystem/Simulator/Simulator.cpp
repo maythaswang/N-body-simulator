@@ -21,7 +21,7 @@ glm::vec3 Simulator::calculate_acceleration(uint32_t current, uint32_t other)
     glm::vec3 direction = -glm::normalize(temp_distance);
     GLfloat sq_distance = glm::dot(temp_distance, temp_distance);
     GLfloat sq_soften = std::pow(this->softening_factor, 2);
-    return this->particle_mass[other] / std::sqrt(sq_distance + sq_soften) * direction;
+    return (this->particle_mass[other] / std::sqrt(sq_distance + sq_soften)) * direction;
 }
 
 void Simulator::next_step()
@@ -36,10 +36,10 @@ void Simulator::update_position_euler()
 {
     glm::vec3 tmp_acceleration;
     std::fill(this->particle_acceleration.begin(), this->particle_acceleration.end(), glm::vec3(0.0f));
-    
+
     for (int i = 0; i < this->n_particle; i++)
     {
-        for (int j = i+1; j < this->n_particle; j++)
+        for (int j = i + 1; j < this->n_particle; j++)
         {
             tmp_acceleration = this->calculate_acceleration(i, j);
             this->particle_acceleration[i] += tmp_acceleration;
@@ -56,7 +56,7 @@ void Simulator::update_position_euler()
 
 void Simulator::initialize_particles(GLuint *VAO, GLuint *VBO)
 {
-    this->spawn_globular_cluster(1000);
+    this->spawn_globular_cluster(500);
 
     glGenVertexArrays(1, VAO);
     glGenBuffers(1, VBO);
@@ -74,6 +74,7 @@ void Simulator::initialize_particles(GLuint *VAO, GLuint *VBO)
     this->VBO = VBO;
 }
 
+// TODO: Accept min,max mass and velocity as input
 void Simulator::spawn_globular_cluster(GLfloat radius)
 {
     for (int i = 0; i < this->n_particle; i++)
@@ -81,8 +82,7 @@ void Simulator::spawn_globular_cluster(GLfloat radius)
         // TODO: Increase the density near the center of the cluster.
         glm::vec3 tmp_position = glm::sphericalRand(radius);
         glm::vec3 tmp_velocity = glm::vec3(0.0f); // TODO: Maybe make it possible to select a range of initial velocity.
-        GLfloat tmp_mass = 10000;                 // TODO: Fix this, Let this be the uniform mass for now
-
+        GLfloat tmp_mass = glm::linearRand(100, 100000);
         particle_position[i] = tmp_position;
         particle_velocity[i] = tmp_velocity;
         particle_mass[i] = tmp_mass;
