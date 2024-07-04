@@ -40,10 +40,12 @@ int main(int argc, char *argv[])
 
 	ProgramInit::initialize_glad();
 
+	// TODO: Implement a Renderer class.
+
 	// Preparing shader program
 	// ----------------------------------------------------------------------------
 
-	Shader shader_program = Shader::Shader();
+	Shader shader_program = Shader();
 
 	// The dir depends on where you call it so if you call it from root, do it as if the current working directory is in root.
 	GLuint vertexShader = shader_program.compile_shader("./shader_source/light.vert.glsl", GL_VERTEX_SHADER);
@@ -56,7 +58,7 @@ int main(int argc, char *argv[])
 	// ----------------------------------------------------------------------------
 	Camera camera = Camera();
 	Camera *p_camera = &camera;
-	CallbackManager callback_manager = CallbackManager::CallbackManager(window, p_camera);
+	CallbackManager callback_manager = CallbackManager(window, p_camera);
 
 	// Initialize Geometry
 	// ----------------------------------------------------------------------------
@@ -73,13 +75,8 @@ int main(int argc, char *argv[])
 
 	// Simulator
 	GLuint VAO, VBO;
-	Simulator sim = Simulator::Simulator(1000, 0.8, 15, 0.001);
+	Simulator sim = Simulator(1000, 0.8, 15, 0.001);
 	sim.initialize_particles(&VAO, &VBO);
-
-	// // SamplePolygon
-	// SamplePolygon sample_polygon = SamplePolygon();
-	// GLuint VAO, VBO, EBO;
-	// sample_polygon.init_cube(&VAO, &VBO, &EBO);
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
@@ -94,12 +91,10 @@ int main(int argc, char *argv[])
 		shader_program.use();
 
 		glBindVertexArray(VAO);
-		// glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, 0);
-		// glDrawElements(GL_POINTS, 8 * 3, GL_FLOAT, 0);
 		glDrawArrays(GL_POINTS, 0, 1000);
-		sim.next_step();
-
 		glfwSwapBuffers(window);
+		
+		sim.next_step();  // TODO: Implement a pause callback that will not call the next step.
 		glfwPollEvents();
 	}
 
@@ -109,7 +104,6 @@ int main(int argc, char *argv[])
 	// Delete Buffers
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-	// glDeleteBuffers(1, &EBO);
 
 	shader_program.delete_shader();
 	glfwTerminate();
