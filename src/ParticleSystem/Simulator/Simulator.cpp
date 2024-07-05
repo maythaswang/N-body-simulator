@@ -8,13 +8,14 @@ Simulator::Simulator(GLfloat n_particle, GLfloat gravitational_constant, GLfloat
     this->gravitational_constant = gravitational_constant;
     this->softening_factor = softening_factor;
     this->timestep_size = timestep_size;
-    this->current_time = 0;
+    this->current_step = 0;
+    this->running_state = 0;
+
     this->n_particle = n_particle;
     this->particle_position.resize(n_particle);
     this->particle_velocity.resize(n_particle);
     this->particle_mass.resize(n_particle);
     this->particle_acceleration.resize(n_particle);
-    this->running_state = 0;
 }
 
 glm::vec3 Simulator::calculate_acceleration(uint32_t current, uint32_t other)
@@ -30,9 +31,10 @@ glm::vec3 Simulator::calculate_acceleration(uint32_t current, uint32_t other)
 void Simulator::next_step()
 {
     this->update_position_euler();
-
     glBindBuffer(GL_ARRAY_BUFFER, *VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * this->n_particle * 3, &this->particle_position[0]);
+
+    this->current_step +=1;
 }
 
 void Simulator::update_position_euler()
@@ -85,7 +87,7 @@ void Simulator::spawn_globular_cluster(GLfloat radius, GLfloat min_mass, GLfloat
     for (int i = 0; i < this->n_particle; i++)
     {
         glm::vec3 tmp_position = glm::sphericalRand(tmp_radius * glm::linearRand(0.0f, 1.0f) + 25); // This will ensure that at least the center will be a bit more dense. (use integer and it will spawn right in the middle)
-        glm::vec3 tmp_velocity = glm::vec3(0.0f);                                             // TODO: Maybe make it possible to select a range of initial velocity.
+        glm::vec3 tmp_velocity = glm::vec3(0.0f);                                                   // TODO: Maybe make it possible to select a range of initial velocity.
         GLfloat tmp_mass = glm::linearRand(min_mass, max_mass);
         particle_position[i] = tmp_position;
         particle_velocity[i] = tmp_velocity;
@@ -97,8 +99,8 @@ void Simulator::spawn_sphere(GLfloat radius, GLfloat min_mass, GLfloat max_mass)
 {
     for (int i = 0; i < this->n_particle; i++)
     {
-        glm::vec3 tmp_position = glm::sphericalRand(radius); // This will ensure that at least the center will be a bit more dense.
-        glm::vec3 tmp_velocity = glm::vec3(0.0f);            // TODO: Maybe make it possible to select a range of initial velocity.
+        glm::vec3 tmp_position = glm::sphericalRand(radius);
+        glm::vec3 tmp_velocity = glm::vec3(0.0f); // TODO: Maybe make it possible to select a range of initial velocity.
         GLfloat tmp_mass = glm::linearRand(min_mass, max_mass);
         particle_position[i] = tmp_position;
         particle_velocity[i] = tmp_velocity;
@@ -106,9 +108,19 @@ void Simulator::spawn_sphere(GLfloat radius, GLfloat min_mass, GLfloat max_mass)
     }
 }
 
-bool Simulator::get_running_state() {
+bool Simulator::get_running_state()
+{
     return this->running_state;
 }
-void Simulator::set_running_state(bool running_state) {
+void Simulator::set_running_state(bool running_state)
+{
     this->running_state = running_state;
+}
+
+GLuint Simulator::get_current_step(){
+    return this->current_step;
+}
+
+GLfloat Simulator::get_timestep_size(){
+    return this->timestep_size;
 }

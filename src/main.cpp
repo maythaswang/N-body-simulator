@@ -12,6 +12,7 @@
 
 #include <Simulator.h>
 #include <Renderer.h>
+#include <StringCommon.h>
 
 // For initialization
 const unsigned int SCREEN_WIDTH = 640;
@@ -20,8 +21,13 @@ const char *SCREEN_NAME = "N-BODY-SIMULATION";
 const bool WIREFRAME_ON = true;
 const bool POINT_SIZE_ON = false;
 
+const std::string welcome_message ="";
+
 int main(int argc, char *argv[])
 {
+	std::cout << g_welcome_message << std::endl;
+	std::cout << g_controls_help << std::endl;
+
 	// Initialization Subroutine
 	// ----------------------------------------------------------------------------
 	ProgramInit::initialize_glfw();
@@ -47,9 +53,6 @@ int main(int argc, char *argv[])
 	shader_program.link_shader(vertexShader);
 	shader_program.link_shader(fragmentShader);
 
-	// Setup Callback and Camera
-	// ----------------------------------------------------------------------------
-
 	// Settings for test.
 	// ----------------------------------------------------------------------------
 
@@ -63,7 +66,7 @@ int main(int argc, char *argv[])
 		glPointSize(1);
 	}
 
-	// Simulator
+	// Setup Required Components
 	// ----------------------------------------------------------------------------
 	Camera camera = Camera();
 

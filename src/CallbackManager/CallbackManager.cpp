@@ -1,4 +1,5 @@
 #include <iostream>
+#include <StringCommon.h>
 #include <CallbackManager.h>
 
 CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, Simulator *simulator)
@@ -130,9 +131,26 @@ void CallbackManager::set_keyboard_callback()
         CallbackManager * callback_manager = reinterpret_cast<CallbackManager *> ( glfwGetWindowUserPointer ( window ));
         if (callback_manager){
             if (key == GLFW_KEY_P && action == GLFW_PRESS)
-            {
+            {   
+                GLuint current_step = callback_manager->simulator->get_current_step();
+                GLfloat timestep_size = callback_manager->simulator->get_timestep_size();
+                if(callback_manager->simulator->get_running_state())
+                {
+                    std::cout << "The simulation is now paused. Step: " << current_step << ", Time (timestep size): " 
+                    << current_step * timestep_size << "\nPress p to resume..." << std::endl;
+                } 
+                else 
+                {
+                    std::cout << "Resuming simulation..." << std::endl;
+                }
+
+
                 callback_manager->simulator->set_running_state(!callback_manager->simulator->get_running_state());
             } 
-        } 
-    });
+
+            if (key == GLFW_KEY_H && action == GLFW_PRESS)
+            {
+                std::cout << g_controls_help << std::endl;
+            }
+        } });
 }

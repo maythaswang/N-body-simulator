@@ -34,6 +34,9 @@ public:
     bool get_running_state();
     void set_running_state(bool);
 
+    GLuint get_current_step();
+    GLfloat get_timestep_size();
+
 private:
     std::vector<glm::vec3> particle_position;
     std::vector<glm::vec3> particle_velocity;
@@ -42,8 +45,8 @@ private:
     GLfloat gravitational_constant;
     GLfloat softening_factor;
     GLfloat timestep_size;
-    GLfloat current_time;
     GLfloat n_particle;
+    GLuint current_step;
     GLuint *VAO;
     GLuint *VBO;
     bool running_state;
