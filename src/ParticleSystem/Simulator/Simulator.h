@@ -46,11 +46,39 @@ public:
      */
     void load_particles(GLuint, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<GLfloat>);
 
+    /**
+     * @brief Get the running state object
+     * 
+     * @return true 
+     * @return false 
+     */
     bool get_running_state();
+
+    /**
+     * @brief Set the running state
+     * 
+     */
     void set_running_state(bool);
 
+    /**
+     * @brief Get the current step of the simulation
+     * 
+     * @return GLuint 
+     */
     GLuint get_current_step();
+
+    /**
+     * @brief Get the timestep size of the simulation
+     * 
+     * @return GLfloat 
+     */
     GLfloat get_timestep_size();
+
+    /**
+     * @brief Get the number of particles in the simulation
+     * 
+     * @return GLuint 
+     */
     GLuint get_n_particle();
 
 private:

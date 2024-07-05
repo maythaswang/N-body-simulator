@@ -5,6 +5,10 @@
 
 #include <GLCommon.h>
 
+/**
+ * @brief Used to build GLFWwindow
+ * 
+ */
 class WindowFactory
 {
 public:

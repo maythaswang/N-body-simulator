@@ -5,6 +5,11 @@
 #include <GLCommon.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
+/**
+ * @brief Stores position of camera, handle camera transformations, and construct matrix to transform polygons accordingly.
+ * 
+ */
 class Camera
 {
 public:

@@ -1,6 +1,10 @@
 #pragma once
 #include <GLCommon.h>
 
+/**
+ * @brief Initializes the libraries required.
+ * 
+ */
 namespace ProgramInit
 {
     /**

@@ -4,6 +4,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <string>
 
+/**
+ * @brief Store, Initialize, Link, Compile, Destroy Shaders.
+ * 
+ */
 class Shader
 {
 public:

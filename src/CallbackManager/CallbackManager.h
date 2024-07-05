@@ -4,14 +4,18 @@
 #include <CameraEnum.h>
 #include <Simulator.h>
 
+/**
+ * @brief Handle Callbacks recieved from window, mouse, keyboards and update the components accordingly
+ * 
+ */
 class CallbackManager
 {
 public:
     /**
      * @brief Construct a new Callback Manager
      *
-     * @param window
-     * @param camera
+     * @param window glfw window where we want to use as our display window
+     * @param camera the current camera
      */
     CallbackManager(GLFWwindow *, Camera *, Simulator *);
 

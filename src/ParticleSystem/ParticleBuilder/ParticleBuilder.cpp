@@ -27,7 +27,6 @@ void ParticleBuilder::spawn_random(GLuint n, glm::vec3 offset, GLfloat radius, G
     this->n_particle += n;
 }
 
-// TODO: Support random velocity
 // TODO: Support spiral
 // TODO: Return failure for some condition (eg: center = 0 or radius = 0)
 
