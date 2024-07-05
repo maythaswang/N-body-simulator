@@ -15,6 +15,12 @@ Simulator::Simulator(GLfloat n_particle, GLfloat gravitational_constant, GLfloat
 glm::vec3 Simulator::calculate_acceleration(uint32_t current, uint32_t other)
 {
     glm::vec3 temp_distance = this->particle_position[current] - this->particle_position[other];
+    
+    // Since we did not handle collision, this will prevent 0 division when calculating direction (as inaccurate as it is).
+    if (temp_distance == glm::vec3(0.0f)){ 
+        return glm::vec3(0.0f);
+    }
+
     glm::vec3 direction = -glm::normalize(temp_distance);
     GLfloat sq_distance = glm::dot(temp_distance, temp_distance);
     GLfloat sq_soften = std::pow(this->softening_factor, 2);
@@ -37,12 +43,14 @@ void Simulator::update_position_euler()
 
     for (int i = 0; i < this->n_particle; i++)
     {
+        // Update Acceleration
         for (int j = i + 1; j < this->n_particle; j++)
         {
             tmp_acceleration = this->calculate_acceleration(i, j);
             this->particle_acceleration[i] += tmp_acceleration;
             this->particle_acceleration[j] -= tmp_acceleration;
         }
+        
         // Update Velocity
         this->particle_velocity[i] += this->particle_acceleration[i] * this->timestep_size * this->gravitational_constant;
 

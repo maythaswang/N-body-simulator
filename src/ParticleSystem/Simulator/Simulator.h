@@ -66,7 +66,7 @@ private:
     glm::vec3 calculate_acceleration(uint32_t, uint32_t);
 
     /**
-     * @brief Update the position of each particle using euler method
+     * @brief Update the position of each particle using semi-implicit euler method as the integrator
      * @note v = dx/dt, a = dv/dt
      * @note dx = v * dt, dv = a * dt
      * @note x_n+1 = x_n + h * dx, v_n+1 = v_n + h * dv

@@ -9,7 +9,7 @@ class ParticleBuilder
 {
 public:
     ParticleBuilder();
-    void spawn_random(GLfloat, GLfloat, GLfloat);
+    void spawn_random(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity);
     void spawn_globular_cluster(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat center_radius, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity, bool is_spiral, bool is_dense, bool outer_only);
     void spawn_sphere(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity, bool is_spiral);
     bool populate_vectors(GLuint *, std::vector<glm::vec3> *, std::vector<glm::vec3> *, std::vector<glm::vec3> *, std::vector<GLfloat> *);
