@@ -2,6 +2,8 @@
 #include <GLCommon.h>
 #include <Camera.h>
 #include <CameraEnum.h>
+#include <Simulator.h>
+
 class CallbackManager
 {
 public:
@@ -11,7 +13,7 @@ public:
      * @param window
      * @param camera
      */
-    CallbackManager(GLFWwindow *, Camera *);
+    CallbackManager(GLFWwindow *, Camera *, Simulator *);
 
     /**
      * @brief Main function for processing input
@@ -23,6 +25,7 @@ private:
     GLFWwindow *window;
     Camera *camera;
     CameraMode camera_mode;
+    Simulator *simulator;
 
     // Mouse states
 
@@ -32,7 +35,7 @@ private:
 
     double old_mouse_pos_x;
     double old_mouse_pos_y;
-    
+
     double mouse_pos_x;
     double mouse_pos_y;
 
@@ -53,6 +56,12 @@ private:
      *
      */
     void set_cursor_position_callback();
+
+    /**
+     * @brief Set the keyboard callback.
+     *
+     */
+    void set_keyboard_callback();
 
     /**
      * @brief Update the camera mode accordingly

@@ -10,8 +10,8 @@
 #include <Camera.h>
 #include <WindowFactory.h>
 
-#include <SamplePolygon.h>
 #include <Simulator.h>
+#include <Renderer.h>
 
 // For initialization
 const unsigned int SCREEN_WIDTH = 640;
@@ -22,16 +22,12 @@ const bool POINT_SIZE_ON = false;
 
 int main(int argc, char *argv[])
 {
-
 	// Initialization Subroutine
 	// ----------------------------------------------------------------------------
 	ProgramInit::initialize_glfw();
 	WindowFactory window_factory = WindowFactory();
-
-	// Initialize Window
 	GLFWwindow *window = window_factory.create_window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_NAME);
 
-	// Verify that the window has been created properly
 	if (!window)
 	{
 		glfwTerminate();
@@ -39,8 +35,6 @@ int main(int argc, char *argv[])
 	}
 
 	ProgramInit::initialize_glad();
-
-	// TODO: Implement a Renderer class.
 
 	// Preparing shader program
 	// ----------------------------------------------------------------------------
@@ -52,15 +46,11 @@ int main(int argc, char *argv[])
 	GLuint fragmentShader = shader_program.compile_shader("./shader_source/light.frag.glsl", GL_FRAGMENT_SHADER);
 	shader_program.link_shader(vertexShader);
 	shader_program.link_shader(fragmentShader);
-	GLuint shader_id = shader_program.get_shader_id();
 
 	// Setup Callback and Camera
 	// ----------------------------------------------------------------------------
-	Camera camera = Camera();
-	Camera *p_camera = &camera;
-	CallbackManager callback_manager = CallbackManager(window, p_camera);
 
-	// Initialize Geometry
+	// Settings for test.
 	// ----------------------------------------------------------------------------
 
 	if (WIREFRAME_ON)
@@ -74,13 +64,18 @@ int main(int argc, char *argv[])
 	}
 
 	// Simulator
+	// ----------------------------------------------------------------------------
+	Camera camera = Camera();
+
 	GLuint VAO, VBO;
-	Simulator sim = Simulator(1000, 0.8, 15, 0.001);
-	sim.initialize_particles(&VAO, &VBO);
+	Simulator simulator = Simulator(1000, 0.8, 15, 0.001);
+	simulator.initialize_particles(&VAO, &VBO);
+
+	CallbackManager callback_manager = CallbackManager(window, &camera, &simulator);
+	// Renderer renderer = Renderer(&callback_manager, window, &shader_program, &camera, &simulator, VAO); // FIXME: Renderer class currently doesn't work
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
-
 	while (!glfwWindowShouldClose(window))
 	{
 		callback_manager.process_input();
@@ -93,18 +88,19 @@ int main(int argc, char *argv[])
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_POINTS, 0, 1000);
 		glfwSwapBuffers(window);
-		
-		sim.next_step();  // TODO: Implement a pause callback that will not call the next step.
+
+		if (simulator.get_running_state())
+		{
+			simulator.next_step();
+		}
 		glfwPollEvents();
 	}
 
 	// Termination Subroutine
 	// ----------------------------------------------------------------------------
 
-	// Delete Buffers
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-
 	shader_program.delete_shader();
 	glfwTerminate();
 	return 0;

@@ -53,8 +53,9 @@ set(PROJECT_SOURCES
     src/ParticleSystem/Particle/Particle.cpp
     src/ProgramInit/ProgramInit.cpp
     src/Shader/Shader.cpp
-    src/Polygon/SamplePolygon/SamplePolygon.cpp
+    src/SamplePolygon/SamplePolygon.cpp
     src/ParticleSystem/Simulator/Simulator.cpp
+    src/Renderer/renderer.cpp
 )
 
 set(INCLUDE_DIRS
@@ -67,8 +68,9 @@ set(INCLUDE_DIRS
     src/CallbackManager/
     src/ProgramInit/
     src/Shader/
-    src/Polygon/SamplePolygon/
+    src/SamplePolygon/
     src/ParticleSystem/Simulator/
+    src/Renderer/
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})

@@ -1,3 +1,4 @@
+#pragma once
 #include <GLCommon.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -30,6 +31,9 @@ public:
 
     void initialize_particles(GLuint *, GLuint *);
 
+    bool get_running_state();
+    void set_running_state(bool);
+
 private:
     std::vector<glm::vec3> particle_position;
     std::vector<glm::vec3> particle_velocity;
@@ -42,6 +46,7 @@ private:
     GLfloat n_particle;
     GLuint *VAO;
     GLuint *VBO;
+    bool running_state;
 
     /**
      * @brief Calculate acceleration between the two particles

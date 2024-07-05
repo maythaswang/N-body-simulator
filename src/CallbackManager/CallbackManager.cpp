@@ -1,10 +1,11 @@
 #include <iostream>
 #include <CallbackManager.h>
 
-CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera)
+CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, Simulator *simulator)
 {
     this->window = window;
     this->camera = camera;
+    this->simulator = simulator;
     this->camera_mode = CAMERA_IDLE;
 
     // TODO: Maybe make a map or array to handle mouse/keyboard state.
@@ -15,6 +16,7 @@ CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera)
     // Set callbacks
     this->set_window_resize_callback();
     this->set_cursor_position_callback();
+    this->set_keyboard_callback();
 };
 
 void CallbackManager::process_input()
@@ -22,6 +24,7 @@ void CallbackManager::process_input()
     if (glfwGetKey(this->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
+    // We check everyframe and not as event.
     this->left_ctrl_down = glfwGetKey(this->window, GLFW_KEY_LEFT_CONTROL);
     this->left_shift_down = glfwGetKey(this->window, GLFW_KEY_LEFT_SHIFT);
     this->middle_mouse_down = glfwGetMouseButton(this->window, GLFW_MOUSE_BUTTON_MIDDLE);
@@ -116,4 +119,20 @@ void CallbackManager::set_window_resize_callback()
 
         // set the viewport size
         glViewport(0, 0, width, height); });
+}
+
+void CallbackManager::set_keyboard_callback()
+{
+    glfwSetWindowUserPointer(this->window, reinterpret_cast<void *>(this));
+
+    glfwSetKeyCallback(this->window, [](GLFWwindow *window, int key, int scancode, int action, int mods)
+                       {
+        CallbackManager * callback_manager = reinterpret_cast<CallbackManager *> ( glfwGetWindowUserPointer ( window ));
+        if (callback_manager){
+            if (key == GLFW_KEY_P && action == GLFW_PRESS)
+            {
+                callback_manager->simulator->set_running_state(!callback_manager->simulator->get_running_state());
+            } 
+        } 
+    });
 }
