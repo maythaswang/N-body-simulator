@@ -30,6 +30,7 @@ public:
     void next_step();
 
     void initialize_particles(GLuint *, GLuint *);
+    void load_particles(GLuint, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<GLfloat>);
 
     bool get_running_state();
     void set_running_state(bool);

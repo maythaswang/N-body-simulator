@@ -10,17 +10,10 @@ Simulator::Simulator(GLfloat n_particle, GLfloat gravitational_constant, GLfloat
     this->timestep_size = timestep_size;
     this->current_step = 0;
     this->running_state = 0;
-
-    this->n_particle = n_particle;
-    this->particle_position.resize(n_particle);
-    this->particle_velocity.resize(n_particle);
-    this->particle_mass.resize(n_particle);
-    this->particle_acceleration.resize(n_particle);
 }
 
 glm::vec3 Simulator::calculate_acceleration(uint32_t current, uint32_t other)
 {
-    // At this stage we will not multiply current mass and gravitational constant.
     glm::vec3 temp_distance = this->particle_position[current] - this->particle_position[other];
     glm::vec3 direction = -glm::normalize(temp_distance);
     GLfloat sq_distance = glm::dot(temp_distance, temp_distance);
@@ -51,7 +44,6 @@ void Simulator::update_position_euler()
             this->particle_acceleration[j] -= tmp_acceleration;
         }
         // Update Velocity
-
         this->particle_velocity[i] += this->particle_acceleration[i] * this->timestep_size * this->gravitational_constant;
 
         // Update Position
@@ -61,9 +53,6 @@ void Simulator::update_position_euler()
 
 void Simulator::initialize_particles(GLuint *VAO, GLuint *VBO)
 {
-    this->spawn_globular_cluster(500, 100, 100000);
-    // this->spawn_sphere(500,100, 100000);
-
     glGenVertexArrays(1, VAO);
     glGenBuffers(1, VBO);
 
@@ -80,32 +69,12 @@ void Simulator::initialize_particles(GLuint *VAO, GLuint *VBO)
     this->VBO = VBO;
 }
 
-// TODO: Accept min,max velocity as input
-void Simulator::spawn_globular_cluster(GLfloat radius, GLfloat min_mass, GLfloat max_mass)
-{
-    GLfloat tmp_radius = radius;
-    for (int i = 0; i < this->n_particle; i++)
-    {
-        glm::vec3 tmp_position = glm::sphericalRand(tmp_radius * glm::linearRand(0.0f, 1.0f) + 25); // This will ensure that at least the center will be a bit more dense. (use integer and it will spawn right in the middle)
-        glm::vec3 tmp_velocity = glm::vec3(0.0f);                                                   // TODO: Maybe make it possible to select a range of initial velocity.
-        GLfloat tmp_mass = glm::linearRand(min_mass, max_mass);
-        particle_position[i] = tmp_position;
-        particle_velocity[i] = tmp_velocity;
-        particle_mass[i] = tmp_mass;
-    }
-}
-
-void Simulator::spawn_sphere(GLfloat radius, GLfloat min_mass, GLfloat max_mass)
-{
-    for (int i = 0; i < this->n_particle; i++)
-    {
-        glm::vec3 tmp_position = glm::sphericalRand(radius);
-        glm::vec3 tmp_velocity = glm::vec3(0.0f); // TODO: Maybe make it possible to select a range of initial velocity.
-        GLfloat tmp_mass = glm::linearRand(min_mass, max_mass);
-        particle_position[i] = tmp_position;
-        particle_velocity[i] = tmp_velocity;
-        particle_mass[i] = tmp_mass;
-    }
+void Simulator::load_particles(GLuint n, std::vector<glm::vec3> position, std::vector<glm::vec3> velocity, std::vector<glm::vec3> acceleration, std::vector<GLfloat> mass){
+    this->n_particle = n;
+    this->particle_position = position;
+    this->particle_velocity = velocity;
+    this->particle_acceleration = acceleration;
+    this->particle_mass = mass;
 }
 
 bool Simulator::get_running_state()

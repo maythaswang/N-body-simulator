@@ -9,6 +9,7 @@
 #include <Camera.h>
 #include <WindowFactory.h>
 
+#include <ParticleBuilder.h>
 #include <Simulator.h>
 #include <Renderer.h>
 #include <StringCommon.h>
@@ -67,8 +68,24 @@ int main(int argc, char *argv[])
 	// ----------------------------------------------------------------------------
 	Camera camera = Camera();
 
+	ParticleBuilder particle_builder = ParticleBuilder();
+    std::vector<glm::vec3> particle_position;
+    std::vector<glm::vec3> particle_velocity;
+    std::vector<glm::vec3> particle_acceleration;
+    std::vector<GLfloat> particle_mass;
+	GLuint n_particles;
+	// particle_builder.spawn_globular_cluster(500,glm::vec3(0,-500,-500),200,25,1000,100000,0,0,false,false, false);
+	// particle_builder.spawn_globular_cluster(500,glm::vec3(0,500,-500),200,25,1000,100000,0,0,false,false, false);
+	particle_builder.spawn_globular_cluster(1000,glm::vec3(0,0,0),200,25,1000,100000,0,0,false,false, false);
+
+	if(!particle_builder.populate_vectors(&n_particles, &particle_position, &particle_velocity, &particle_acceleration, &particle_mass)){
+		std::cout << "Failed to populate particles." << std::endl;
+		return -1;
+	}
+
 	GLuint VAO, VBO;
 	Simulator simulator = Simulator(1000, 0.8, 15, 0.001);
+	simulator.load_particles(n_particles,particle_position,particle_velocity,particle_acceleration,particle_mass);
 	simulator.initialize_particles(&VAO, &VBO);
 
 	CallbackManager callback_manager = CallbackManager(window, &camera, &simulator);

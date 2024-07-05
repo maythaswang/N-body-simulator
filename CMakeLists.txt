@@ -53,6 +53,7 @@ set(PROJECT_SOURCES
     src/ProgramInit/ProgramInit.cpp
     src/Shader/Shader.cpp
     src/ParticleSystem/Simulator/Simulator.cpp
+    src/ParticleSystem/ParticleBuilder/ParticleBuilder.cpp
     src/Renderer/Renderer.cpp
 )
 
@@ -66,6 +67,7 @@ set(INCLUDE_DIRS
     src/ProgramInit/
     src/Shader/
     src/ParticleSystem/Simulator/
+    src/ParticleSystem/ParticleBuilder/
     src/Renderer/
 )
 
