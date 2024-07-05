@@ -5,7 +5,7 @@ printf '\nBegin building!\n'
 printf '\nBuild finished! Now running the program.\n'
 printf %"$COLUMNS"s |tr " " "-"
 printf '\n'
-
+pwd
 ./run.sh
 
 printf '\nexit code: '

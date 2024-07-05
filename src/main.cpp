@@ -74,10 +74,19 @@ int main(int argc, char *argv[])
     std::vector<glm::vec3> particle_acceleration;
     std::vector<GLfloat> particle_mass;
 	GLuint n_particles;
-	// particle_builder.spawn_globular_cluster(500,glm::vec3(-500,-500,-250),200,25,1000,100000,0,0,false,false, false);
-	// particle_builder.spawn_globular_cluster(500,glm::vec3(500,500,-250),200,25,1000,100000,0,0,false,false, false);
-	particle_builder.spawn_globular_cluster(1000,glm::vec3(0,0,0),200,25,1000,100000,0,0,false,false, false);
-	// particle_builder.spawn_random(200,glm::vec3(0.0f),500,1000,100000,0,0);
+
+	// Default testers rn
+	// particle_builder.spawn_globular_cluster(500,glm::vec3(-550,-700,0),200,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(500,glm::vec3(470,650,0),200,25,1000,100000,10,1000,false,true, false);
+
+	// particle_builder.spawn_globular_cluster(1000,glm::vec3(0,0,0),200,25,1000,100000,-1000,1000,false,false, false);
+
+	// particle_builder.spawn_globular_cluster(1000,glm::vec3(0,0,0),700,50,1000,100000,-1000,1000,false,true, false);
+
+	particle_builder.spawn_globular_cluster(1000,glm::vec3(0,0,0),500,50,1000,100000,0,0,false,true, false);
+
+	// particle_builder.spawn_random(100,glm::vec3(0.0f),500,1000,100000,0,1000);
+
 	if(!particle_builder.populate_vectors(&n_particles, &particle_position, &particle_velocity, &particle_acceleration, &particle_mass)){
 		std::cout << "Failed to populate particles." << std::endl;
 		return -1;

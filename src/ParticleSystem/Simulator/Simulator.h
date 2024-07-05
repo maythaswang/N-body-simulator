@@ -16,10 +16,10 @@ public:
     /**
      * @brief Construct a new Simulator:: Simulator object
      *
-     * @param n_particle
-     * @param gravitational_constat
-     * @param softening_factor
-     * @param timestep_size
+     * @param n_particle number of particles
+     * @param gravitational_constant gravitational constant
+     * @param softening_factor softening factor 
+     * @param timestep_size timestep size (per frame)
      */
     Simulator(GLfloat, GLfloat, GLfloat, GLfloat);
 
@@ -29,7 +29,21 @@ public:
      */
     void next_step();
 
+    /**
+     * @brief Initialize VAO and VBO with the particle informations
+     * @param VAO Vertex Array Object pointer 
+     * @param VBO Vertex Buffer Object pointer
+     */
     void initialize_particles(GLuint *, GLuint *);
+
+    /**
+     * @brief Load particles information from the input vector into the simulation.
+     * @param n_particles number of particles
+     * @param position vector of particle position
+     * @param velocity vector of particle velocity 
+     * @param previous_acceleration vector of particle acceleration in the previous step.
+     * @param mass vector of particle mass
+     */
     void load_particles(GLuint, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<GLfloat>);
 
     bool get_running_state();
@@ -43,6 +57,7 @@ private:
     std::vector<glm::vec3> particle_position;
     std::vector<glm::vec3> particle_velocity;
     std::vector<glm::vec3> particle_acceleration;
+    std::vector<glm::vec3> particle_previous_acceleration;
     std::vector<GLfloat> particle_mass;
     GLfloat gravitational_constant;
     GLfloat softening_factor;
@@ -73,9 +88,13 @@ private:
      */
     void update_position_euler();
 
-    
-    void update_position_velocity_verlet(); //TODO: Implement this.
-
-    void spawn_globular_cluster(GLfloat, GLfloat, GLfloat);
-    void spawn_sphere(GLfloat, GLfloat, GLfloat);
+    /**
+     * @brief Update the position of each particle using Velocity-Verlet method as the integrator
+     * @note Aka. KDK (Kick-Drift-Kick) Leapfrog
+     * @note v(t + 1/2δt) = v(t) + 1/2 * a(t) * δt
+     * @note x(t + δt) = x(t) + v(t+ 1/2δt) * δt
+     * @note a(t + δt) = Calculate acceleration as usual using the new position x(t+δt)
+     * @note v(t + δt) = v(t + 1/2δt) + 1/2 * a(t + δt) * δt
+     */
+    void update_position_velocity_verlet();
 };

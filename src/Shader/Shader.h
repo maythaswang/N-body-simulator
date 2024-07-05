@@ -2,10 +2,8 @@
 #include <GLCommon.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-
 #include <string>
 
-// TODO: Maybe rename this class ....
 class Shader
 {
 public:

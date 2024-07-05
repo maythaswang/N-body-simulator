@@ -21,5 +21,6 @@ private:
     std::vector<GLfloat> particle_mass;
     GLuint n_particle;
 
+    GLfloat random_number(GLfloat, GLfloat);
     void reset_vectors();
 };

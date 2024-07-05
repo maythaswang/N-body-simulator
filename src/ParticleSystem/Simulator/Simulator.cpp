@@ -1,7 +1,6 @@
 #include <Simulator.h>
 #include <iostream>
 
-// TODO: Create Enumerator for Swapping Integrator midway (Make sure this can only happen during paused state.)
 
 Simulator::Simulator(GLfloat n_particle, GLfloat gravitational_constant, GLfloat softening_factor, GLfloat timestep_size)
 {
@@ -29,7 +28,10 @@ glm::vec3 Simulator::calculate_acceleration(uint32_t current, uint32_t other)
 
 void Simulator::next_step()
 {
-    this->update_position_euler();
+    // TODO: Create Enumerator for integrators and make them swappable
+    // this->update_position_euler();
+    this->update_position_velocity_verlet();
+
     glBindBuffer(GL_ARRAY_BUFFER, *VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * this->n_particle * 3, &this->particle_position[0]);
 
@@ -41,9 +43,42 @@ void Simulator::update_position_euler()
     glm::vec3 tmp_acceleration;
     std::fill(this->particle_acceleration.begin(), this->particle_acceleration.end(), glm::vec3(0.0f));
 
+    // Update Acceleration
     for (int i = 0; i < this->n_particle; i++)
     {
-        // Update Acceleration
+        for (int j = i + 1; j < this->n_particle; j++)
+        {
+            tmp_acceleration = this->calculate_acceleration(i, j);
+            this->particle_acceleration[i] += tmp_acceleration;
+            this->particle_acceleration[j] -= tmp_acceleration;
+        }
+    }
+
+    for(int i = 0; i < this->n_particle; i++){
+        // Update Velocity
+        this->particle_velocity[i] += this->particle_acceleration[i] * this->timestep_size * this->gravitational_constant;
+
+        // Update Position
+        this->particle_position[i] += this->particle_velocity[i] * this->timestep_size;
+    }
+}
+
+void Simulator::update_position_velocity_verlet(){
+
+    glm::vec3 tmp_acceleration;
+    std::fill(this->particle_acceleration.begin(), this->particle_acceleration.end(), glm::vec3(0.0f));
+
+    for (int i = 0; i < this->n_particle; i++){
+        // Update velocity by 1/2 timestep
+        this->particle_velocity[i] += this->particle_previous_acceleration[i] * this->timestep_size * (GLfloat) 0.5 * this->gravitational_constant;
+
+        // Update position by 1 step
+        this->particle_position[i] += this->particle_velocity[i] * this->timestep_size;
+    }
+    
+    // Update Acceleration by 1 step
+    for (int i = 0; i < this->n_particle; i++)
+    {
         for (int j = i + 1; j < this->n_particle; j++)
         {
             tmp_acceleration = this->calculate_acceleration(i, j);
@@ -51,12 +86,12 @@ void Simulator::update_position_euler()
             this->particle_acceleration[j] -= tmp_acceleration;
         }
         
-        // Update Velocity
-        this->particle_velocity[i] += this->particle_acceleration[i] * this->timestep_size * this->gravitational_constant;
-
-        // Update Position
-        this->particle_position[i] += this->particle_velocity[i] * this->timestep_size;
+        // Update Velocity by 1 step
+        this->particle_velocity[i] += particle_acceleration[i] * this->timestep_size * (GLfloat) 0.5 * this->gravitational_constant;
     }
+
+    // Copy next step acceleration for next iteration
+    std::copy(this->particle_previous_acceleration.begin(), this->particle_previous_acceleration.end(), std::back_inserter(particle_acceleration));  
 }
 
 void Simulator::initialize_particles(GLuint *VAO, GLuint *VBO)
@@ -77,12 +112,14 @@ void Simulator::initialize_particles(GLuint *VAO, GLuint *VBO)
     this->VBO = VBO;
 }
 
-void Simulator::load_particles(GLuint n, std::vector<glm::vec3> position, std::vector<glm::vec3> velocity, std::vector<glm::vec3> acceleration, std::vector<GLfloat> mass){
+void Simulator::load_particles(GLuint n, std::vector<glm::vec3> position, std::vector<glm::vec3> velocity, std::vector<glm::vec3> previous_acceleration, std::vector<GLfloat> mass){
     this->n_particle = n;
     this->particle_position = position;
     this->particle_velocity = velocity;
-    this->particle_acceleration = acceleration;
+    this->particle_previous_acceleration = previous_acceleration;
     this->particle_mass = mass;
+    
+    this->particle_acceleration.resize(this->n_particle);
 }
 
 bool Simulator::get_running_state()

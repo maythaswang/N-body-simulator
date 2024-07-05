@@ -1,25 +1,29 @@
 #include <ParticleBuilder.h>
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 
 ParticleBuilder::ParticleBuilder()
 {
     this->n_particle = 0;
+    time_t t;
+    std::srand((unsigned)time(&t));
 }
 
 void ParticleBuilder::spawn_random(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity)
 {
     for (int i = 0; i < n; i++)
-    {   
-        glm::vec3 tmp_position = glm::vec3(glm::linearRand(-radius, radius),glm::linearRand(-radius, radius),glm::linearRand(-radius, radius)) + offset;
-        glm::vec3 tmp_velocity = glm::vec3(0.0f); // TODO: Make a randomizer for this
-        GLfloat tmp_mass = glm::linearRand(min_mass, max_mass);
+    {
+        glm::vec3 tmp_position = glm::vec3(random_number(-radius, radius), random_number(-radius, radius), random_number(-radius, radius)) + offset;
+        glm::vec3 tmp_velocity = glm::vec3(random_number(min_velocity, max_velocity), random_number(min_velocity, max_velocity), random_number(min_velocity, max_velocity)); 
+        GLfloat tmp_mass = random_number(min_mass, max_mass);
 
         this->particle_position.push_back(tmp_position);
         this->particle_velocity.push_back(tmp_velocity);
         this->particle_acceleration.push_back(glm::vec3(0.0f)); // TODO: There is a better way to do this but we'll have this for now because I'm getting lazy...
         this->particle_mass.push_back(tmp_mass);
     }
-    
+
     this->n_particle += n;
 }
 
@@ -33,10 +37,10 @@ void ParticleBuilder::spawn_globular_cluster(GLuint n, glm::vec3 offset, GLfloat
     for (int i = 0; i < n; i++)
     {
         radius_multiplier = (outer_only) ? 1 : (is_dense) ? glm::linearRand(0, 1)
-                                                          : glm::linearRand(0.0f, 1.0f);
+                                                          : random_number(0.0f, 1.0f);
         glm::vec3 tmp_position = glm::sphericalRand(radius * radius_multiplier + center_radius) + offset;
-        glm::vec3 tmp_velocity = glm::vec3(0.0f); // TODO: Make a randomizer for this
-        GLfloat tmp_mass = glm::linearRand(min_mass, max_mass);
+        glm::vec3 tmp_velocity = glm::vec3(random_number(min_velocity, max_velocity), random_number(min_velocity, max_velocity), random_number(min_velocity, max_velocity));
+        GLfloat tmp_mass = random_number(min_mass, max_mass);
 
         this->particle_position.push_back(tmp_position);
         this->particle_velocity.push_back(tmp_velocity);
@@ -74,4 +78,9 @@ void ParticleBuilder::reset_vectors()
     this->particle_velocity.clear();
     this->particle_mass.clear();
     this->particle_acceleration.clear();
+}
+
+GLfloat ParticleBuilder::random_number(GLfloat min_value, GLfloat max_value)
+{
+return min_value + (((GLfloat) rand())/ ((GLfloat) (RAND_MAX))) * (max_value- min_value);
 }
