@@ -8,6 +8,7 @@ Renderer::Renderer(CallbackManager* callback_manager,GLFWwindow *window, Shader 
     this->camera = camera;
     this->simulator = simulator;
     this->callback_manager = callback_manager;
+    this->VAO = VAO;
 }
 
 void Renderer::render()
@@ -18,7 +19,7 @@ void Renderer::render()
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     this->shader_program->use();
-
+    
     glBindVertexArray(this->VAO);
     glDrawArrays(GL_POINTS, 0, 1000);
     glfwSwapBuffers(window);
@@ -26,7 +27,6 @@ void Renderer::render()
     if (this->simulator->get_running_state())
     {
         this->simulator->next_step();
-    } 
-    std::cout << this->simulator->get_running_state() << std::endl;
+    }
     glfwPollEvents();
 }

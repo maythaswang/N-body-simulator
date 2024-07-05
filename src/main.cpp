@@ -5,7 +5,6 @@
 
 #include <ProgramInit.h>
 #include <Shader.h>
-#include <Particle.h>
 #include <CallbackManager.h>
 #include <Camera.h>
 #include <WindowFactory.h>
@@ -18,10 +17,8 @@
 const unsigned int SCREEN_WIDTH = 640;
 const unsigned int SCREEN_HEIGHT = 480;
 const char *SCREEN_NAME = "N-BODY-SIMULATION";
-const bool WIREFRAME_ON = true;
+const bool WIREFRAME_ON = false;
 const bool POINT_SIZE_ON = false;
-
-const std::string welcome_message ="";
 
 int main(int argc, char *argv[])
 {
@@ -75,28 +72,13 @@ int main(int argc, char *argv[])
 	simulator.initialize_particles(&VAO, &VBO);
 
 	CallbackManager callback_manager = CallbackManager(window, &camera, &simulator);
-	// Renderer renderer = Renderer(&callback_manager, window, &shader_program, &camera, &simulator, VAO); // FIXME: Renderer class currently doesn't work
+	Renderer renderer = Renderer(&callback_manager, window, &shader_program, &camera, &simulator, VAO);
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
 	while (!glfwWindowShouldClose(window))
 	{
-		callback_manager.process_input();
-		shader_program.set_mat4("modelview", camera.get_view_matrix() * camera.get_model_matrix());
-		shader_program.set_mat4("projection", camera.get_projection_matrix());
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-		shader_program.use();
-
-		glBindVertexArray(VAO);
-		glDrawArrays(GL_POINTS, 0, 1000);
-		glfwSwapBuffers(window);
-
-		if (simulator.get_running_state())
-		{
-			simulator.next_step();
-		}
-		glfwPollEvents();
+		renderer.render();
 	}
 
 	// Termination Subroutine

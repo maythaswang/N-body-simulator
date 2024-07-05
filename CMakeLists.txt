@@ -50,12 +50,10 @@ set(PROJECT_SOURCES
     src/DisplaySystem/WindowFactory/WindowFactory.cpp
     src/DisplaySystem/Camera/Camera.cpp
     src/CallbackManager/CallbackManager.cpp
-    src/ParticleSystem/Particle/Particle.cpp
     src/ProgramInit/ProgramInit.cpp
     src/Shader/Shader.cpp
-    src/SamplePolygon/SamplePolygon.cpp
     src/ParticleSystem/Simulator/Simulator.cpp
-    src/Renderer/renderer.cpp
+    src/Renderer/Renderer.cpp
 )
 
 set(INCLUDE_DIRS
@@ -64,11 +62,9 @@ set(INCLUDE_DIRS
     src/DisplaySystem/
     src/DisplaySystem/WindowFactory/
     src/DisplaySystem/Camera/
-    src/ParticleSystem/Particle/
     src/CallbackManager/
     src/ProgramInit/
     src/Shader/
-    src/SamplePolygon/
     src/ParticleSystem/Simulator/
     src/Renderer/
 )
