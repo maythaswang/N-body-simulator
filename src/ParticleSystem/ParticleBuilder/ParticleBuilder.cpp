@@ -6,6 +6,10 @@ ParticleBuilder::ParticleBuilder()
     this->n_particle = 0;
 }
 
+// TODO: Support random velocity 
+// TODO: Support spiral
+// TODO: Return failure for some condition (eg: center = 0 or radius = 0) 
+
 void ParticleBuilder::spawn_globular_cluster(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat center_radius, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity, bool is_spiral, bool is_dense, bool outer_only)
 {
     GLfloat radius_multiplier;

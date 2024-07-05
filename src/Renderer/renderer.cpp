@@ -21,7 +21,7 @@ void Renderer::render()
     this->shader_program->use();
     
     glBindVertexArray(this->VAO);
-    glDrawArrays(GL_POINTS, 0, 1000);
+    glDrawArrays(GL_POINTS, 0, this->simulator->get_n_particle());
     glfwSwapBuffers(window);
 
     if (this->simulator->get_running_state())

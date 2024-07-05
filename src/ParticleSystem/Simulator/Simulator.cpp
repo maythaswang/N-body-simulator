@@ -93,3 +93,7 @@ GLuint Simulator::get_current_step(){
 GLfloat Simulator::get_timestep_size(){
     return this->timestep_size;
 }
+
+GLuint Simulator::get_n_particle(){
+    return this->n_particle;
+}

@@ -37,6 +37,7 @@ public:
 
     GLuint get_current_step();
     GLfloat get_timestep_size();
+    GLuint get_n_particle();
 
 private:
     std::vector<glm::vec3> particle_position;
