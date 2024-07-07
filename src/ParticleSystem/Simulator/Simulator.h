@@ -5,6 +5,7 @@
 #include <glm/gtc/random.hpp>
 #include <math.h>
 #include <vector>
+#include <iostream>
 
 /**
  * @brief This simulator is implemented using Sequential Particle-Particle method O(n^2) on CPU
@@ -13,16 +14,6 @@
 class Simulator
 {
 public:
-    /**
-     * @brief Construct a new Simulator:: Simulator object
-     *
-     * @param n_particle number of particles
-     * @param gravitational_constant gravitational constant
-     * @param softening_factor softening factor 
-     * @param timestep_size timestep size (per frame)
-     */
-    Simulator(GLfloat, GLfloat, GLfloat, GLfloat);
-
     /**
      * @brief Calculate the next step of the simulation
      *
@@ -81,7 +72,8 @@ public:
      */
     GLuint get_n_particle();
 
-private:
+// I'll just declare it all protected since it's only me working on this.
+protected:
     std::vector<glm::vec3> particle_position;
     std::vector<glm::vec3> particle_velocity;
     std::vector<glm::vec3> particle_acceleration;
@@ -97,6 +89,16 @@ private:
     bool running_state;
 
     /**
+     * @brief Construct a new Simulator:: Simulator object
+     *
+     * @param n_particle number of particles
+     * @param gravitational_constant gravitational constant
+     * @param softening_factor softening factor 
+     * @param timestep_size timestep size (per frame)
+     */
+    Simulator(GLfloat, GLfloat, GLfloat, GLfloat);
+
+    /**
      * @brief Calculate acceleration between the two particles
      *
      * @note F = Gmm/r^2 * -r/||r||, F = ma
@@ -106,7 +108,7 @@ private:
      * @param other
      * @return acceleration of the particle "current" based on force being exerted from the particle "other"
      */
-    glm::vec3 calculate_acceleration(uint32_t, uint32_t);
+    virtual glm::vec3 calculate_acceleration(uint32_t, uint32_t);
 
     /**
      * @brief Update the position of each particle using semi-implicit euler method as the integrator
@@ -114,7 +116,7 @@ private:
      * @note dx = v * dt, dv = a * dt
      * @note x_n+1 = x_n + h * dx, v_n+1 = v_n + h * dv
      */
-    void update_position_euler();
+    virtual void update_position_euler() ;
 
     /**
      * @brief Update the position of each particle using Velocity-Verlet method as the integrator
@@ -124,5 +126,5 @@ private:
      * @note a(t + δt) = Calculate acceleration as usual using the new position x(t+δt)
      * @note v(t + δt) = v(t + 1/2δt) + 1/2 * a(t + δt) * δt
      */
-    void update_position_velocity_verlet();
+    virtual void update_position_velocity_verlet();
 };

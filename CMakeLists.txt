@@ -55,6 +55,7 @@ set(PROJECT_SOURCES
     src/ParticleSystem/Simulator/Simulator.cpp
     src/ParticleSystem/ParticleBuilder/ParticleBuilder.cpp
     src/Renderer/Renderer.cpp
+    src/ParticleSystem/ParticleParticleCPU/ParticleParticleCPU.cpp
 )
 
 set(INCLUDE_DIRS
@@ -69,6 +70,7 @@ set(INCLUDE_DIRS
     src/ParticleSystem/Simulator/
     src/ParticleSystem/ParticleBuilder/
     src/Renderer/
+    src/ParticleSystem/ParticleParticleCPU/
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})

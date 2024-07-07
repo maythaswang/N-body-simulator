@@ -13,6 +13,7 @@
 #include <Simulator.h>
 #include <Renderer.h>
 #include <StringCommon.h>
+#include <ParticleParticleCPU.h>
 
 // For initialization
 const unsigned int SCREEN_WIDTH = 640;
@@ -64,9 +65,8 @@ int main(int argc, char *argv[])
 	GLuint n_particles;
 
 	// TODO: DELETE THIS LATER
-	set_debug_mode(0,0,1);
-	sample_compute_shader();
-
+	// set_debug_mode(0,0,1);
+	// sample_compute_shader();
 
 	// TODO: DO SOMETHING, THESE ARE JUST TEMPORARY TESTERS
 	// particle_builder.spawn_globular_cluster(500,glm::vec3(-550,-700,0),200,25,1000,100000,10,1000,false,true, false);
@@ -87,12 +87,15 @@ int main(int argc, char *argv[])
 	}
 
 	GLuint VAO, VBO;
-	Simulator simulator = Simulator(1000, 0.8, 50, 0.001);
-	simulator.load_particles(n_particles, particle_position, particle_velocity, particle_acceleration, particle_mass);
-	simulator.initialize_particles(&VAO, &VBO);
+	Simulator *simulator;
+	ParticleParticleCPU	simulator_CPU = ParticleParticleCPU(1000,0.8,50,0.001);
+	
+	simulator = &simulator_CPU;
+	simulator->load_particles(n_particles, particle_position, particle_velocity, particle_acceleration, particle_mass);
+	simulator->initialize_particles(&VAO, &VBO);
 
-	CallbackManager callback_manager = CallbackManager(window, &camera, &simulator);
-	Renderer renderer = Renderer(&callback_manager, window, &shader_program, &camera, &simulator, VAO);
+	CallbackManager callback_manager = CallbackManager(window, &camera, simulator);
+	Renderer renderer = Renderer(&callback_manager, window, &shader_program, &camera, simulator, VAO);
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
@@ -131,7 +134,7 @@ void set_debug_mode(bool wireframe_on, bool point_size_on, GLuint point_size)
 
 	ProgramInit::get_max_workgroup_info(max_compute_work_group_count, max_compute_work_group_size, &max_compute_work_group_invocations);
 
-	std::cout << "maximum numbe of work groups: " << max_compute_work_group_count[0] << max_compute_work_group_count[1] << max_compute_work_group_count[2] << std::endl;
+	std::cout << "maximum number of work groups: " << max_compute_work_group_count[0] << max_compute_work_group_count[1] << max_compute_work_group_count[2] << std::endl;
 	std::cout << "maximum size of a work group: " << max_compute_work_group_size[0] << max_compute_work_group_size[1] << max_compute_work_group_size[2] << std::endl;
 	std::cout << "maximum number of invocations: " << max_compute_work_group_invocations << std::endl;
 }
