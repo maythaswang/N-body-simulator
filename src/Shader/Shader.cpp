@@ -25,6 +25,7 @@ GLuint Shader::compile_shader(std::string fileName, GLenum SHADER_TYPE)
 
     // For Debugging Purposes
     std::string shader_type_string = (SHADER_TYPE == GL_VERTEX_SHADER) ? "GL_VERTEX_SHADER" : (SHADER_TYPE == GL_FRAGMENT_SHADER) ? "GL_FRAGMENT_SHADER"
+                                                                                          : (SHADER_TYPE == GL_COMPUTE_SHADER)    ? "GL_COMPUTE_SHADER"
                                                                                                                                   : "UNKNOWN_TYPE";
 
     if (!success)
@@ -86,8 +87,8 @@ void Shader::delete_shader()
 }
 
 void Shader::use()
-{   
-	glUseProgram(this->shader_id);
+{
+    glUseProgram(this->shader_id);
 }
 
 // Utilities Setter for Uniform Variables

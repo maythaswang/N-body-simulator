@@ -3,7 +3,7 @@
 
 /**
  * @brief Initializes the libraries required.
- * 
+ *
  */
 namespace ProgramInit
 {
@@ -24,4 +24,10 @@ namespace ProgramInit
      *
      */
     void error_callback(int, const char *);
+
+    /**
+     * @brief Put the information about maximum value (number, size, invocations) of a workgroup into the arrays specified.
+     *
+     */
+    void get_max_workgroup_info(int[3], int[3], int *);
 }

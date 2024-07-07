@@ -101,7 +101,7 @@ void Simulator::initialize_particles(GLuint *VAO, GLuint *VBO)
 
     glBindVertexArray(*VAO);
     glBindBuffer(GL_ARRAY_BUFFER, *VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * this->n_particle * 3, &this->particle_position[0], GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * this->n_particle * 3, &this->particle_position[0], GL_DYNAMIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void *)0);
     glEnableVertexAttribArray(0);
