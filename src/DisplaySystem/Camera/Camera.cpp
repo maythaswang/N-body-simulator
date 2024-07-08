@@ -11,7 +11,7 @@ Camera::Camera()
     this->aspect_w = 640;
     this->aspect_h = 480;
     this->z_near = 0.1;
-    this->z_far = 50000.0;
+    this->z_far = 200000.0;
 
     this->rotation_sensitivity = 0.9;
     this->zoom_sensitivity = 1;

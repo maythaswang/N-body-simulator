@@ -79,10 +79,52 @@ int main(int argc, char *argv[])
 
 	// particle_builder.spawn_globular_cluster(10000, glm::vec3(0, 0, 0), 700, 50, 1000, 100000, -1000, 1000, false, true, false);
 
-	particle_builder.spawn_globular_cluster(10000, glm::vec3(0, 0, 0), 700, 50, 1000, 100000, -100, 100, false, false, false);
+	// particle_builder.spawn_globular_cluster(10000, glm::vec3(0, 0, 0), 10000, 50, 1000, 100000, -100, 100, false, true, false);
+
+	particle_builder.spawn_globular_cluster(10000, glm::vec3(0, 0, 0), 100000, 50, 1000, 100000, -100, 100, false, true, false);
+	
+	// particle_builder.spawn_globular_cluster(10000, glm::vec3(0, 0, 0), 50000, 50, 1000, 100000, -100, 100, false, false, true);
 
 	// particle_builder.spawn_globular_cluster(5000,glm::vec3(-550,-600,0),200,25,1000,100000,10,1000,false,false, false);
 	// particle_builder.spawn_globular_cluster(5000,glm::vec3(470,450,0),200,25,1000,100000,10,1000,false,false, false);
+
+	// particle_builder.spawn_globular_cluster(2500,glm::vec3(-550,-600,0),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(2500,glm::vec3(470,450,54),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(2500,glm::vec3(124,-2634,-156),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(2500,glm::vec3(-470,440,-48),10000,25,1000,100000,10,1000,false,true, false);
+	
+	// particle_builder.spawn_globular_cluster(1000,glm::vec3(470,450,54),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(1000,glm::vec3(-550,-600,0),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(1000,glm::vec3(124,-2634,-156),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(1000,glm::vec3(-470,440,-48),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(1000,glm::vec3(1470,3440,-4238),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(1000,glm::vec3(-470,41243,248),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(1000,glm::vec3(-470,150,-48),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(1000,glm::vec3(3170,49,4488),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(1000,glm::vec3(570,330,-48),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(1000,glm::vec3(0,0,0),10000,25,1000,100000,10,1000,false,true, false);
+
+	// particle_builder.spawn_globular_cluster(1500,glm::vec3(470,450,54),10000,25,1000,100000,-1000,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(800,glm::vec3(-550,-600,0),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(800,glm::vec3(124,-2634,-156),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(500,glm::vec3(-470,440,-48),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(500,glm::vec3(1470,3440,-4238),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(500,glm::vec3(-470,41243,248),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(500,glm::vec3(-470,150,-48),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(600,glm::vec3(3170,49,4488),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(100,glm::vec3(570,330,-48),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(200,glm::vec3(0,0,0),10000,25,1000,100000,10,1000,false,true, false);	
+	// particle_builder.spawn_globular_cluster(1000,glm::vec3(470,450,54),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(200,glm::vec3(250,-600,887),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(200,glm::vec3(828,-2634,-827),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(200,glm::vec3(-8272,551,-254),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(200,glm::vec3(52,8,-4238),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(200,glm::vec3(-85,5452,248),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(500,glm::vec3(-425,1550,-28),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(500,glm::vec3(340,45,52),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(500,glm::vec3(5702,330,-548),10000,25,1000,100000,10,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(500,glm::vec3(5,50,750),10000,25,1000,100000,10,1000,false,true, false);
+
 
 	if (!particle_builder.populate_vectors(&n_particles, &particle_position, &particle_velocity, &particle_acceleration, &particle_mass))
 	{
