@@ -7,7 +7,10 @@ ParticleParticleGPU::ParticleParticleGPU(GLfloat n_particle, GLfloat gravitation
 void ParticleParticleGPU::next_step()
 {
 
-    this->update_position_euler();
+    // this->update_position_euler();
+    this->update_position_velocity_verlet();
+
+
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->particle_position_SSBO);
     glm::vec4 *rtn = static_cast<glm::vec4 *>(glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_READ_ONLY));
     glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
@@ -51,6 +54,13 @@ void ParticleParticleGPU::update_position_euler()
 
 void ParticleParticleGPU::update_position_velocity_verlet()
 {
+    this->compute_shader_program.use();
+    this->compute_shader_program.set_float("gravitational_constant", this->gravitational_constant);
+    this->compute_shader_program.set_float("softening_factor", this->softening_factor);
+    this->compute_shader_program.set_float("timestep_size", this->timestep_size);
+    this->compute_shader_program.set_int("n_particle", this->n_particle);
+    glDispatchCompute(157, 1, 1); //TODO: CHANGE THIS
+    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }
 
 void ParticleParticleGPU::load_particles(GLuint n, std::vector<glm::vec3> position, std::vector<glm::vec3> velocity, std::vector<glm::vec3> previous_acceleration, std::vector<GLfloat> mass)
@@ -61,10 +71,6 @@ void ParticleParticleGPU::load_particles(GLuint n, std::vector<glm::vec3> positi
     this->particle_vel_vec4 = this->convert_to_vec4(velocity);
     this->particle_acc_vec4 = this->convert_to_vec4(previous_acceleration);
     this->particle_mass = mass;
-
-    std::cout << &this->particle_pos_vec4 << std::endl;
-    std::cout << &this->particle_vel_vec4 << std::endl;
-    std::cout << &this->particle_acc_vec4 << std::endl;
 
     this->init_compute_shader();
     this->init_SSBOs();
@@ -106,7 +112,8 @@ void ParticleParticleGPU::init_SSBOs()
 void ParticleParticleGPU::init_compute_shader()
 {
     Shader shader_program = Shader();
-    GLuint compute_shader = shader_program.compile_shader("./shader_source/update_position_euler.comp.glsl", GL_COMPUTE_SHADER);
+    // GLuint compute_shader = shader_program.compile_shader("./shader_source/update_position_euler.comp.glsl", GL_COMPUTE_SHADER);
+    GLuint compute_shader = shader_program.compile_shader("./shader_source/update_position_velocity_verlet.comp.glsl", GL_COMPUTE_SHADER);
     shader_program.link_shader(compute_shader);
     this->compute_shader_program = shader_program;
 }

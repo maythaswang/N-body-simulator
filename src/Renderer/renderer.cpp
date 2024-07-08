@@ -14,11 +14,11 @@ Renderer::Renderer(CallbackManager* callback_manager,GLFWwindow *window, Shader 
 void Renderer::render()
 {
     this->callback_manager->process_input();
-    this->shader_program->set_mat4("modelview", this->camera->get_view_matrix() * this->camera->get_model_matrix());
-    this->shader_program->set_mat4("projection", this->camera->get_projection_matrix());
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     this->shader_program->use();
+    this->shader_program->set_mat4("modelview", this->camera->get_view_matrix() * this->camera->get_model_matrix());
+    this->shader_program->set_mat4("projection", this->camera->get_projection_matrix());
     
     glBindVertexArray(this->VAO);
     glDrawArrays(GL_POINTS, 0, this->simulator->get_n_particle());
