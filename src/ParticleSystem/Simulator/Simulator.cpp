@@ -88,3 +88,7 @@ GLuint Simulator::get_n_particle()
 {
     return this->n_particle;
 }
+
+void Simulator::terminate(){
+    // Do nothing
+}

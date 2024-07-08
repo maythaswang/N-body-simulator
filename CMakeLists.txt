@@ -56,6 +56,7 @@ set(PROJECT_SOURCES
     src/ParticleSystem/ParticleBuilder/ParticleBuilder.cpp
     src/Renderer/Renderer.cpp
     src/ParticleSystem/ParticleParticleCPU/ParticleParticleCPU.cpp
+    src/ParticleSystem/ParticleParticleGPU/ParticleParticleGPU.cpp
 )
 
 set(INCLUDE_DIRS
@@ -71,6 +72,7 @@ set(INCLUDE_DIRS
     src/ParticleSystem/ParticleBuilder/
     src/Renderer/
     src/ParticleSystem/ParticleParticleCPU/
+    src/ParticleSystem/ParticleParticleGPU/
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})

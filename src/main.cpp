@@ -14,6 +14,7 @@
 #include <Renderer.h>
 #include <StringCommon.h>
 #include <ParticleParticleCPU.h>
+#include <ParticleParticleGPU.h>
 
 // For initialization
 const unsigned int SCREEN_WIDTH = 640;
@@ -48,10 +49,10 @@ int main(int argc, char *argv[])
 	Shader shader_program = Shader();
 
 	// The dir depends on where you call it so if you call it from root, do it as if the current working directory is in root.
-	GLuint vertexShader = shader_program.compile_shader("./shader_source/light.vert.glsl", GL_VERTEX_SHADER);
-	GLuint fragmentShader = shader_program.compile_shader("./shader_source/light.frag.glsl", GL_FRAGMENT_SHADER);
-	shader_program.link_shader(vertexShader);
-	shader_program.link_shader(fragmentShader);
+	GLuint vertex_shader = shader_program.compile_shader("./shader_source/light.vert.glsl", GL_VERTEX_SHADER);
+	GLuint fragment_shader = shader_program.compile_shader("./shader_source/light.frag.glsl", GL_FRAGMENT_SHADER);
+	shader_program.link_shader(vertex_shader);
+	shader_program.link_shader(fragment_shader);
 
 	// Setup Required Components
 	// ----------------------------------------------------------------------------
@@ -65,7 +66,7 @@ int main(int argc, char *argv[])
 	GLuint n_particles;
 
 	// TODO: DELETE THIS LATER
-	// set_debug_mode(0,0,1);
+	// set_debug_mode(0,1,2);
 	// sample_compute_shader();
 
 	// TODO: DO SOMETHING, THESE ARE JUST TEMPORARY TESTERS
@@ -74,11 +75,15 @@ int main(int argc, char *argv[])
 
 	// particle_builder.spawn_globular_cluster(1000,glm::vec3(0,0,0),200,25,1000,100000,-1000,1000,false,false, false);
 
-	// particle_builder.spawn_globular_cluster(1000,glm::vec3(0,0,0),700,50,1000,100000,-1000,1000,false,true, false);
+	// particle_builder.spawn_globular_cluster(1000, glm::vec3(0, 0, 0), 700, 50, 1000, 100000, -1000, 1000, false, true, false);
 
-	particle_builder.spawn_globular_cluster(1000, glm::vec3(0, 0, 0), 500, 50, 1000, 100000, 0, 0, false, true, false);
+	// particle_builder.spawn_globular_cluster(1000, glm::vec3(0, 0, 0), 500, 50, 1000, 100000, 0, 0, false, true, false);
 
 	// particle_builder.spawn_random(100,glm::vec3(0.0f),500,1000,100000,0,1000);
+
+	// particle_builder.spawn_globular_cluster(10000, glm::vec3(0, 0, 0), 700, 50, 1000, 100000, -1000, 1000, false, true, false);
+
+	particle_builder.spawn_globular_cluster(10000, glm::vec3(0, 0, 0), 700, 50, 1000, 100000, -1000, 1000, false, false, false);
 
 	if (!particle_builder.populate_vectors(&n_particles, &particle_position, &particle_velocity, &particle_acceleration, &particle_mass))
 	{
@@ -88,9 +93,12 @@ int main(int argc, char *argv[])
 
 	GLuint VAO, VBO;
 	Simulator *simulator;
-	ParticleParticleCPU	simulator_CPU = ParticleParticleCPU(1000,0.8,50,0.001);
-	
-	simulator = &simulator_CPU;
+	// ParticleParticleCPU simulator_CPU = ParticleParticleCPU(1000, 0.8, 50, 0.001);
+	// simulator = &simulator_CPU;
+
+	ParticleParticleGPU simulator_GPU = ParticleParticleGPU(10000, 0.8, 50, 0.001);
+	simulator = &simulator_GPU;
+
 	simulator->load_particles(n_particles, particle_position, particle_velocity, particle_acceleration, particle_mass);
 	simulator->initialize_particles(&VAO, &VBO);
 
@@ -112,6 +120,7 @@ int main(int argc, char *argv[])
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	shader_program.delete_shader();
+	simulator->terminate();
 	glfwTerminate();
 	return 0;
 }
@@ -148,27 +157,43 @@ void sample_compute_shader()
 
 	GLuint tmp_n = 64;
 	std::vector<GLfloat> tmp_data(tmp_n);
+	std::vector<GLfloat> tmp_data2(tmp_n);
+	std::vector<GLfloat> tmp_data3(tmp_n);
 
 	for (int i = 0; i < tmp_n; i++)
 	{
 		tmp_data[i] = i;
+		tmp_data2[i] = 3;
+		tmp_data3[i] = 2;
 	}
 
-	GLuint SSBO;
+	GLuint SSBO, SSBO2, SSBO3;
 
 	glGenBuffers(1, &SSBO);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, SSBO);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, tmp_n * 1 * sizeof(GLfloat), &tmp_data[0], GL_DYNAMIC_COPY);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, SSBO);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, SSBO);
-	comp_shader_program.use();
+	glGenBuffers(1, &SSBO2);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, SSBO2);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, tmp_n * 1 * sizeof(GLfloat), &tmp_data2[0],GL_DYNAMIC_COPY);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, SSBO2);
+
+	glGenBuffers(1, &SSBO3);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, SSBO3);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, tmp_n * 1 * sizeof(GLfloat), &tmp_data3[0], GL_DYNAMIC_COPY);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, SSBO3);
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	for (int runs = 0; runs < 10; runs++)
 	{
-		glDispatchCompute(2, 1, 1);
-		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, SSBO); // WHY DO I NEED TO PUT THIS???
+		comp_shader_program.use();
+		comp_shader_program.set_int("test_num", 1);
+		glDispatchCompute(64, 1, 1);
+		glMemoryBarrier(GL_UNIFORM_BARRIER_BIT);
 
 		GLfloat *rtn = (GLfloat *)glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_READ_ONLY);
 		glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
@@ -181,4 +206,8 @@ void sample_compute_shader()
 		std::cout << std::endl;
 	}
 	comp_shader_program.delete_shader();
+	// glDeleteBuffers(1, &VAO_tmp);
+	glDeleteBuffers(1, &SSBO);
+	glDeleteBuffers(1, &SSBO2);
+	glDeleteBuffers(1, &SSBO3);
 }

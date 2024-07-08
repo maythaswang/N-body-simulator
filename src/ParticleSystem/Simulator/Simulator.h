@@ -18,7 +18,7 @@ public:
      * @brief Calculate the next step of the simulation
      *
      */
-    void next_step();
+    virtual void next_step();
 
     /**
      * @brief Initialize VAO and VBO with the particle informations
@@ -35,7 +35,7 @@ public:
      * @param previous_acceleration vector of particle acceleration in the previous step.
      * @param mass vector of particle mass
      */
-    void load_particles(GLuint, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<GLfloat>);
+    virtual void load_particles(GLuint, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<GLfloat>);
 
     /**
      * @brief Get the running state object
@@ -71,6 +71,8 @@ public:
      * @return GLuint 
      */
     GLuint get_n_particle();
+    
+    virtual void terminate();
 
 // I'll just declare it all protected since it's only me working on this.
 protected:
@@ -82,7 +84,7 @@ protected:
     GLfloat gravitational_constant;
     GLfloat softening_factor;
     GLfloat timestep_size;
-    GLfloat n_particle;
+    GLuint n_particle;
     GLuint current_step;
     GLuint *VAO;
     GLuint *VBO;
@@ -127,4 +129,5 @@ protected:
      * @note v(t + δt) = v(t + 1/2δt) + 1/2 * a(t + δt) * δt
      */
     virtual void update_position_velocity_verlet();
+
 };
