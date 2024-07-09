@@ -38,4 +38,10 @@ private:
     Simulator *simulator;
     CallbackManager *callback_manager;
     GLuint VAO;
+    double start_time; // For calculating fps only
+    double previous_time;
+    
+    long frame_count;
+    
+    void show_fps();
 };

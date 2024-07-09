@@ -9,7 +9,6 @@ CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, Simulator *
     this->simulator = simulator;
     this->camera_mode = CAMERA_IDLE;
 
-    // TODO: Maybe make a map or array to handle mouse/keyboard state.
     this->middle_mouse_down = false;
     this->left_shift_down = false;
     this->left_ctrl_down = false;
