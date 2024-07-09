@@ -1,6 +1,6 @@
 #include <ParticleParticleCPU.h>
 
-ParticleParticleCPU::ParticleParticleCPU(GLfloat n_particle, GLfloat gravitational_constant, GLfloat softening_factor, GLfloat timestep_size) : Simulator(n_particle, gravitational_constant, softening_factor, timestep_size)
+ParticleParticleCPU::ParticleParticleCPU(GLfloat n_particle, GLfloat gravitational_constant, GLfloat softening_factor, GLfloat timestep_size, SimulatorIntegrator integrator) : Simulator(n_particle, gravitational_constant, softening_factor, timestep_size, integrator)
 {
 }
 

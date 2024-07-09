@@ -66,7 +66,6 @@ void Shader::link_shader(GLuint shader)
 
 std::string Shader::read_shader_file(std::string fileName)
 {
-    // TODO: Throw errors when failed to read file
     std::ifstream input_file(fileName);
     std::stringstream buffer;
     buffer << input_file.rdbuf();

@@ -1,19 +1,29 @@
 #include <Simulator.h>
 
-Simulator::Simulator(GLfloat n_particle, GLfloat gravitational_constant, GLfloat softening_factor, GLfloat timestep_size)
+Simulator::Simulator(GLfloat n_particle, GLfloat gravitational_constant, GLfloat softening_factor, GLfloat timestep_size, SimulatorIntegrator integrator)
 {
     this->gravitational_constant = gravitational_constant;
     this->softening_factor = softening_factor;
     this->timestep_size = timestep_size;
     this->current_step = 0;
     this->running_state = 0;
+    this->integrator = integrator;
 }
 
 void Simulator::next_step()
 {
-    // TODO: Create Enumerator for integrators and make them swappable
-    // this->update_position_euler();
-    this->update_position_velocity_verlet();
+    switch (this->integrator)
+    {
+    case INTEGRATOR_EULER:
+        this->update_position_euler();
+        break;
+    case INTEGRATOR_VELOCITY_VERLET:
+        this->update_position_velocity_verlet();
+        break;
+    default:
+        this->update_position_velocity_verlet();
+        break;
+    }
 
     glBindBuffer(GL_ARRAY_BUFFER, *VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * this->n_particle * 3, &this->particle_position[0]);
@@ -89,6 +99,7 @@ GLuint Simulator::get_n_particle()
     return this->n_particle;
 }
 
-void Simulator::terminate(){
+void Simulator::terminate()
+{
     // Do nothing
 }

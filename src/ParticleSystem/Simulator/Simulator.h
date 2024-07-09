@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/random.hpp>
+#include <SimulatorEnum.h>
 #include <math.h>
 #include <vector>
 #include <iostream>
@@ -88,6 +89,8 @@ protected:
     GLuint current_step;
     GLuint *VAO;
     GLuint *VBO;
+    SimulatorIntegrator integrator;
+
     bool running_state;
 
     /**
@@ -97,8 +100,9 @@ protected:
      * @param gravitational_constant gravitational constant
      * @param softening_factor softening factor 
      * @param timestep_size timestep size (per frame)
+     * @param integrator integrator
      */
-    Simulator(GLfloat, GLfloat, GLfloat, GLfloat);
+    Simulator(GLfloat, GLfloat, GLfloat, GLfloat, SimulatorIntegrator);
 
     /**
      * @brief Calculate acceleration between the two particles

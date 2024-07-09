@@ -4,7 +4,7 @@
 class ParticleParticleGPU : public Simulator
 {
 public:
-    ParticleParticleGPU(GLfloat, GLfloat, GLfloat, GLfloat);
+    ParticleParticleGPU(GLfloat, GLfloat, GLfloat, GLfloat, SimulatorIntegrator);
     void terminate();
 
 private:
@@ -13,15 +13,14 @@ private:
     GLuint particle_acceleration_SSBO;
     GLuint particle_previous_acceleration_SSBO;
     GLuint particle_mass_SSBO;
+    GLuint n_work_groups;
     Shader compute_shader_program;
     
     std::vector<glm::vec4> particle_pos_vec4;
     std::vector<glm::vec4> particle_vel_vec4;
     std::vector<glm::vec4> particle_acc_vec4;
 
-    void update_position_euler() override;
-
-    void update_position_velocity_verlet() override;
+    void update_position();
 
     void load_particles(GLuint, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<GLfloat>) override;
 
@@ -33,5 +32,5 @@ private:
 
     std::vector<glm::vec4> convert_to_vec4(std::vector<glm::vec3> );
 
-    std::vector<glm::vec3> convert_to_vec3(glm::vec4 *);
+    void update_position_vector(glm::vec4 *);
 };

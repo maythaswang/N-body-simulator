@@ -3,7 +3,7 @@
 class ParticleParticleCPU : public Simulator
 {
 public:
-    ParticleParticleCPU(GLfloat, GLfloat, GLfloat, GLfloat);
+    ParticleParticleCPU(GLfloat, GLfloat, GLfloat, GLfloat, SimulatorIntegrator);
 
 private:
     glm::vec3 calculate_acceleration(uint32_t, uint32_t) override;

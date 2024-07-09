@@ -47,7 +47,6 @@ void main() {
 	if (id >= n_particle) return ;
     acceleration[id] = calculate_acceleration(id) * gravitational_constant;
     
-    // groupMemoryBarrier();
     memoryBarrier();
     barrier();
 
