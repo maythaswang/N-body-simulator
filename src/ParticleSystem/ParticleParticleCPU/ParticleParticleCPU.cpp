@@ -48,7 +48,6 @@ void ParticleParticleCPU::update_position_euler()
 
 void ParticleParticleCPU::update_position_velocity_verlet()
 {
-
     glm::vec3 tmp_acceleration;
     std::fill(this->particle_acceleration.begin(), this->particle_acceleration.end(), glm::vec3(0.0f));
 
@@ -73,8 +72,11 @@ void ParticleParticleCPU::update_position_velocity_verlet()
 
         // Update Velocity by 1 step
         this->particle_velocity[i] += particle_acceleration[i] * this->timestep_size * (GLfloat)0.5 * this->gravitational_constant;
+        
+        // Store Acceleration for next step.
+        this->particle_previous_acceleration[i] = this->particle_acceleration[i];
     }
 
     // Copy next step acceleration for next iteration
-    std::copy(this->particle_previous_acceleration.begin(), this->particle_previous_acceleration.end(), std::back_inserter(this->particle_acceleration));
+    // std::copy(this->particle_previous_acceleration.begin(), this->particle_previous_acceleration.end(), std::back_inserter(this->particle_acceleration)); // This somewhat segfaults.
 }

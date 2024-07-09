@@ -57,6 +57,7 @@ set(PROJECT_SOURCES
     src/Renderer/Renderer.cpp
     src/ParticleSystem/ParticleParticleCPU/ParticleParticleCPU.cpp
     src/ParticleSystem/ParticleParticleGPU/ParticleParticleGPU.cpp
+    src/InputParser/InputParser.cpp
 )
 
 set(INCLUDE_DIRS
@@ -73,6 +74,7 @@ set(INCLUDE_DIRS
     src/Renderer/
     src/ParticleSystem/ParticleParticleCPU/
     src/ParticleSystem/ParticleParticleGPU/
+    src/InputParser/
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
