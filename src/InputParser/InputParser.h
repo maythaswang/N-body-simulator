@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 
 class InputParser
 {
@@ -18,8 +19,18 @@ private:
     ParticleBuilder *particle_builder;
     GLuint default_test, n_particle;
     bool use_GPU, use_default_test;
+    GLfloat gravitational_constant;
+    GLfloat timestep_size;
 
     void input_YN(bool &output, std::string message);
     void load_default_test();
+    void populate_simulator();
+    void manual_setup();
 
+    void populate_disc();
+    void populate_random();
+    void populate_globular_cluster();
+    void populate_sphere_surface();
+
+    void clear_cin();
 };

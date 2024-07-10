@@ -63,8 +63,20 @@ public:
      */
     void spawn_sphere(GLuint, glm::vec3, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, bool);
 
-    
-    void spawn_disc(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat width, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity, bool is_spiral);
+    /**
+     * @brief Spawn particles on a form of disc and store it into the intermediate vector.
+     * 
+     * @param n number of particles
+     * @param offset offset of the center of the disc from origin
+     * @param radius radius of the disc
+     * @param width width of the disc
+     * @param min_mass minimum particle mass
+     * @param max_mass maximum particle mass
+     * @param min_velocity minimum particle velocity
+     * @param max_velocity maximum particle velocity
+     * @param is_spiral set the velocity of the particles such that they all move in a spiral.
+     */
+    void spawn_disc(GLuint , glm::vec3 , GLfloat , GLfloat , GLfloat , GLfloat , GLfloat , GLfloat , bool );
 
     /**
      * @brief populate vectors user inputted through the parameters using the stored particle data. Afterwards the stored particle data is resetted.
