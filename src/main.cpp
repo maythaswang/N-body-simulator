@@ -23,6 +23,8 @@ const char *SCREEN_NAME = "N-BODY-SIMULATION";
 
 void set_debug_mode(bool, bool, GLuint);
 
+// TODO: Implement visual effects (eg: bloom, particle colour based on size...)
+
 int main(int argc, char *argv[])
 {
 	// Accept Inputs
@@ -56,6 +58,8 @@ int main(int argc, char *argv[])
 
 	Shader shader_program = Shader();
 
+	//TODO: Bake the shaders in.
+
 	// The dir depends on where you call it so if you call it from root, do it as if the current working directory is in root.
 	GLuint vertex_shader = shader_program.compile_shader("./shader_source/light.vert.glsl", GL_VERTEX_SHADER);
 	GLuint fragment_shader = shader_program.compile_shader("./shader_source/light.frag.glsl", GL_FRAGMENT_SHADER);
@@ -72,8 +76,6 @@ int main(int argc, char *argv[])
 	std::vector<GLfloat> particle_mass;
 	GLuint n_particles;
 
-	// set_debug_mode(0,1,2);
-
 	if (!particle_builder.populate_vectors(&n_particles, &particle_position, &particle_velocity, &particle_acceleration, &particle_mass))
 	{
 		std::cout << "Failed to populate particles." << std::endl;
@@ -83,14 +85,18 @@ int main(int argc, char *argv[])
 	GLuint VAO, VBO;
 	Simulator *simulator;
 
+	SimulatorIntegrator integrator = (input_parser.get_use_velocity_verlet()) ? INTEGRATOR_VELOCITY_VERLET : INTEGRATOR_EULER;
+	GLfloat gravitational_constant = input_parser.get_gravitational_constant();
+	GLfloat timestep_size = input_parser.get_timestep_size();
+
 	if (!input_parser.get_use_GPU())
 	{
-		ParticleParticleCPU simulator_CPU = ParticleParticleCPU(n_particles, 0.8, SOFTENING_FACTOR, 0.001, INTEGRATOR_VELOCITY_VERLET);
+		ParticleParticleCPU simulator_CPU = ParticleParticleCPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
 		simulator = &simulator_CPU;
 	}
 	else
 	{
-		ParticleParticleGPU simulator_GPU = ParticleParticleGPU(n_particles, 0.8, SOFTENING_FACTOR, 0.001, INTEGRATOR_VELOCITY_VERLET);
+		ParticleParticleGPU simulator_GPU = ParticleParticleGPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
 		simulator = &simulator_GPU;
 	}
 
@@ -108,6 +114,8 @@ int main(int argc, char *argv[])
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
+	
+	// set_debug_mode(0,1,2);
 	std::cout << simulator->get_setup_log() << std::endl;
 	std::cout << g_controls_help << std::endl;
 	std::cout << "Starting Simulator in paused state..." << std::endl;

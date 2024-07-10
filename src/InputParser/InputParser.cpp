@@ -4,8 +4,7 @@ int TESTCASE_CAP_GPU = 25;
 GLfloat DEFAULT_TIMESTEP_SIZE = 0.001;
 GLfloat DEFAULT_GRAVITATIONAL_CONSTANT = 0.8;
 
-
-// TODO: Make this class less hedious.
+// TODO: Make this class less hedious. (Refractor and change this whole mess)
 
 InputParser::InputParser(ParticleBuilder *particle_builder)
 {
@@ -16,7 +15,7 @@ void InputParser::accept_input()
 {
     this->timestep_size = DEFAULT_TIMESTEP_SIZE;
     this->gravitational_constant = DEFAULT_GRAVITATIONAL_CONSTANT;
-    
+
     int default_cap = TESTCASE_CAP_CPU; // Maximum umber of CPU testers
     std::string input;
 
@@ -67,14 +66,14 @@ void InputParser::manual_setup()
     bool integrator;
     std::string input;
     bool add_object;
-    
+
     do
     {
         std::cout << "Please input the following information separated by spaces. integrator: {0: Euler, 1: Velocity-Verlet}" << std::endl;
         std::cout << "<gravitational constant> <timestep size> <integrator>" << std::endl;
         std::cout << ":" << std::flush;
         getline(std::cin, input);
-    } while (!(std::stringstream(input) >> gravitational_constant >> timestep_size>> integrator));
+    } while (!(std::stringstream(input) >> gravitational_constant >> timestep_size >> integrator));
 
     this->gravitational_constant = gravitational_constant;
     this->timestep_size = timestep_size;
@@ -266,11 +265,26 @@ bool InputParser::get_use_GPU()
     return this->use_GPU;
 }
 
+bool InputParser::get_use_velocity_verlet()
+{
+    return this->use_velocity_verlet;
+}
+
+GLfloat InputParser::get_timestep_size()
+{
+    return this->timestep_size;
+}
+
+GLfloat InputParser::get_gravitational_constant()
+{
+    return this->gravitational_constant;
+}
+
 std::string InputParser::get_summary()
 {
     std::cout << std::boolalpha;
     std::string rtn = "";
-    rtn.append("Using GPU: " + std::to_string(this->use_GPU) + "\n") ;
+    rtn.append("Using GPU: " + std::to_string(this->use_GPU) + "\n");
     rtn.append("Using default test: " + std::to_string(this->use_default_test));
     if (this->use_default_test)
     {
@@ -281,7 +295,7 @@ std::string InputParser::get_summary()
     rtn.append("Gravitational Constant: " + std::to_string(this->gravitational_constant) + "\n");
     rtn.append("Timestep Size: " + std::to_string(this->timestep_size) + "\n");
     std::string integrator_name = (this->use_velocity_verlet) ? "Velocity-Verlet" : "Euler";
-    rtn.append("Integrator: " + integrator_name+ "\n\n");
+    rtn.append("Integrator: " + integrator_name + "\n\n");
     return rtn;
 }
 
@@ -511,7 +525,7 @@ void InputParser::load_default_test()
         this->particle_builder->spawn_globular_cluster(10000, glm::vec3(0, 0, 0), 10000, 10, 1000000, 10000000, 50, 50, false, true, false);
         this->particle_builder->spawn_sphere(9000, glm::vec3(0, 0, 0), 10000, 10, 10, 0, 0, false);
         break;
-        
+
     default:
         break;
     }

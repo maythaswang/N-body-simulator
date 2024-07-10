@@ -1,6 +1,9 @@
 #include <Camera.h>
 #include <iostream>
 
+// TODO: Have a function for scaling sensitivity
+// TODO: Implement free-flying camera mode.
+
 Camera::Camera()
 {
     this->eye = glm::vec3(0, 0, 200.0);

@@ -17,7 +17,11 @@ public:
 
     void accept_input();
     std::string get_summary();
+
     bool get_use_GPU();
+    bool get_use_velocity_verlet();
+    GLfloat get_gravitational_constant();
+    GLfloat get_timestep_size();
 
 private:
     ParticleBuilder *particle_builder;

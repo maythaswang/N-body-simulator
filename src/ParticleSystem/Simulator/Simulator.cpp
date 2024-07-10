@@ -1,4 +1,6 @@
 #include <Simulator.h>
+// TODO: Implement Save/Load (both setup only and current state)
+
 
 Simulator::Simulator(GLfloat n_particle, GLfloat gravitational_constant, GLfloat softening_factor, GLfloat timestep_size, SimulatorIntegrator integrator)
 {
