@@ -5,6 +5,7 @@
 #include <glm/gtc/random.hpp>
 #include <math.h>
 #include <vector>
+#include <string>
 
 /**
  * @brief Build vectors of particle data in preparation for Simulation.
@@ -90,12 +91,14 @@ public:
      */
     bool populate_vectors(GLuint *, std::vector<glm::vec3> *, std::vector<glm::vec3> *, std::vector<glm::vec3> *, std::vector<GLfloat> *);
 
+    std::string get_summary();
 private:
     std::vector<glm::vec3> particle_position;
     std::vector<glm::vec3> particle_velocity;
     std::vector<glm::vec3> particle_acceleration;
     std::vector<GLfloat> particle_mass;
     GLuint n_particle;
+    std::string setup_summary;
 
     /**
      * @brief Number Randomizer
@@ -113,4 +116,7 @@ private:
     void reset_vectors();
 
     glm::vec3 sample_velocity(glm::vec3, glm::vec3, GLfloat, GLfloat, bool);
+
+    std::string format_string_vec3(glm::vec3);
+
 };

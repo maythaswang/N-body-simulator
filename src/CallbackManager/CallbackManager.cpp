@@ -151,5 +151,9 @@ void CallbackManager::set_keyboard_callback()
             {
                 std::cout << g_controls_help << std::endl;
             }
+
+            if (key == GLFW_KEY_I && action == GLFW_PRESS){
+                std::cout << callback_manager->simulator->get_setup_log()<< std::endl;
+            }
         } });
 }

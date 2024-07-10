@@ -18,20 +18,24 @@
 // For initialization
 const unsigned int SCREEN_WIDTH = 640;
 const unsigned int SCREEN_HEIGHT = 480;
+const GLfloat SOFTENING_FACTOR = 50;
 const char *SCREEN_NAME = "N-BODY-SIMULATION";
 
 void set_debug_mode(bool, bool, GLuint);
 
 int main(int argc, char *argv[])
 {
+	// Accept Inputs
+	// ----------------------------------------------------------------------------
 	std::cout << g_welcome_message << std::endl;
-
 	ParticleBuilder particle_builder = ParticleBuilder();
 	InputParser input_parser = InputParser(&particle_builder);
 	input_parser.accept_input();
-	input_parser.print_summary();
-
-	std::cout << g_controls_help << std::endl;
+	std::string setup_log_head = "+------------------------------------------------+\n"
+								 "| Setup Summary                                  |\n"
+								 "+------------------------------------------------+\n";
+	std::string setup_log_input = input_parser.get_summary();
+	std::string setup_log_particle = particle_builder.get_summary();
 
 	// Initialization Subroutine
 	// ----------------------------------------------------------------------------
@@ -81,24 +85,32 @@ int main(int argc, char *argv[])
 
 	if (!input_parser.get_use_GPU())
 	{
-		ParticleParticleCPU simulator_CPU = ParticleParticleCPU(n_particles, 0.8, 50, 0.001, INTEGRATOR_VELOCITY_VERLET);
+		ParticleParticleCPU simulator_CPU = ParticleParticleCPU(n_particles, 0.8, SOFTENING_FACTOR, 0.001, INTEGRATOR_VELOCITY_VERLET);
 		simulator = &simulator_CPU;
 	}
 	else
 	{
-		ParticleParticleGPU simulator_GPU = ParticleParticleGPU(n_particles, 0.8, 50, 0.001, INTEGRATOR_VELOCITY_VERLET);
+		ParticleParticleGPU simulator_GPU = ParticleParticleGPU(n_particles, 0.8, SOFTENING_FACTOR, 0.001, INTEGRATOR_VELOCITY_VERLET);
 		simulator = &simulator_GPU;
 	}
 
 	simulator->load_particles(n_particles, particle_position, particle_velocity, particle_acceleration, particle_mass);
 	simulator->initialize_particles(&VAO, &VBO);
 
-	std::cout << simulator->get_n_particle() << std::endl;
+	simulator->append_setup_log(setup_log_head);
+	simulator->append_setup_log(setup_log_input);
+	simulator->append_setup_log(setup_log_particle);
+	simulator->append_setup_log("\n--------------------------------------------------\n\n");
+
+
 	CallbackManager callback_manager = CallbackManager(window, &camera, simulator);
 	Renderer renderer = Renderer(&callback_manager, window, &shader_program, &camera, simulator, VAO);
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
+	std::cout << simulator->get_setup_log() << std::endl;
+	std::cout << g_controls_help << std::endl;
+	std::cout << "Starting Simulator in paused state..." << std::endl;
 	while (!glfwWindowShouldClose(window))
 	{
 		renderer.render();

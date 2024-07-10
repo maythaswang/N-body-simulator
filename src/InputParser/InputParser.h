@@ -16,13 +16,13 @@ public:
     InputParser(ParticleBuilder *);
 
     void accept_input();
-    void print_summary();
+    std::string get_summary();
     bool get_use_GPU();
 
 private:
     ParticleBuilder *particle_builder;
     GLuint default_test, n_particle;
-    bool use_GPU, use_default_test;
+    bool use_GPU, use_default_test, use_velocity_verlet; // Well do this since there are only 2 integrators available.
     GLfloat gravitational_constant;
     GLfloat timestep_size;
 

@@ -7,6 +7,7 @@
 #include <math.h>
 #include <vector>
 #include <iostream>
+#include <string>
 
 /**
  * @brief This simulator is implemented using Sequential Particle-Particle method O(n^2) on CPU
@@ -75,6 +76,9 @@ public:
     
     virtual void terminate();
 
+    std::string get_setup_log();
+    void append_setup_log(std::string);
+
 // I'll just declare it all protected since it's only me working on this.
 protected:
     std::vector<glm::vec3> particle_position;
@@ -90,6 +94,8 @@ protected:
     GLuint *VAO;
     GLuint *VBO;
     SimulatorIntegrator integrator;
+    
+    std::string setup_log;
 
     bool running_state;
 
@@ -133,5 +139,4 @@ protected:
      * @note v(t + δt) = v(t + 1/2δt) + 1/2 * a(t + δt) * δt
      */
     virtual void update_position_velocity_verlet();
-
 };

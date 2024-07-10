@@ -6,6 +6,7 @@
 ParticleBuilder::ParticleBuilder()
 {
     this->n_particle = 0;
+    this->setup_summary = "";
     time_t t;
     std::srand((unsigned)time(&t));
 }
@@ -25,6 +26,7 @@ void ParticleBuilder::spawn_random(GLuint n, glm::vec3 offset, GLfloat radius, G
     }
 
     this->n_particle += n;
+    this->setup_summary.append("Random: " + std::to_string(n) + ' ' + this->format_string_vec3(offset) + ' ' + std::to_string(radius) + " (" + std::to_string(min_mass) + ", " + std::to_string(max_mass) + ") " + "(" + std::to_string(min_velocity) + ", " + std::to_string(max_velocity) + ") " + "\n");
 }
 
 void ParticleBuilder::spawn_globular_cluster(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat center_radius, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity, bool is_spiral, bool is_dense, bool outer_only)
@@ -47,11 +49,16 @@ void ParticleBuilder::spawn_globular_cluster(GLuint n, glm::vec3 offset, GLfloat
     }
 
     this->n_particle += n;
+    if (!outer_only)
+    {
+        this->setup_summary.append("Globular Cluster: " + std::to_string(n) + ' ' + this->format_string_vec3(offset) + ' ' + std::to_string(radius) + ' ' + std::to_string(center_radius) + " (" + std::to_string(min_mass) + ", " + std::to_string(max_mass) + ") " + "(" + std::to_string(min_velocity) + ", " + std::to_string(max_velocity) + ") " + std::to_string(is_spiral) + ' ' + std::to_string(is_dense) + ' ' + std::to_string(outer_only) + "\n");
+    }
 }
 
 void ParticleBuilder::spawn_sphere(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity, bool is_spiral)
 {
     this->spawn_globular_cluster(n, offset, radius, 0, min_mass, max_mass, min_velocity, max_velocity, is_spiral, 0, 1);
+    this->setup_summary.append("Sphere Surface: " + std::to_string(n) + ' ' + this->format_string_vec3(offset) + ' ' + std::to_string(radius) + ' ' + " (" + std::to_string(min_mass) + ", " + std::to_string(max_mass) + ") " + "(" + std::to_string(min_velocity) + ", " + std::to_string(max_velocity) + ") " + std::to_string(is_spiral) + "\n");
 }
 
 bool ParticleBuilder::populate_vectors(GLuint *n, std::vector<glm::vec3> *particle_position, std::vector<glm::vec3> *particle_velocity, std::vector<glm::vec3> *particle_acceleration, std::vector<GLfloat> *particle_mass)
@@ -119,4 +126,15 @@ void ParticleBuilder::spawn_disc(GLuint n, glm::vec3 offset, GLfloat radius, GLf
     }
 
     this->n_particle += n;
+    this->setup_summary.append("Disc: " + std::to_string(n) + ' ' + this->format_string_vec3(offset) + ' ' + std::to_string(radius) + ' ' + std::to_string(width) + " (" + std::to_string(min_mass) + ", " + std::to_string(max_mass) + ") " + "(" + std::to_string(min_velocity) + ", " + std::to_string(max_velocity) + ") " + std::to_string(is_spiral) + "\n");
+}
+
+std::string ParticleBuilder::get_summary()
+{
+    return "Total number of particles: " + std::to_string(this->n_particle) + "\n" +  this->setup_summary;
+}
+
+std::string ParticleBuilder::format_string_vec3(glm::vec3 input)
+{
+    return "(" + std::to_string(input.x) + ", " + std::to_string(input.y) + ", " + std::to_string(input.z) + ")";
 }

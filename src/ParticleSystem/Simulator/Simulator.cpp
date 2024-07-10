@@ -8,6 +8,7 @@ Simulator::Simulator(GLfloat n_particle, GLfloat gravitational_constant, GLfloat
     this->current_step = 0;
     this->running_state = 0;
     this->integrator = integrator;
+    this->setup_log = "";
 }
 
 void Simulator::next_step()
@@ -102,4 +103,12 @@ GLuint Simulator::get_n_particle()
 void Simulator::terminate()
 {
     // Do nothing
+}
+
+std::string Simulator::get_setup_log(){
+    return this->setup_log;
+}
+
+void Simulator::append_setup_log(std::string input){
+    this->setup_log.append(input);
 }

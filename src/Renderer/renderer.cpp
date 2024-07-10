@@ -47,7 +47,7 @@ void Renderer::show_fps()
     double cur_time = glfwGetTime();
     double delta_time = cur_time - this->previous_time;
     this->previous_time = delta_time;
-    if (delta_time >= 2.0)
+    if (delta_time >= 1.0)
     {
         std::stringstream ss;
         ss << "N-BODY SIMULATOR. FPS: " << (double)frame_count / delta_time << ". Time elapsed: " << cur_time;
