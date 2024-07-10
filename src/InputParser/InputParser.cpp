@@ -1,4 +1,7 @@
 #include <InputParser.h>
+int TESTCASE_CAP_CPU = 4;
+int TESTCASE_CAP_GPU = 25;
+
 
 InputParser::InputParser(ParticleBuilder *particle_builder)
 {
@@ -7,8 +10,7 @@ InputParser::InputParser(ParticleBuilder *particle_builder)
 
 void InputParser::accept_input()
 {
-    this->default_test = 1000;
-    int default_cap = 4; // Maximum umber of CPU testers
+    int default_cap = TESTCASE_CAP_CPU; // Maximum umber of CPU testers
     std::string input;
 
     std::cout << "You can now begin by setting up the simulator." << std::endl;
@@ -17,7 +19,7 @@ void InputParser::accept_input()
     this->input_YN(this->use_GPU, "Would you like to use the GPU implementation. (Y/N).");
     if (this->use_GPU)
     {
-        default_cap = 24; // Maximum number of GPU testers.
+        default_cap = TESTCASE_CAP_GPU; // Maximum number of GPU testers.
     }
 
     // Use default tests check.
@@ -43,6 +45,7 @@ void InputParser::accept_input()
         this->default_test = input_test;
         this->load_default_test();
     }
+
     // Manual Setup
     else
     {
@@ -69,25 +72,34 @@ void InputParser::manual_setup()
     this->timestep_size = timestep_size;
     std::cout << this->gravitational_constant << ' ' << this->timestep_size << std::endl;
 
-    do
+    while (true)
     {
         this->input_YN(add_object, "Do you wish to add more particles? (Y/N)");
+        if (!add_object)
+        {
+            break;
+        }
         this->populate_simulator();
-    } while (add_object);
+    }
 }
 
 void InputParser::populate_simulator()
 {
-    clear_cin();
-    int particle_type = 4;
-    do
+    std::string input;
+    int particle_type;
+    while (true)
     {
         std::cout << "Please select the particle primitives." << std::endl;
         std::cout << "[0]: Disc, [1]: Random (x,y,z radius), [2]: Globular Cluster, [3]: Sphere Surface" << std::endl;
-        std::cin >> particle_type;
-    } while (particle_type > 4);
-
-    clear_cin();
+        getline(std::cin, input);
+        if (std::stringstream(input) >> particle_type)
+        {
+            if ((particle_type >= 0 & particle_type < 4))
+            {
+                break;
+            }
+        }
+    }
 
     switch (particle_type)
     {
@@ -116,24 +128,11 @@ void InputParser::populate_disc()
 {
     std::string input;
     GLuint n_particle;
-    GLfloat x_offset, y_offset, z_offset;
-    GLfloat radius, width;
-    GLfloat min_mass, max_mass, min_velocity, max_velocity;
+    GLfloat radius, width, min_mass, max_mass, min_velocity, max_velocity;
+    glm::vec3 offset;
     bool is_spiral;
 
-    do
-    {
-        std::cout << "Please input the amount of particles." << std::endl;
-        std::cout << ":" << std::flush;
-        getline(std::cin, input);
-    } while (!(std::stringstream(input) >> n_particle));
-
-    do
-    {
-        std::cout << "Please input the amount of offset from origin.\n<x> <y> <z>" << std::endl;
-        std::cout << ":" << std::flush;
-        getline(std::cin, input);
-    } while (!(std::stringstream(input) >> x_offset >> y_offset >> z_offset));
+    this->input_basic_information(&n_particle, &offset);
 
     do
     {
@@ -155,43 +154,106 @@ void InputParser::populate_disc()
         std::cout << ":" << std::flush;
         getline(std::cin, input);
     } while (!(std::stringstream(input) >> is_spiral));
-    // std::cout << "Please input the following information separated by spaces." << std::endl;
-    particle_builder->spawn_disc(n_particle, glm::vec3(x_offset, y_offset, z_offset), radius, width, min_mass, max_mass, min_velocity, max_velocity, is_spiral);
+    particle_builder->spawn_disc(n_particle, offset, radius, width, min_mass, max_mass, min_velocity, max_velocity, is_spiral);
 }
 
 void InputParser::populate_random()
 {
+    std::string input;
+    GLuint n_particle;
+    GLfloat radius, min_mass, max_mass, min_velocity, max_velocity;
+    glm::vec3 offset;
+
+    input_basic_information(&n_particle, &offset);
+
+    do
+    {
+        std::cout << "Please input the radius of the particle cluster.\n<radius>" << std::endl;
+        std::cout << ":" << std::flush;
+        getline(std::cin, input);
+    } while (!(std::stringstream(input) >> radius));
+
+    do
+    {
+        std::cout << "Please input the mass and velocity range.\n<min_mass> <max_mass> <min_velocity> <max_velocity>" << std::endl;
+        std::cout << ":" << std::flush;
+        getline(std::cin, input);
+    } while (!(std::stringstream(input) >> min_mass >> max_mass >> min_velocity >> max_velocity));
+
+    particle_builder->spawn_random(n_particle, offset, radius, min_mass, max_mass, min_velocity, max_velocity);
 }
 
 void InputParser::populate_globular_cluster()
 {
+    std::string input;
+    GLuint n_particle;
+    GLfloat radius, center_radius, min_mass, max_mass, min_velocity, max_velocity;
+    glm::vec3 offset;
+    bool is_spiral, is_dense;
+
+    this->input_basic_information(&n_particle, &offset);
+
+    do
+    {
+        std::cout << "Please input the radius and center radius of the disc.\n<radius> <center radius>" << std::endl;
+        std::cout << ":" << std::flush;
+        getline(std::cin, input);
+    } while (!(std::stringstream(input) >> radius >> center_radius));
+
+    do
+    {
+        std::cout << "Please input the mass and velocity range.\n<min_mass> <max_mass> <min_velocity> <max_velocity>" << std::endl;
+        std::cout << ":" << std::flush;
+        getline(std::cin, input);
+    } while (!(std::stringstream(input) >> min_mass >> max_mass >> min_velocity >> max_velocity));
+
+    do
+    {
+        std::cout << "Please set the characteristic of the disc. {0: disable, 1: enable} \n<spiral> <dense center>" << std::endl;
+        std::cout << ":" << std::flush;
+        getline(std::cin, input);
+    } while (!(std::stringstream(input) >> is_spiral >> is_dense));
+
+    particle_builder->spawn_globular_cluster(n_particle, offset, radius, center_radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral, is_dense, 0);
 }
 
 void InputParser::populate_sphere_surface()
 {
+    std::string input;
+    GLuint n_particle;
+    GLfloat radius, min_mass, max_mass, min_velocity, max_velocity;
+    glm::vec3 offset;
+    bool is_spiral;
+
+    this->input_basic_information(&n_particle, &offset);
+
+    do
+    {
+        std::cout << "Please input the radius of the disc.\n<radius>" << std::endl;
+        std::cout << ":" << std::flush;
+        getline(std::cin, input);
+    } while (!(std::stringstream(input) >> radius));
+
+    do
+    {
+        std::cout << "Please input the mass and velocity range.\n<min_mass> <max_mass> <min_velocity> <max_velocity>" << std::endl;
+        std::cout << ":" << std::flush;
+        getline(std::cin, input);
+    } while (!(std::stringstream(input) >> min_mass >> max_mass >> min_velocity >> max_velocity));
+
+    do
+    {
+        std::cout << "Please set the characteristic of the disc. {0: disable, 1: enable} \n<spiral> <dense center>" << std::endl;
+        std::cout << ":" << std::flush;
+        getline(std::cin, input);
+    } while (!(std::stringstream(input) >> is_spiral));
+
+    particle_builder->spawn_sphere(n_particle, offset, radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral);
 }
 
 bool InputParser::get_use_GPU()
 {
     return this->use_GPU;
-}
-
-void InputParser::input_YN(bool &output, std::string message)
-{
-    char status;
-    std::string input;
-    while (true)
-    {
-        std::cout << message << std::endl;
-        std::cout << ":" << std::flush;
-        getline(std::cin, input);
-        if (std::stringstream(input) >> status)
-        {
-            if (status == 'Y' | status == 'N')
-                break;
-        }
-    }
-    output = (status == 'Y') ? true : false;
 }
 
 void InputParser::print_summary()
@@ -212,6 +274,45 @@ void InputParser::print_summary()
     std::cout << std::endl;
 
     std::cout << "\n--------------------------------------------" << std::endl;
+}
+
+void InputParser::input_basic_information(GLuint *n_particle, glm::vec3 *offset)
+{
+    std::string input;
+    GLfloat x_offset, y_offset, z_offset;
+    do
+    {
+        std::cout << "Please input the amount of particles." << std::endl;
+        std::cout << ":" << std::flush;
+        getline(std::cin, input);
+    } while (!(std::stringstream(input) >> *n_particle));
+
+    do
+    {
+        std::cout << "Please input the amount of offset from origin.\n<x> <y> <z>" << std::endl;
+        std::cout << ":" << std::flush;
+        getline(std::cin, input);
+    } while (!(std::stringstream(input) >> x_offset >> y_offset >> z_offset));
+
+    *offset = glm::vec3(x_offset, y_offset, z_offset);
+}
+
+void InputParser::input_YN(bool &output, std::string message)
+{
+    char status;
+    std::string input;
+    while (true)
+    {
+        std::cout << message << std::endl;
+        std::cout << ":" << std::flush;
+        getline(std::cin, input);
+        if (std::stringstream(input) >> status)
+        {
+            if (status == 'Y' | status == 'N')
+                break;
+        }
+    }
+    output = (status == 'Y') ? true : false;
 }
 
 void InputParser::clear_cin()
@@ -395,6 +496,13 @@ void InputParser::load_default_test()
         this->particle_builder->spawn_globular_cluster(1, glm::vec3(10000, 0, 0), 1, 0, 1000000, 1000000, 0, 0, true, false, true);
         break;
 
+    case 25:
+        this->particle_builder->spawn_disc(20000, glm::vec3(0, 0, 0), 1000, 20, 10000, 100000, 5000, 50000, 1);
+        this->particle_builder->spawn_random(1000, glm::vec3(999, 999, 999), 1000, 50, 50, 50, 50);
+        this->particle_builder->spawn_globular_cluster(10000, glm::vec3(0, 0, 0), 10000, 10, 1000000, 10000000, 50, 50, false, true, false);
+        this->particle_builder->spawn_sphere(9000, glm::vec3(0, 0, 0), 10000, 10, 10, 0, 0, false);
+        break;
+        
     default:
         break;
     }

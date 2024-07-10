@@ -6,6 +6,10 @@
 #include <string>
 #include <sstream>
 
+/**
+ * @brief Parse input from user for setting up the particle simulator.
+ * @warning This class is a complete mess. This is just a makeshift solution.
+ */
 class InputParser
 {
 public:
@@ -32,5 +36,6 @@ private:
     void populate_globular_cluster();
     void populate_sphere_surface();
 
+    void input_basic_information(GLuint *, glm::vec3 *);
     void clear_cin();
 };
