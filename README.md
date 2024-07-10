@@ -1,7 +1,7 @@
 Modified by: Maythas Wangcharoenwong 20240711
 # N-body-simulator
 ----------
-This project aims to Simulate interactions of N-bodies in using Particle-Particle Method. The project provides option to use either Compute Shaders written in `glsl` or simple CPU implementation.
+This project aims to Simulate interactions of N-bodies in using Particle-Particle Method implemented with `OpenGL` and `C++`. The project provides option to use either Compute Shaders written in `glsl` or simple CPU implementation.
 
 Note: The project is currently a WIP.
 
@@ -14,5 +14,7 @@ Note: The project is currently a WIP.
 ### Setting up
 Simply use the scripts provided in `./QOL_Snippets` to build and run the program.
 
-
+----------
+### Controls
+Please refer to the `"Window Controls"` provided in the program for now...
 
