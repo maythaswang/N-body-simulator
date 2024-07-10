@@ -15,7 +15,7 @@ void InputParser::accept_input()
     this->input_YN(this->use_GPU, "Would you like to use the GPU implementation. (Y/N).");
     if (this->use_GPU)
     {
-        default_cap = 14; // Number of GPU testers.
+        default_cap = 24; // Number of GPU testers.
     }
 
     // Use default tests check.
@@ -147,15 +147,93 @@ void InputParser::load_default_test()
         break;
 
     case (14):
-        this->particle_builder->spawn_globular_cluster(19999, glm::vec3(0, 0, 0), 10000, 25, 1000, 10000, 10, 1000, false, false, true);
+        this->particle_builder->spawn_globular_cluster(20000, glm::vec3(0, 0, 0), 10000, 25, 1000, 10000, 10, 1000, false, false, true);
         this->particle_builder->spawn_globular_cluster(1, glm::vec3(0, 0, 0), 1, 0, 10000000, 10000000, 0, 0, false, false, false);
         break;
+
+    case (15):
+        this->particle_builder->spawn_globular_cluster(29999, glm::vec3(0, 0, 0), 10, 25, 0, 0, -1000, 1000, false, false, true);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(500, 500, 500), 1, 0, 10000000, 10000000, -1000, 1000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(-500, 500, 500), 1, 0, 10000000, 10000000, -1000, 1000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(-500, -500, -500), 1, 0, 10000000, 10000000, -1000, 1000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(500, -500, -500), 1, 0, 10000000, 10000000, -1000, 1000, false, false, false);
+        break;
+    case (16):
+        this->particle_builder->spawn_globular_cluster(20000, glm::vec3(0, 0, 0), 10, 25, 0, 0, -1000, 1000, false, false, true);
+        this->particle_builder->spawn_globular_cluster(200, glm::vec3(5000, 5000, 5000), 1, 0, 10000000, 10000000, -1000, 1000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(200, glm::vec3(-5000, -5000, -5000), 1, 0, 10000000, 10000000, -1000, 1000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(200, glm::vec3(-5000, 5000, -5000), 1, 0, 10000000, 10000000, -1000, 1000, false, false, false);
+        break;
+    case (17):
+        this->particle_builder->spawn_globular_cluster(20000, glm::vec3(0, 0, 0), 10, 25, 1, 1, -1000, 1000, false, false, true);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(5000, 5000, 5000), 10000, 0, 100000000, 100000000, -10000, 10000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(5000, 5000, -5000), 10000, 0, 100000000, 100000000, -10000, 10000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(5000, -5000, 5000), 10000, 0, 100000000, 100000000, -10000, 10000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(-5000, 5000, 5000), 10000, 0, 100000000, 100000000, -10000, 10000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(-5000, -5000, 5000), 10000, 0, 100000000, 100000000, -10000, 10000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(5000, -5000, -5000), 10000, 0, 100000000, 100000000, -10000, 10000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(-5000, -5000, -5000), 10000, 0, 100000000, 100000000, -10000, 10000, false, false, false);
+        break;
+    case (18):
+        this->particle_builder->spawn_globular_cluster(20000, glm::vec3(0, 0, 0), 10, 5, 1, 1, -1000, 1000, false, false, true);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(5000, 5000, 5000), 10000, 0, 1000000000, 1000000000, -10000, -10000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(5000, 5000, -5000), 10000, 0, 1000000000, 1000000000, -10000, -10000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(5000, -5000, 5000), 10000, 0, 1000000000, 1000000000, -10000, 10000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(-5000, 5000, 5000), 10000, 0, 1000000000, 1000000000, -10000, 10000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(-5000, -5000, 5000), 10000, 0, 1000000000, 1000000000, 10000, -10000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(5000, -5000, -5000), 10000, 0, 1000000000, 1000000000, 10000, -10000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(-5000, 5000, -5000), 10000, 0, 1000000000, 1000000000, 10000, 10000, false, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(-5000, -5000, -5000), 10000, 0, 1000000000, 1000000000, 10000, 10000, false, false, false);
+        break;
+
+    case(19):
+
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(0, 0, 0), 2, 2, 100000000, 100000000, 0,0, false, false, true);
+        this->particle_builder->spawn_globular_cluster(40000, glm::vec3(0, 0, 0), 2, 2, 1000000, 1000000, 0,0, false, false, true);
+        // this->particle_builder->spawn_globular_cluster(20000, glm::vec3(0, 0, 0), 1000000, 5, 1, 1, -1000, 1000, false, false, true);
+        // this->particle_builder->spawn_globular_cluster(1, glm::vec3(0, 0, 0), 10,10, 10000000000, 10000000000, 0, 0, false, false, false);
+        // this->particle_builder->spawn_globular_cluster(1, glm::vec3(5000, 5000, -5000), 10,10, 10000000000, 10000000000, 0, 0, false, false, false);
+        // this->particle_builder->spawn_globular_cluster(1, glm::vec3(-5000, 5000, 5000), 10,10, 10000000000, 10000000000, 0, 0, false, false, false);
+        break;
+    case(20):
+        this->particle_builder->spawn_globular_cluster(7000, glm::vec3(10000, 0, 0), 5, 5, 10000000, 10000000, 0, 0, false, false, true);
+        this->particle_builder->spawn_globular_cluster(7000, glm::vec3(0, 10000, 0), 5, 5, 10000000, 10000000, 0, 0, false, false, true);
+        this->particle_builder->spawn_globular_cluster(7000, glm::vec3(-10000, 0, 0), 5, 5, 10000000, 10000000, 0, 0, false, false, true);
+        this->particle_builder->spawn_globular_cluster(7000, glm::vec3(0, -10000, 0), 5, 5, 10000000, 10000000, 0, 0, false, false, true);
+        break;
+
+    case(21):
+        this->particle_builder->spawn_globular_cluster(20000, glm::vec3(0, 0, 0), 100, 1000, 10000, 100000, 10000, 100000, true, false, false);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(0, 0, 0), 1, 0, 10000000, 10000000, 10000, 10000, true, false, true);
+        break;
+    
+    case(22):
+        this->particle_builder->spawn_globular_cluster(20000, glm::vec3(0, 0, 0), 1000, 10000, 100000, 1000000, 10000, 100000, true, false, false);
+
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(0, 0, 0), 1, 0, 10000000, 10000000, 0, 0, true, false, true);
+        break;
+    
+    case(23):
+        this->particle_builder->spawn_globular_cluster(10000, glm::vec3(1000, 0, 0), 1000, 10000, 1, 1, 1000, 10000, true, false, false);
+        this->particle_builder->spawn_globular_cluster(10000, glm::vec3(-1000, 0, 0), 1000, 10000, 1, 1, 1000, 10000, true, false, false);
+        this->particle_builder->spawn_globular_cluster(100, glm::vec3(0, 0, 0), 1, 0, 10000000, 10000000, 0, 0, true, false, true);
+        break;
+
+    case(24):
+        this->particle_builder->spawn_disc(20000, glm::vec3(-10000, 0, 0), 1000, 20, 100000, 1000000, 10000, 100000, true);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(-10000, 0, 0), 1, 0, 1000000, 1000000, 0, 0, true, false, true);
+
+        this->particle_builder->spawn_disc(20000, glm::vec3(10000, 0, 0), 1000, 20, 100000, 1000000, 10000, 100000, true);
+        this->particle_builder->spawn_globular_cluster(1, glm::vec3(10000, 0, 0), 1, 0, 1000000, 1000000, 0, 0, true, false, true);
+        break;
+
     default:
         break;
     }
 }
 
-bool InputParser::get_use_GPU(){
+bool InputParser::get_use_GPU()
+{
     return this->use_GPU;
 }
 
@@ -165,7 +243,8 @@ void InputParser::print_summary()
 
     std::cout << "+-------------------------------------------+" << std::endl;
     std::cout << "| Setup Summary                             |" << std::endl;
-    std::cout << "+-------------------------------------------+\n" << std::endl;
+    std::cout << "+-------------------------------------------+\n"
+              << std::endl;
 
     std::cout << "  Using GPU: " << this->use_GPU << std::endl;
     std::cout << "  Using default test: " << this->use_default_test;

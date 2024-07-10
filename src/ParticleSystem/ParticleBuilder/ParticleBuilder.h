@@ -63,6 +63,9 @@ public:
      */
     void spawn_sphere(GLuint, glm::vec3, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, bool);
 
+    
+    void spawn_disc(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat width, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity, bool is_spiral);
+
     /**
      * @brief populate vectors user inputted through the parameters using the stored particle data. Afterwards the stored particle data is resetted.
      *
@@ -96,4 +99,6 @@ private:
      *
      */
     void reset_vectors();
+
+    glm::vec3 sample_velocity(glm::vec3, glm::vec3, GLfloat, GLfloat, bool);
 };
