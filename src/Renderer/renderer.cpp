@@ -41,16 +41,15 @@ void Renderer::render()
     glfwPollEvents();
 }
 
-// TODO: Change the way to calculate FPS
 void Renderer::show_fps()
 {
     double cur_time = glfwGetTime();
     double delta_time = cur_time - this->previous_time;
-    this->previous_time = delta_time;
-    if (delta_time >= 1.0)
-    {
-        std::stringstream ss;
-        ss << "N-BODY SIMULATOR. FPS: " << (double)frame_count / delta_time << ". Time elapsed: " << cur_time;
-        glfwSetWindowTitle(this->window, ss.str().c_str());
-    }
+    this->previous_time = cur_time;
+    std::stringstream ss;
+    ss << std::fixed;
+    ss.precision(2);
+
+    ss << "N-BODY SIMULATOR. FPS: " << 1.0 / delta_time << ". Time elapsed: " << cur_time;
+    glfwSetWindowTitle(this->window, ss.str().c_str());
 }
