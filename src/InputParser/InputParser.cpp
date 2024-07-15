@@ -4,7 +4,7 @@ int TESTCASE_CAP_GPU = 25;
 GLfloat DEFAULT_TIMESTEP_SIZE = 0.001;
 GLfloat DEFAULT_GRAVITATIONAL_CONSTANT = 0.8;
 
-// TODO: Make this class less hedious. (Refractor and change this whole mess)
+// TODO: Refractor 
 
 InputParser::InputParser(ParticleBuilder *particle_builder)
 {

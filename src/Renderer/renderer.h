@@ -40,8 +40,11 @@ private:
     GLuint VAO;
     double start_time; // For calculating fps only
     double previous_time;
-    
     long frame_count;
     
+    /**
+     * @brief Update the window name to show FPS and time elapsed.
+     * 
+     */
     void show_fps();
 };

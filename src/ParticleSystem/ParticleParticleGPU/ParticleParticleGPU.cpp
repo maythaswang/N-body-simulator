@@ -8,7 +8,6 @@ void ParticleParticleGPU::next_step()
 {
     this->update_position();
 
-    // TODO: Find a way to update VBO without this whole chunk
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->particle_position_SSBO);
     glm::vec4 *rtn = static_cast<glm::vec4 *>(glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_READ_ONLY));
     glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);

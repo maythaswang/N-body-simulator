@@ -21,7 +21,9 @@ namespace ProgramInit
 
     /**
      * @brief Function for GLFW error callback
-     *
+     * @param error
+     * @param description
+     * 
      */
     void error_callback(int, const char *);
 

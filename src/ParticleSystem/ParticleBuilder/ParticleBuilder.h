@@ -66,7 +66,7 @@ public:
 
     /**
      * @brief Spawn particles on a form of disc and store it into the intermediate vector.
-     * 
+     *
      * @param n number of particles
      * @param offset offset of the center of the disc from origin
      * @param radius radius of the disc
@@ -77,7 +77,7 @@ public:
      * @param max_velocity maximum particle velocity
      * @param is_spiral set the velocity of the particles such that they all move in a spiral.
      */
-    void spawn_disc(GLuint , glm::vec3 , GLfloat , GLfloat , GLfloat , GLfloat , GLfloat , GLfloat , bool );
+    void spawn_disc(GLuint, glm::vec3, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, bool);
 
     /**
      * @brief populate vectors user inputted through the parameters using the stored particle data. Afterwards the stored particle data is resetted.
@@ -91,7 +91,13 @@ public:
      */
     bool populate_vectors(GLuint *, std::vector<glm::vec3> *, std::vector<glm::vec3> *, std::vector<glm::vec3> *, std::vector<GLfloat> *);
 
+    /**
+     * @brief provide summary string of the simulation setup
+     *
+     * @return simulation setup information
+     */
     std::string get_summary();
+
 private:
     std::vector<glm::vec3> particle_position;
     std::vector<glm::vec3> particle_velocity;
@@ -115,8 +121,22 @@ private:
      */
     void reset_vectors();
 
+    /**
+     * @brief Assign velocity to each particle based on settings 
+     *
+     * @param position vector of particle's position
+     * @param offset offset of the center of the particle cluster from origin
+     * @param min_velocity minimum particle velocity
+     * @param max_velocity maximum particle velocity
+     * @param is_spiral set the velocity of the particles such that they all move in a spiral 
+     * @return vector of particle's velocity
+     */
     glm::vec3 sample_velocity(glm::vec3, glm::vec3, GLfloat, GLfloat, bool);
 
+    /**
+     * @brief format vec3 into string (x, y ,z)
+     * 
+     * @return vec3 information in terms of string 
+     */
     std::string format_string_vec3(glm::vec3);
-
 };

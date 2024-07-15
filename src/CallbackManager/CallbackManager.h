@@ -81,6 +81,17 @@ private:
      */
     void update_camera_position();
 
+    /**
+     * @brief Set the camera status to orbiting / free
+     * 
+     * @param camera_orbiting {0: free mode, 1: orbit mode}
+     */
     void set_camera_orbiting(bool);
+
+    /**
+     * @brief Get camera orbiting status
+     * 
+     * @return 1 if camera is in orbit mode
+     */
     bool get_camera_orbiting();
 };

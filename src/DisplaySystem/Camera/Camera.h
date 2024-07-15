@@ -27,9 +27,9 @@ public:
 
     /**
      * @brief Rotate camera based on mouse drag.
-     * @param
-     * @param
-     *
+     * 
+     * @param mouse_delta_x change in x position of mouse
+     * @param mouse_delta_y change in y position of mouse
      */
     void rotate(GLfloat, GLfloat);
 
@@ -78,14 +78,14 @@ public:
     /**
      * @brief Set fovy value
      *
-     * @param fovy
+     * @param fovy field of view y 
      */
     void set_fovy(GLfloat);
 
     /**
      * @brief Set height and width value for calculating the aspect ratio.
      *
-     * @param height
+     * @param height 
      * @param width
      */
     void set_aspect(GLfloat, GLfloat);

@@ -74,9 +74,24 @@ public:
      */
     GLuint get_n_particle();
     
+    /**
+     * @brief Delete and free all components needed to be freed.
+     * 
+     */
     virtual void terminate();
 
+    /**
+     * @brief Get simulator setup log.
+     * 
+     * @return string of the details of simulator setup.
+     */
     std::string get_setup_log();
+
+    /**
+     * @brief Append information to the setup log.
+     * @param input Information string
+     * 
+     */
     void append_setup_log(std::string);
 
 // I'll just declare it all protected since it's only me working on this.
