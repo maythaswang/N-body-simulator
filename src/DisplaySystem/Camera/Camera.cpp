@@ -2,7 +2,6 @@
 #include <iostream>
 
 // TODO: Have a function for scaling sensitivity
-// TODO: Implement free-flying camera mode.
 
 Camera::Camera()
 {
@@ -51,19 +50,19 @@ void Camera::rotate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
 void Camera::zoom(GLfloat mouse_delta_y)
 {
     glm::vec3 direction = glm::normalize(this->center - this->eye);
-    GLfloat zoom_power = -mouse_delta_y * zoom_sensitivity;
+    GLfloat zoom_power = -mouse_delta_y * this->zoom_sensitivity;
 
     // Set zoom limit
-    glm::vec3 new_eye = this->eye + direction * zoom_power; 
+    glm::vec3 new_eye = this->eye + direction * zoom_power;
 
     glm::vec3 etc = this->eye - this->center;
     glm::vec3 netc = new_eye - this->center;
 
-    bool x_in_bound = etc[0] * netc[0] > 0 || !this->eye[0];
-    bool y_in_bound = etc[1] * netc[1] > 0 || !this->eye[1];
-    bool z_in_bound = etc[2] * netc[2] > 0 || !this->eye[2];
+    bool x_in_bound = (etc[0] * netc[0]) > 0 || !etc[0];
+    bool y_in_bound = (etc[1] * netc[1]) > 0 || !etc[1];
+    bool z_in_bound = (etc[2] * netc[2]) > 0 || !etc[2];
 
-    if(x_in_bound && y_in_bound && z_in_bound)
+    if (x_in_bound && y_in_bound && z_in_bound)
     {
         this->eye = new_eye;
         this->build_view_matrix();
@@ -81,6 +80,44 @@ void Camera::translate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
 
     this->eye += translation_vector;
     this->center += translation_vector;
+    this->build_view_matrix();
+}
+
+void Camera::free_forward(GLfloat mouse_delta_y)
+{
+    glm::vec3 direction = glm::normalize(this->center - this->eye);
+    GLfloat zoom_power = -mouse_delta_y * this->zoom_sensitivity;
+
+    this->eye = this->eye + direction * zoom_power;
+    this->center = this->center + direction * zoom_power;
+    this->build_view_matrix();
+}
+
+
+void Camera::free_rotate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
+{
+    glm::vec3 direction = glm::normalize(this->center - this->eye);
+    glm::vec3 right = glm::normalize(glm::cross(direction, this->up));
+    GLfloat yaw = -mouse_delta_x * rotation_sensitivity;  // along up-axis
+    GLfloat pitch = mouse_delta_y * rotation_sensitivity; // along right-axis
+    // roll: along the center-axis
+
+    if (pitch > 89.0f)
+        pitch = 89.0f;
+    if (pitch < -89.0f)
+        pitch = -89.0f;
+
+    // Rotation Matrix
+    glm::mat4 rotationYaw = glm::rotate(glm::mat4(1.0f), glm::radians(yaw), this->up);
+    glm::mat4 rotationPitch = glm::rotate(rotationYaw, glm::radians(pitch), right);
+    glm::mat3 rotation = glm::mat3(rotationPitch);
+
+    glm::vec3 eye_origin = this->eye - this->center;
+    glm::vec3 new_eye = rotation * eye_origin;
+    glm::vec3 direction_to_old =  eye_origin - new_eye;
+    
+    this->center = this->center + direction_to_old;
+    this->up = rotation * this->up;
     this->build_view_matrix();
 }
 

@@ -8,7 +8,7 @@
 
 /**
  * @brief Stores position of camera, handle camera transformations, and construct matrix to transform polygons accordingly.
- * 
+ *
  */
 class Camera
 {
@@ -27,9 +27,9 @@ public:
 
     /**
      * @brief Rotate camera based on mouse drag.
-     * @param 
      * @param
-     * 
+     * @param
+     *
      */
     void rotate(GLfloat, GLfloat);
 
@@ -38,6 +38,21 @@ public:
      * @note The translation is done in the direction of up and right only.
      */
     void translate(GLfloat, GLfloat);
+
+    /**
+     * @brief Moves the eye and center forward based on mouse drag.
+     *
+     * @param mouse_delta_y change in y position of mouse
+     */
+    void free_forward(GLfloat);
+
+    /**
+     * @brief rotate all 3 components of mvp matrix
+     *
+     * @param mouse_delta_x change in x position of mouse
+     * @param mouse_delta_y change in y position of mouse
+     */
+    void free_rotate(GLfloat mouse_delta_x, GLfloat mouse_delta_y);
 
     /**
      * @brief Set eye value

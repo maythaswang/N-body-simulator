@@ -29,6 +29,7 @@ void ParticleBuilder::spawn_random(GLuint n, glm::vec3 offset, GLfloat radius, G
     this->setup_summary.append("Random: " + std::to_string(n) + ' ' + this->format_string_vec3(offset) + ' ' + std::to_string(radius) + " (" + std::to_string(min_mass) + ", " + std::to_string(max_mass) + ") " + "(" + std::to_string(min_velocity) + ", " + std::to_string(max_velocity) + ") " + "\n");
 }
 
+// TODO: Change the way globular cluster is initialized to make it more accurate.
 void ParticleBuilder::spawn_globular_cluster(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat center_radius, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity, bool is_spiral, bool is_dense, bool outer_only)
 {
     center_radius = (center_radius == 0) ? 1 : center_radius;

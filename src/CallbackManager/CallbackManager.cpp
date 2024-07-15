@@ -2,12 +2,15 @@
 #include <StringCommon.h>
 #include <CallbackManager.h>
 
+// TODO: Implement Scroll Zoom
+
 CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, Simulator *simulator)
 {
     this->window = window;
     this->camera = camera;
     this->simulator = simulator;
     this->camera_mode = CAMERA_IDLE;
+    this->camera_orbiting = true;
 
     this->middle_mouse_down = false;
     this->left_shift_down = false;
@@ -74,13 +77,31 @@ void CallbackManager::update_camera_position()
     case CAMERA_IDLE:
         break;
     case CAMERA_ZOOM:
-        this->camera->zoom(delta_mouse_pos_y);
+        if (this->camera_orbiting)
+        {
+            this->camera->zoom(delta_mouse_pos_y);
+        }
+        else
+        {
+            this->camera->free_forward(delta_mouse_pos_y);
+        }
+
         break;
     case CAMERA_ROTATE:
-        camera->rotate(delta_mouse_pos_x, delta_mouse_pos_y);
+        if (this->camera_orbiting)
+        {
+
+            this->camera->rotate(delta_mouse_pos_x, delta_mouse_pos_y);
+        }
+        else
+        {
+            this->camera->free_rotate(delta_mouse_pos_x, delta_mouse_pos_y);
+        }
+
         break;
     case CAMERA_TRANSLATE:
         camera->translate(delta_mouse_pos_x, delta_mouse_pos_y);
+
         break;
     default:
         break;
@@ -88,6 +109,15 @@ void CallbackManager::update_camera_position()
 
     this->old_mouse_pos_x = mouse_pos_x;
     this->old_mouse_pos_y = mouse_pos_y;
+}
+
+void CallbackManager::set_camera_orbiting(bool camera_orbiting)
+{
+    this->camera_orbiting = camera_orbiting;
+}
+bool CallbackManager::get_camera_orbiting()
+{
+    return this->camera_orbiting;
 }
 
 void CallbackManager::set_cursor_position_callback()
@@ -155,5 +185,15 @@ void CallbackManager::set_keyboard_callback()
             if (key == GLFW_KEY_I && action == GLFW_PRESS){
                 std::cout << callback_manager->simulator->get_setup_log()<< std::endl;
             }
+            
+            if (key == GLFW_KEY_O && action == GLFW_PRESS){
+                bool is_orbiting = callback_manager->get_camera_orbiting();
+                callback_manager->set_camera_orbiting(!is_orbiting);
+
+                // This one checks the previous state and do the inverse 
+                std::string msg = (is_orbiting) ? "Camera is set to free flying mode." : "Camera is set to orbit mode.";
+                std::cout << msg << std::endl;
+            }
+
         } });
 }

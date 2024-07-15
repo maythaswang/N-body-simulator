@@ -6,7 +6,7 @@
 
 /**
  * @brief Handle Callbacks recieved from window, mouse, keyboards and update the components accordingly
- * 
+ *
  */
 class CallbackManager
 {
@@ -36,6 +36,8 @@ private:
     bool middle_mouse_down;
     bool left_shift_down; // for translation
     bool left_ctrl_down;  // for zoom
+
+    bool camera_orbiting;
 
     double old_mouse_pos_x;
     double old_mouse_pos_y;
@@ -78,4 +80,7 @@ private:
      *
      */
     void update_camera_position();
+
+    void set_camera_orbiting(bool);
+    bool get_camera_orbiting();
 };
