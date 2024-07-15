@@ -1,6 +1,7 @@
 #pragma once
 #include <GLcommon.h>
 #include <ParticleBuilder.h>
+#include <DefaultTestLoader.h>
 
 #include <iostream>
 #include <string>
@@ -31,7 +32,6 @@ private:
     GLfloat timestep_size;
 
     void input_YN(bool &output, std::string message);
-    void load_default_test();
     void populate_simulator();
     void manual_setup();
 
