@@ -29,17 +29,25 @@ void ParticleBuilder::spawn_random(GLuint n, glm::vec3 offset, GLfloat radius, G
     this->setup_summary.append("Random: " + std::to_string(n) + ' ' + this->format_string_vec3(offset) + ' ' + std::to_string(radius) + " (" + std::to_string(min_mass) + ", " + std::to_string(max_mass) + ") " + "(" + std::to_string(min_velocity) + ", " + std::to_string(max_velocity) + ") " + "\n");
 }
 
-// TODO: Change the way globular cluster is initialized to make it more accurate.
+// TODO: Probably need to rename param (is_dense)
 void ParticleBuilder::spawn_globular_cluster(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat center_radius, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity, bool is_spiral, bool is_dense, bool outer_only)
 {
     center_radius = (center_radius == 0) ? 1 : center_radius;
+
+    std::random_device rd; 
+    std::mt19937 gen(rd()); 
+    std::normal_distribution<float> d(0, radius); 
+    GLfloat new_radius = radius;
 
     GLfloat radius_multiplier;
     for (int i = 0; i < n; i++)
     {
         radius_multiplier = (outer_only) ? 1 : (is_dense) ? glm::linearRand(0, 1)
                                                           : random_number(0.0f, 1.0f);
-        glm::vec3 tmp_position = glm::sphericalRand(radius * radius_multiplier + center_radius) + offset;
+        if(!is_dense & !outer_only){
+            new_radius = std::abs(d(gen));
+        }
+        glm::vec3 tmp_position = glm::sphericalRand(new_radius * radius_multiplier + center_radius) + offset;
         glm::vec3 tmp_velocity = this->sample_velocity(tmp_position, offset, min_velocity, max_velocity, is_spiral);
         GLfloat tmp_mass = random_number(min_mass, max_mass);
 

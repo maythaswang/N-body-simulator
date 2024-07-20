@@ -6,6 +6,7 @@
 #include <math.h>
 #include <vector>
 #include <string>
+#include <random>
 
 /**
  * @brief Build vectors of particle data in preparation for Simulation.
