@@ -2,8 +2,6 @@
 #include <StringCommon.h>
 #include <CallbackManager.h>
 
-// TODO: Implement Scroll Zoom
-
 CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, Simulator *simulator)
 {
     this->window = window;
@@ -209,7 +207,14 @@ void CallbackManager::set_scroll_callback()
         if (callback_manager){
             if(callback_manager->camera_mode == CAMERA_IDLE)
             {
-                callback_manager->camera->zoom(-y_offset*1000);
+                if(callback_manager->camera_orbiting)
+                {
+                    callback_manager->camera->zoom(-y_offset*1000);
+                }
+                else 
+                {
+                    callback_manager->camera->free_forward(-y_offset * 1000);
+                }
             }
         } });
 }

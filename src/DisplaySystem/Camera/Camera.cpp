@@ -1,8 +1,6 @@
 #include <Camera.h>
 #include <iostream>
 
-// TODO: Have a function for scaling sensitivity
-
 Camera::Camera()
 {
     this->eye = glm::vec3(0, 0, 200.0);
@@ -17,7 +15,7 @@ Camera::Camera()
 
     this->rotation_sensitivity = 0.9;
     this->zoom_sensitivity = 1;
-    this->translation_sensitivity = 0.7;
+    this->translation_sensitivity = 0.000001;
 
     this->build_model_matrix();
     this->build_view_matrix();
@@ -71,11 +69,12 @@ void Camera::zoom(GLfloat mouse_delta_y)
 
 void Camera::translate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
 {
+    GLfloat distance = glm::dot(this->center - this->eye, this->center - this->eye);
     glm::vec3 direction = glm::normalize(this->center - this->eye);
     glm::vec3 right = glm::normalize(glm::cross(direction, this->up));
 
-    GLfloat x_translate = -mouse_delta_x * this->translation_sensitivity;
-    GLfloat y_translate = mouse_delta_y * this->translation_sensitivity;
+    GLfloat x_translate = -mouse_delta_x * this->translation_sensitivity * std::min(distance,100000000.0f);
+    GLfloat y_translate = mouse_delta_y * this->translation_sensitivity * std::min(distance,100000000.0f);
     glm::vec3 translation_vector = glm::normalize(right) * x_translate + glm::normalize(this->up) * y_translate;
 
     this->eye += translation_vector;
