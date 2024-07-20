@@ -20,6 +20,7 @@ CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, Simulator *
     this->set_window_resize_callback();
     this->set_cursor_position_callback();
     this->set_keyboard_callback();
+    this->set_scroll_callback();
 };
 
 void CallbackManager::process_input()
@@ -195,5 +196,20 @@ void CallbackManager::set_keyboard_callback()
                 std::cout << msg << std::endl;
             }
 
+        } });
+}
+
+void CallbackManager::set_scroll_callback()
+{
+    glfwSetWindowUserPointer(this->window, reinterpret_cast<void *>(this));
+
+    glfwSetScrollCallback(this->window, [](GLFWwindow *window, double x_offset, double y_offset)
+                          {
+        CallbackManager * callback_manager = reinterpret_cast<CallbackManager *> ( glfwGetWindowUserPointer ( window ));
+        if (callback_manager){
+            if(callback_manager->camera_mode == CAMERA_IDLE)
+            {
+                callback_manager->camera->zoom(-y_offset*1000);
+            }
         } });
 }

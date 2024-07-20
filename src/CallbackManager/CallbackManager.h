@@ -69,6 +69,13 @@ private:
      */
     void set_keyboard_callback();
 
+
+    /**
+     * @brief Set the mouse scroll callback
+     * 
+     */
+    void set_scroll_callback();
+
     /**
      * @brief Update the camera mode accordingly
      *
