@@ -33,10 +33,10 @@ void ParticleBuilder::spawn_globular_cluster(GLuint n, glm::vec3 offset, GLfloat
 {
     center_radius = (center_radius == 0) ? 1 : center_radius;
 
-    GLfloat new_radius = std::max(radius, 0.0001f);
+    GLfloat new_radius = std::max(radius, 0.0000001f);
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::normal_distribution<float> d(0, new_radius);
+    std::normal_distribution<float> d(0, new_radius/2);
 
     GLfloat radius_multiplier;
     for (int i = 0; i < n; i++)
@@ -123,12 +123,20 @@ glm::vec3 ParticleBuilder::sample_velocity(glm::vec3 position, glm::vec3 offset,
     return glm::vec3(random_number(min_velocity, max_velocity), random_number(min_velocity, max_velocity), random_number(min_velocity, max_velocity));
 }
 
-void ParticleBuilder::spawn_disc(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat width, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity, bool is_spiral)
+void ParticleBuilder::spawn_disc(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat width, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity, bool is_spiral, bool dense_center)
 {
+    GLfloat new_radius = std::max(radius, 0.0000001f);
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::normal_distribution<float> d(0, new_radius/2);
 
     for (int i = 0; i < n; i++)
     {
-        glm::vec2 disc_pos = glm::diskRand(radius);
+        if (dense_center)
+        {
+            new_radius = std::abs(d(gen));
+        }
+        glm::vec2 disc_pos = glm::diskRand(new_radius+ 1.0f);
         glm::vec3 tmp_position = glm::vec3(disc_pos.x, disc_pos.y, this->random_number(-width, width)) + offset;
         glm::vec3 tmp_velocity = this->sample_velocity(tmp_position, offset, min_velocity, max_velocity, is_spiral);
         GLfloat tmp_mass = random_number(min_mass, max_mass);

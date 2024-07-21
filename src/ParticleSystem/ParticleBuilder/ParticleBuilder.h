@@ -76,8 +76,9 @@ public:
      * @param min_velocity minimum particle velocity
      * @param max_velocity maximum particle velocity
      * @param is_spiral set the velocity of the particles such that they all move in a spiral.
+     * @param dense_center place particles using normal distribution about the center point of the disc
      */
-    void spawn_disc(GLuint, glm::vec3, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, bool);
+    void spawn_disc(GLuint, glm::vec3, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, bool, bool);
 
     /**
      * @brief Spawn particles on the surface of the sphere and store it into the intermediate vector.

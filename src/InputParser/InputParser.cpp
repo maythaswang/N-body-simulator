@@ -1,6 +1,6 @@
 #include <InputParser.h>
 int TESTCASE_CAP_CPU = 4;
-int TESTCASE_CAP_GPU = 28;
+int TESTCASE_CAP_GPU = 29;
 GLfloat DEFAULT_TIMESTEP_SIZE = 0.001;
 GLfloat DEFAULT_GRAVITATIONAL_CONSTANT = 0.8;
 
@@ -139,7 +139,7 @@ void InputParser::populate_disc()
     GLuint n_particle;
     GLfloat radius, width, min_mass, max_mass, min_velocity, max_velocity;
     glm::vec3 offset;
-    bool is_spiral;
+    bool is_spiral, dense_center;
 
     this->input_basic_information(&n_particle, &offset);
 
@@ -159,11 +159,11 @@ void InputParser::populate_disc()
 
     do
     {
-        std::cout << "Please set the characteristic of the disc. {0: disable, 1: enable} \n<spiral>" << std::endl;
+        std::cout << "Please set the characteristic of the disc. {0: disable, 1: enable} \n<spiral> <dense_center>" << std::endl;
         std::cout << ":" << std::flush;
         getline(std::cin, input);
-    } while (!(std::stringstream(input) >> is_spiral));
-    particle_builder->spawn_disc(n_particle, offset, radius, width, min_mass, max_mass, min_velocity, max_velocity, is_spiral);
+    } while (!(std::stringstream(input) >> is_spiral >> dense_center));
+    particle_builder->spawn_disc(n_particle, offset, radius, width, min_mass, max_mass, min_velocity, max_velocity, is_spiral, dense_center);
 }
 
 void InputParser::populate_random()
