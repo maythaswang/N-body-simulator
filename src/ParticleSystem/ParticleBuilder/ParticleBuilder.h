@@ -46,10 +46,9 @@ public:
      * @param min_velocity minimum particle velocity
      * @param max_velocity maximum particle velocity
      * @param is_spiral set the velocity of the particles such that they all move in a spiral
-     * @param is_dense increase the number of particles in the region of center_radius by a substantial amount
      * @param outer_only spawn particles only on the surface of the sphere.
      */
-    void spawn_globular_cluster(GLuint, glm::vec3, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, bool, bool, bool);
+    void spawn_globular_cluster(GLuint, glm::vec3, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, bool, bool);
 
     /**
      * @brief Spawn particles on the surface of the sphere and store it into the intermediate vector.
@@ -79,6 +78,22 @@ public:
      * @param is_spiral set the velocity of the particles such that they all move in a spiral.
      */
     void spawn_disc(GLuint, glm::vec3, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, GLfloat, bool);
+
+    /**
+     * @brief Spawn particles on the surface of the sphere and store it into the intermediate vector.
+     * @note This function exist only to support some legacy test cases. 
+     * 
+     * @param n number of particles
+     * @param offset offset of the center of the sphere from the origin.
+     * @param radius radius of the sphere.
+     * @param center_radius radius of the inner sphere
+     * @param min_mass minimum particle mass
+     * @param max_mass maximum particle mass
+     * @param min_velocity minimum particle velocity
+     * @param max_velocity maximum particle velocity
+     * @param is_spiral set the velocity of the particles such that they all move in a spiral
+     */
+    void spawn_double_sphere(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat center_radius, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity, bool is_spiral);
 
     /**
      * @brief populate vectors user inputted through the parameters using the stored particle data. Afterwards the stored particle data is resetted.

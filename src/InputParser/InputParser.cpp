@@ -1,6 +1,6 @@
 #include <InputParser.h>
 int TESTCASE_CAP_CPU = 4;
-int TESTCASE_CAP_GPU = 25;
+int TESTCASE_CAP_GPU = 28;
 GLfloat DEFAULT_TIMESTEP_SIZE = 0.001;
 GLfloat DEFAULT_GRAVITATIONAL_CONSTANT = 0.8;
 
@@ -204,7 +204,7 @@ void InputParser::populate_globular_cluster()
 
     do
     {
-        std::cout << "Please input the radius and center radius of the disc.\n<radius> <center radius>" << std::endl;
+        std::cout << "Please input the radius and center radius of the cluster.\n<radius> <center radius>" << std::endl;
         std::cout << ":" << std::flush;
         getline(std::cin, input);
     } while (!(std::stringstream(input) >> radius >> center_radius));
@@ -218,12 +218,12 @@ void InputParser::populate_globular_cluster()
 
     do
     {
-        std::cout << "Please set the characteristic of the disc. {0: disable, 1: enable} \n<spiral> <dense center>" << std::endl;
+        std::cout << "Please set the characteristic of the cluster. {0: disable, 1: enable} \n<spiral>" << std::endl;
         std::cout << ":" << std::flush;
         getline(std::cin, input);
-    } while (!(std::stringstream(input) >> is_spiral >> is_dense));
+    } while (!(std::stringstream(input) >> is_spiral));
 
-    particle_builder->spawn_globular_cluster(n_particle, offset, radius, center_radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral, is_dense, 0);
+    particle_builder->spawn_globular_cluster(n_particle, offset, radius, center_radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral, 0);
 }
 
 void InputParser::populate_sphere_surface()
@@ -238,7 +238,7 @@ void InputParser::populate_sphere_surface()
 
     do
     {
-        std::cout << "Please input the radius of the disc.\n<radius>" << std::endl;
+        std::cout << "Please input the radius of the sphere.\n<radius>" << std::endl;
         std::cout << ":" << std::flush;
         getline(std::cin, input);
     } while (!(std::stringstream(input) >> radius));
@@ -252,7 +252,7 @@ void InputParser::populate_sphere_surface()
 
     do
     {
-        std::cout << "Please set the characteristic of the disc. {0: disable, 1: enable} \n<spiral> <dense center>" << std::endl;
+        std::cout << "Please set the characteristic of the sphere. {0: disable, 1: enable} \n<spiral>" << std::endl;
         std::cout << ":" << std::flush;
         getline(std::cin, input);
     } while (!(std::stringstream(input) >> is_spiral));
