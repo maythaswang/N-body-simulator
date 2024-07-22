@@ -1,4 +1,4 @@
-Modified by: Maythas Wangcharoenwong 20240711
+Modified by: Maythas Wangcharoenwong 20240722
 # N-body-simulator
 ----------
 This project aims to Simulate interactions of N-bodies in using Particle-Particle Method implemented with `OpenGL` and `C++`. The project provides option to use either Compute Shaders written in `glsl` or simple CPU implementation.
@@ -8,7 +8,11 @@ This project aims to Simulate interactions of N-bodies in using Particle-Particl
 - Spawning cluster of bodies into shape such as discs and globular clusters.
 - Although the project does not support taking arguments yet, setups can be done after launching the program.
 
-![](media/default_24.mp4)
+![](images/default_12.gif)
+<div align="center">
+Default Test 12 
+</div>
+
 ----------
 ### Build and Run
 Simply use the scripts provided in `./QOL_Snippets` to build and run the program.
@@ -57,3 +61,21 @@ Please refer to the `"Window Controls"` when running the program.
 ----------
 ### Known Issues
 Please don't minimize the simulation screen or it will blow up. 😂
+
+----------
+### Examples 
+
+![](images/default_24.gif)
+<div align="center">
+Default Test 24 
+</div>
+
+![](images/default_25.gif)
+<div align="center">
+Default Test 25
+</div>
+
+![](images/default_30.gif)
+<div align="center">
+Default Test 30 
+</div>
