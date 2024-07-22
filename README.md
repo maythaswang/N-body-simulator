@@ -38,8 +38,8 @@ Setting up a simulation is simple, you can either use one of the pre-written def
     ```
         Default test 0-4   : Test cases for CPU based setup (~1k particles)
         Default test 5-13  : Test cases for GPU based setup (~10k particles)
-        Default test 14-22  : Test cases for GPU based setup (~20k-30k particles)
-        Default test 5-13  : Test cases for GPU based setup (~40k+ particles)
+        Default test 14-22 : Test cases for GPU based setup (~20k-30k particles)
+        Default test 23-33 : Test cases for GPU based setup (~40k+ particles)
     ```
 4. The simulation will then being in a paused state, simply press `p` to begin
 
