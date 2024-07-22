@@ -23,7 +23,7 @@ const char *SCREEN_NAME = "N-BODY-SIMULATION";
 
 void set_debug_mode(bool, bool, GLuint);
 
-// TODO: Implement visual effects (eg: bloom, particle colour based on size...)
+// TODO: Implement visual effects (eg: bloom, particle colour based on mass or stellar class...)
 
 int main(int argc, char *argv[])
 {
