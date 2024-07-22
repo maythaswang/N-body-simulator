@@ -69,11 +69,13 @@ Please don't minimize the simulation screen or it will blow up. 😂
 <div align="center">
 Default Test 24 
 </div>
+<br>
 
 ![](images/default_25.gif)
 <div align="center">
 Default Test 25
 </div>
+<br>
 
 ![](images/default_30.gif)
 <div align="center">
