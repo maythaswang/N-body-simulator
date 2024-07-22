@@ -1,10 +1,8 @@
 #include <InputParser.h>
 int TESTCASE_CAP_CPU = 4;
-int TESTCASE_CAP_GPU = 29;
+int TESTCASE_CAP_GPU = 33;
 GLfloat DEFAULT_TIMESTEP_SIZE = 0.001;
 GLfloat DEFAULT_GRAVITATIONAL_CONSTANT = 0.8;
-
-// TODO: Refractor 
 
 InputParser::InputParser(ParticleBuilder *particle_builder)
 {

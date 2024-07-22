@@ -5,8 +5,8 @@ void load_default_test(ParticleBuilder *particle_builder, int test_id)
     switch (test_id)
     {
     case (0):
-        particle_builder->spawn_double_sphere(500, glm::vec3(-550, -700, 0), 200, 25, 1000, 100000, 10, 1000, false);
-        particle_builder->spawn_double_sphere(500, glm::vec3(470, 650, 0), 200, 25, 1000, 100000, 10, 1000, false);
+        particle_builder->spawn_globular_cluster(500, glm::vec3(-550, -700, 0), 200, 25, 1000, 100000, 10, 1000, false, false);
+        particle_builder->spawn_globular_cluster(500, glm::vec3(470, 650, 0), 200, 25, 1000, 100000, 10, 1000, false, false);
         break;
 
     case (1):
@@ -14,7 +14,7 @@ void load_default_test(ParticleBuilder *particle_builder, int test_id)
         break;
 
     case (2):
-        particle_builder->spawn_double_sphere(1000, glm::vec3(0, 0, 0), 700, 50, 1000, 100000, -1000, 1000, false);
+        particle_builder->spawn_sphere(1000, glm::vec3(0, 0, 0), 750, 1000, 100000, -1000, 1000, false);
         break;
 
     case (3):
@@ -38,7 +38,7 @@ void load_default_test(ParticleBuilder *particle_builder, int test_id)
         break;
 
     case (8):
-        particle_builder->spawn_globular_cluster(10000, glm::vec3(0, 0, 0), 50000, 50, 1000, 100000, -100, 100, false, true);
+        particle_builder->spawn_globular_cluster(10000, glm::vec3(0, 0, 0), 50000, 50, 1000, 100000, -10000, 10000, false, false);
         break;
 
     case (9):
@@ -100,18 +100,17 @@ void load_default_test(ParticleBuilder *particle_builder, int test_id)
         break;
 
     case (15):
-        particle_builder->spawn_sphere(29999, glm::vec3(0, 0, 0), 35, 0, 0, -1000, 1000, false);
-        particle_builder->spawn_globular_cluster(1, glm::vec3(500, 500, 500), 1, 0, 10000000, 10000000, -1000, 1000, false, false);
-        particle_builder->spawn_globular_cluster(1, glm::vec3(-500, 500, 500), 1, 0, 10000000, 10000000, -1000, 1000, false, false);
-        particle_builder->spawn_globular_cluster(1, glm::vec3(-500, -500, -500), 1, 0, 10000000, 10000000, -1000, 1000, false, false);
-        particle_builder->spawn_globular_cluster(1, glm::vec3(500, -500, -500), 1, 0, 10000000, 10000000, -1000, 1000, false, false);
+        particle_builder->spawn_globular_cluster(20000, glm::vec3(0, 0, 0), 100, 1000, 10000, 100000, 10000, 100000, true, false);
+        particle_builder->spawn_sphere(1, glm::vec3(0, 0, 0), 1, 10000000, 10000000, 10000, 10000, true);
         break;
+
     case (16):
         particle_builder->spawn_sphere(20000, glm::vec3(0, 0, 0), 35, 0, 0, -1000, 1000, false);
         particle_builder->spawn_globular_cluster(200, glm::vec3(5000, 5000, 5000), 1, 0, 10000000, 10000000, -1000, 1000, false, false);
         particle_builder->spawn_globular_cluster(200, glm::vec3(-5000, -5000, -5000), 1, 0, 10000000, 10000000, -1000, 1000, false, false);
         particle_builder->spawn_globular_cluster(200, glm::vec3(-5000, 5000, -5000), 1, 0, 10000000, 10000000, -1000, 1000, false, false);
         break;
+
     case (17):
         particle_builder->spawn_sphere(20000, glm::vec3(0, 0, 0), 35, 1, 1, -1000, 1000, false);
         particle_builder->spawn_globular_cluster(1, glm::vec3(5000, 5000, 5000), 10000, 0, 100000000, 100000000, -10000, 10000, false, false);
@@ -122,6 +121,7 @@ void load_default_test(ParticleBuilder *particle_builder, int test_id)
         particle_builder->spawn_globular_cluster(1, glm::vec3(5000, -5000, -5000), 10000, 0, 100000000, 100000000, -10000, 10000, false, false);
         particle_builder->spawn_globular_cluster(1, glm::vec3(-5000, -5000, -5000), 10000, 0, 100000000, 100000000, -10000, 10000, false, false);
         break;
+
     case (18):
         particle_builder->spawn_sphere(20000, glm::vec3(0, 0, 0), 15, 1, 1, -1000, 1000, false);
         particle_builder->spawn_globular_cluster(1, glm::vec3(5000, 5000, 5000), 10000, 0, 1000000000, 1000000000, -10000, -10000, false, false);
@@ -135,32 +135,34 @@ void load_default_test(ParticleBuilder *particle_builder, int test_id)
         break;
 
     case (19):
-        particle_builder->spawn_sphere(1, glm::vec3(0, 0, 0), 4, 100000000, 100000000, 0, 0, false);
-        particle_builder->spawn_sphere(40000, glm::vec3(0, 0, 0), 4, 1000000, 1000000, 0, 0, false);
+        particle_builder->spawn_globular_cluster(10000, glm::vec3(1000, 0, 0), 1000, 10000, 1, 1, 1000, 10000, true, false);
+        particle_builder->spawn_globular_cluster(10000, glm::vec3(-1000, 0, 0), 1000, 10000, 1, 1, 1000, 10000, true, false);
+        particle_builder->spawn_sphere(100, glm::vec3(0, 0, 0), 1, 10000000, 10000000, 0, 0, true);
         break;
 
     case (20):
+        particle_builder->spawn_globular_cluster(20000, glm::vec3(0, 0, 0), 1000, 10000, 100000, 1000000, 10000, 100000, true, false);
+        particle_builder->spawn_sphere(1, glm::vec3(0, 0, 0), 1, 10000000, 10000000, 0, 0, true);
+        break;
+
+    case (21):
         particle_builder->spawn_sphere(7000, glm::vec3(10000, 0, 0), 10, 10000000, 10000000, 0, 0, false);
         particle_builder->spawn_sphere(7000, glm::vec3(0, 10000, 0), 10, 10000000, 10000000, 0, 0, false);
         particle_builder->spawn_sphere(7000, glm::vec3(-10000, 0, 0), 10, 10000000, 10000000, 0, 0, false);
         particle_builder->spawn_sphere(7000, glm::vec3(0, -10000, 0), 10, 10000000, 10000000, 0, 0, false);
         break;
 
-    case (21):
-        particle_builder->spawn_globular_cluster(20000, glm::vec3(0, 0, 0), 100, 1000, 10000, 100000, 10000, 100000, true, false);
-        particle_builder->spawn_sphere(1, glm::vec3(0, 0, 0), 1, 10000000, 10000000, 10000, 10000, true);
-        break;
-
     case (22):
-        particle_builder->spawn_globular_cluster(20000, glm::vec3(0, 0, 0), 1000, 10000, 100000, 1000000, 10000, 100000, true, false);
-
-        particle_builder->spawn_sphere(1, glm::vec3(0, 0, 0), 1, 10000000, 10000000, 0, 0, true);
+        particle_builder->spawn_sphere(29999, glm::vec3(0, 0, 0), 35, 0, 0, -1000, 1000, false);
+        particle_builder->spawn_globular_cluster(1, glm::vec3(500, 500, 500), 1, 0, 10000000, 10000000, -1000, 1000, false, false);
+        particle_builder->spawn_globular_cluster(1, glm::vec3(-500, 500, 500), 1, 0, 10000000, 10000000, -1000, 1000, false, false);
+        particle_builder->spawn_globular_cluster(1, glm::vec3(-500, -500, -500), 1, 0, 10000000, 10000000, -1000, 1000, false, false);
+        particle_builder->spawn_globular_cluster(1, glm::vec3(500, -500, -500), 1, 0, 10000000, 10000000, -1000, 1000, false, false);
         break;
 
     case (23):
-        particle_builder->spawn_globular_cluster(10000, glm::vec3(1000, 0, 0), 1000, 10000, 1, 1, 1000, 10000, true, false);
-        particle_builder->spawn_globular_cluster(10000, glm::vec3(-1000, 0, 0), 1000, 10000, 1, 1, 1000, 10000, true, false);
-        particle_builder->spawn_sphere(100, glm::vec3(0, 0, 0), 1, 10000000, 10000000, 0, 0, true);
+        particle_builder->spawn_sphere(1, glm::vec3(0, 0, 0), 4, 100000000, 100000000, 0, 0, false);
+        particle_builder->spawn_sphere(40000, glm::vec3(0, 0, 0), 4, 1000000, 1000000, 0, 0, false);
         break;
 
     case (24):
@@ -187,31 +189,37 @@ void load_default_test(ParticleBuilder *particle_builder, int test_id)
         break;
 
     case 28:
-        // particle_builder->spawn_disc(40000, glm::vec3(0.0f), 100000, 100, 10000, 100000, 100000, 200000, true);
-        // particle_builder->spawn_globular_cluster(100, glm::vec3(0.0f), 1000, 10, 100000000, 1000000000, 10000, 100000, true, false, false);
-
-        // particle_builder->spawn_disc(20000, glm::vec3(-200000,-1000, 0), 100000, 1000, 10000, 100000, 100000, 200000, true);
-        // particle_builder->spawn_globular_cluster(100, glm::vec3(-200000,0, 0), 1000, 10, 100000000, 1000000000, 10000, 100000, true, false, false);
-        // particle_builder->spawn_disc(20000, glm::vec3(200000,1000,0), 100000, 1000, 10000, 100000, 100000, 200000, true);
-        // particle_builder->spawn_globular_cluster(100, glm::vec3(200000,0,0), 1000, 10, 100000000, 1000000000, 10000, 100000, true, false, false);
-
         particle_builder->spawn_disc(40000, glm::vec3(0.0f), 50000, 1000, 10000, 100000, 200000, 300000, true, false);
-        // particle_builder->spawn_globular_cluster(3, glm::vec3(100000,-5000,0), 1000, 10, 1000000000, 5000000000, 10000, 100000, true, false, false);
         particle_builder->spawn_globular_cluster(100, glm::vec3(0, 0, 0), 1000, 10, 100000000, 1000000000, 10000, 100000, true, false);
-
-        // particle_builder->spawn_disc(30000, glm::vec3(0.0f), 100, 100000, 10000, 100000, 100000, 500000, true);
-        // particle_builder->spawn_disc(10000, glm::vec3(0.0f), 100000, 10, 10000, 100000, 10000, 100000, true);
-        // particle_builder->spawn_globular_cluster(100, glm::vec3(0,0,0), 1000, 10, 10000000, 100000000, 10000, 100000, true, false, false);
-
-        // particle_builder->spawn_disc(10000, glm::vec3(0,-200000, 0), 100, 1000000, 100000000, 100000000, 100000, 500000, true);
-        // particle_builder->spawn_disc(20000, glm::vec3(0,0,0), 100, 1000000, 10000, 100000, 100000, 500000, true);
-        // particle_builder->spawn_disc(10000, glm::vec3(0,200000,0), 100, 1000000, 10000, 100000000, 100000, 500000, true);
-
         break;
 
     case 29:
         particle_builder->spawn_disc(40000, glm::vec3(0.0f), 50000, 1000, 10000, 100000, 200000, 300000, true, true);
         particle_builder->spawn_globular_cluster(100, glm::vec3(0, 0, 0), 1000, 10, 100000000, 1000000000, 10000, 100000, true, false);
+        break;
+
+    case 30:
+        particle_builder->spawn_disc(40000, glm::vec3(0.0f), 100000, 100, 10000, 100000, 100000, 200000, true, false);
+        particle_builder->spawn_globular_cluster(100, glm::vec3(0.0f), 1000, 10, 100000000, 1000000000, 10000, 100000, true, false);
+        break;
+
+    case 31:
+        particle_builder->spawn_disc(30000, glm::vec3(0.0f), 100, 100000, 10000, 100000, 100000, 500000, true, false);
+        particle_builder->spawn_disc(10000, glm::vec3(0.0f), 100000, 10, 10000, 100000, 10000, 100000, true, false);
+        particle_builder->spawn_globular_cluster(100, glm::vec3(0, 0, 0), 1000, 10, 10000000, 100000000, 10000, 100000, true, false);
+        break;
+
+    case 32:
+        particle_builder->spawn_disc(20000, glm::vec3(-200000, -1000, 0), 100000, 1000, 10000, 100000, 100000, 200000, true, false);
+        particle_builder->spawn_globular_cluster(100, glm::vec3(-200000, 0, 0), 1000, 10, 100000000, 1000000000, 10000, 100000, true, false);
+        particle_builder->spawn_disc(20000, glm::vec3(200000, 1000, 0), 100000, 1000, 10000, 100000, 100000, 200000, true, false);
+        particle_builder->spawn_globular_cluster(100, glm::vec3(200000, 0, 0), 1000, 10, 100000000, 1000000000, 10000, 100000, true, false);
+        break;
+
+    case 33:
+        particle_builder->spawn_disc(10000, glm::vec3(0, -200000, 0), 100, 1000000, 100000000, 100000000, 100000, 500000, true, false);
+        particle_builder->spawn_disc(20000, glm::vec3(0, 0, 0), 100, 1000000, 10000, 100000, 100000, 500000, true, false);
+        particle_builder->spawn_disc(10000, glm::vec3(0, 200000, 0), 100, 1000000, 10000, 100000000, 100000, 500000, true, false);
         break;
 
     default:
