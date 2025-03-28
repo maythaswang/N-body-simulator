@@ -24,6 +24,7 @@ public:
 
     /**
      * @brief Initialize VAO and VBO with the particle informations
+     * @warning DEPRECATE SOON IN FAVOR OF MOVING TO USING PURE SSBO
      * @param VAO Vertex Array Object pointer 
      * @param VBO Vertex Buffer Object pointer
      */
@@ -37,7 +38,7 @@ public:
      * @param previous_acceleration vector of particle acceleration in the previous step.
      * @param mass vector of particle mass
      */
-    virtual void load_particles(GLuint, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<GLfloat>);
+    virtual void load_particles(GLuint, std::vector<glm::vec4>, std::vector<glm::vec4>, std::vector<glm::vec4>, std::vector<GLfloat>);
 
     /**
      * @brief Get the running state object
@@ -96,16 +97,22 @@ public:
 
 // I'll just declare it all protected since it's only me working on this.
 protected:
-    std::vector<glm::vec3> particle_position;
-    std::vector<glm::vec3> particle_velocity;
-    std::vector<glm::vec3> particle_acceleration;
-    std::vector<glm::vec3> particle_previous_acceleration;
+    // Particle data
+    std::vector<glm::vec4> particle_position;
+    std::vector<glm::vec4> particle_velocity;
+    std::vector<glm::vec4> particle_previous_acceleration;
     std::vector<GLfloat> particle_mass;
+
+    // Simulation variables
     GLfloat gravitational_constant;
     GLfloat softening_factor;
     GLfloat timestep_size;
     GLuint n_particle;
+
+    // log
     GLuint current_step;
+
+    // Bufs
     GLuint *VAO;
     GLuint *VBO;
     
