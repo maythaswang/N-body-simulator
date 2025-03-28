@@ -108,6 +108,11 @@ protected:
     GLuint current_step;
     GLuint *VAO;
     GLuint *VBO;
+    
+    // SSBO for color and position
+    GLuint *particle_position_SSBO; 
+    GLuint *particle_mass_SSBO; 
+    
     SimulatorIntegrator integrator;
     
     std::string setup_log;

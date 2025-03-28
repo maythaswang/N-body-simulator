@@ -65,22 +65,22 @@ void ParticleParticleGPU::init_SSBOs()
 {
     glGenBuffers(1, &this->particle_position_SSBO);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->particle_position_SSBO);
-    glBufferData(GL_SHADER_STORAGE_BUFFER, this->n_particle * 4 * sizeof(GLfloat), &this->particle_pos_vec4[0], GL_DYNAMIC_COPY);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, this->n_particle * 4 * sizeof(GLfloat), &this->particle_pos_vec4[0], GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, this->particle_position_SSBO);
 
     glGenBuffers(1, &this->particle_velocity_SSBO);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->particle_velocity_SSBO);
-    glBufferData(GL_SHADER_STORAGE_BUFFER, this->n_particle * 4 * sizeof(GLfloat), &this->particle_vel_vec4[0], GL_DYNAMIC_COPY);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, this->n_particle * 4 * sizeof(GLfloat), &this->particle_vel_vec4[0], GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, this->particle_velocity_SSBO);
 
     glGenBuffers(1, &this->particle_previous_acceleration_SSBO);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->particle_previous_acceleration_SSBO);
-    glBufferData(GL_SHADER_STORAGE_BUFFER, this->n_particle * 4 * sizeof(GLfloat), &this->particle_acc_vec4[0], GL_DYNAMIC_COPY);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, this->n_particle * 4 * sizeof(GLfloat), &this->particle_acc_vec4[0], GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, this->particle_previous_acceleration_SSBO);
 
     glGenBuffers(1, &this->particle_mass_SSBO);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->particle_mass_SSBO);
-    glBufferData(GL_SHADER_STORAGE_BUFFER, this->n_particle * 1 * sizeof(GLfloat), &this->particle_mass[0], GL_DYNAMIC_COPY);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, this->n_particle * 1 * sizeof(GLfloat), &this->particle_mass[0], GL_DYNAMIC_DRAW);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, this->particle_mass_SSBO);
 
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
