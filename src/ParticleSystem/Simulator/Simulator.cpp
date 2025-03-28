@@ -35,6 +35,7 @@ void Simulator::next_step()
 
 glm::vec3 Simulator::calculate_acceleration(uint32_t current, uint32_t other)
 {
+    // Do nothing
     return glm::vec3(0.0f);
 }
 
@@ -66,7 +67,7 @@ void Simulator::initialize_particles(GLuint *VAO, GLuint *VBO)
     this->VBO = VBO;
 }
 
-void Simulator::load_particles(GLuint n, std::vector<glm::vec3> position, std::vector<glm::vec3> velocity, std::vector<glm::vec3> previous_acceleration, std::vector<GLfloat> mass)
+void Simulator::load_particles(GLuint n, std::vector<glm::vec4> position, std::vector<glm::vec4> velocity, std::vector<glm::vec4> previous_acceleration, std::vector<GLfloat> mass)
 {
     this->n_particle = n;
     this->particle_position = position;
@@ -74,6 +75,7 @@ void Simulator::load_particles(GLuint n, std::vector<glm::vec3> position, std::v
     this->particle_previous_acceleration = previous_acceleration;
     this->particle_mass = mass;
 
+    // TODO: Move this to ParticleParticleCPU (call super then do this)
     this->particle_acceleration.resize(this->n_particle);
 }
 
