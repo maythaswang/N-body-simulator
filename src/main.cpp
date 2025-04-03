@@ -11,7 +11,7 @@
 
 #include <Renderer.h>
 #include <StringCommon.h>
-// #include <ParticleParticleCPU.h>
+#include <ParticleParticleCPU.h>
 #include <ParticleParticleGPU.h>
 #include <InputParser.h>
 
@@ -91,28 +91,28 @@ int main(int argc, char *argv[])
 	GLuint VAO, VBO;
 	Simulator *simulator;
 
-	// TODO: REMOVE THIS LATER 
+	// TODO: REMOVE THIS LATER
 	dummy_VAO(&VAO);
 
 	SimulatorIntegrator integrator = (input_parser.get_use_velocity_verlet()) ? INTEGRATOR_VELOCITY_VERLET : INTEGRATOR_EULER;
 	GLfloat gravitational_constant = input_parser.get_gravitational_constant();
 	GLfloat timestep_size = input_parser.get_timestep_size();
 
-	// WARNING: DISABLE CPU IMPLEMENTATION FORNOW
-	// if (!input_parser.get_use_GPU())
-	// {
-	// 	ParticleParticleCPU simulator_CPU = ParticleParticleCPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
-	// 	simulator = &simulator_CPU;
-	// }
-	// else
-	// {
-	ParticleParticleGPU simulator_GPU = ParticleParticleGPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
-	simulator = &simulator_GPU;
-	// }
+	// TODO: CHANGE THIS TO SMART POINTER LATER ON 
+	if (!input_parser.get_use_GPU())
+	{
+		// ParticleParticleCPU simulator_CPU = ParticleParticleCPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
+		simulator = new ParticleParticleCPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
+	}
+	else
+	{
+		ParticleParticleGPU simulator_GPU = ParticleParticleGPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
+		simulator = new ParticleParticleGPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
+		// simulator = &simulator_GPU;
+	}
 
 	simulator->load_particles(n_particles, particle_position, particle_velocity, particle_acceleration, particle_mass);
 	// simulator->initialize_particles(&VAO, &VBO);
-
 	// This is just here for setting up the logs  (we will do it such that the same input can be import/ export later)
 	simulator->append_setup_log(setup_log_head);
 	simulator->append_setup_log(setup_log_input);
@@ -143,6 +143,7 @@ int main(int argc, char *argv[])
 	// glDeleteBuffers(1, &VBO);
 	shader_program.delete_shader();
 	simulator->terminate();
+	delete simulator;
 	glfwTerminate();
 	return 0;
 }
