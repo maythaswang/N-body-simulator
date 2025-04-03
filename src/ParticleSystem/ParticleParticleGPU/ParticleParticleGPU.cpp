@@ -41,8 +41,17 @@ void ParticleParticleGPU::update_position()
 void ParticleParticleGPU::load_particles(GLuint n, std::vector<glm::vec4> position, std::vector<glm::vec4> velocity, std::vector<glm::vec4> previous_acceleration, std::vector<GLfloat> mass)
 {
     this->n_particle = n;
+
+    // Resize vector
+    this->particle_position.resize(n);
+    this->particle_velocity.resize(n);
+    this->particle_previous_acceleration.resize(n);
+    this->particle_mass.resize(n);
+
     // this->particle_position = position;
     std::copy(position.begin(), position.end(), this->particle_position.begin());
+
+    std::cout << position[0].b << std::endl;
     std::copy(velocity.begin(), velocity.end(), this->particle_velocity.begin());
     std::copy(previous_acceleration.begin(), previous_acceleration.end(), this->particle_previous_acceleration.begin());
     std::copy(mass.begin(), mass.end(), this->particle_mass.begin());
@@ -53,7 +62,6 @@ void ParticleParticleGPU::load_particles(GLuint n, std::vector<glm::vec4> positi
     // this->particle_mass = mass;
 
     this->n_work_groups = (GLuint)std::ceil(((GLfloat)this->n_particle) / 64);
-
     this->init_compute_shader();
     this->init_SSBOs();
 }

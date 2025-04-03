@@ -113,7 +113,6 @@ int main(int argc, char *argv[])
 	simulator->append_setup_log(setup_log_particle);
 	simulator->append_setup_log("\n--------------------------------------------------\n\n");
 
-
 	CallbackManager callback_manager = CallbackManager(window, &camera, simulator);
 	Renderer renderer = Renderer(&callback_manager, window, &shader_program, &camera, simulator, VAO);
 
