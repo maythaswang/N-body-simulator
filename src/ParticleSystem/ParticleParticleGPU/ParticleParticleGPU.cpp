@@ -124,4 +124,8 @@ void ParticleParticleGPU::init_compute_shader()
 void ParticleParticleGPU::terminate()
 {
     this->compute_shader_program.delete_shader();
+    glDeleteBuffers(1, &this->particle_mass_SSBO);
+    glDeleteBuffers(1, &this->particle_position_SSBO);
+    glDeleteBuffers(1, &this->particle_previous_acceleration_SSBO);
+    glDeleteBuffers(1, &this->particle_velocity_SSBO);
 }
