@@ -47,4 +47,7 @@ private:
      * 
      */
     void show_fps();
+
+
+    void post_processing();
 };

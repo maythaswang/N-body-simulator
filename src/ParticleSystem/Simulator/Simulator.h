@@ -28,7 +28,7 @@ public:
      * @param VAO Vertex Array Object pointer 
      * @param VBO Vertex Buffer Object pointer
      */
-    void initialize_particles(GLuint *, GLuint *);
+    // void initialize_particles(GLuint *, GLuint *);
 
     /**
      * @brief Load particles information from the input vector into the simulation.
@@ -113,8 +113,8 @@ protected:
     GLuint current_step;
 
     // Bufs (TODO: Deprecate)
-    GLuint *VAO;
-    GLuint *VBO;
+    // GLuint *VAO;
+    // GLuint *VBO;
     
     // SSBO for postion and mass (This will govern the postion of each instance and its color:mass)
     GLuint particle_position_SSBO; 

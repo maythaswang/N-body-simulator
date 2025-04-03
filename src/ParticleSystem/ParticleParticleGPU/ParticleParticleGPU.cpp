@@ -17,8 +17,8 @@ void ParticleParticleGPU::fetch_data()
     glm::vec4 *rtn = static_cast<glm::vec4 *>(glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_READ_ONLY));
     glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
     this->update_position_vector(rtn);
-    glBindBuffer(GL_ARRAY_BUFFER, *VBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * this->n_particle * 3, &this->particle_position[0]);
+    // glBindBuffer(GL_ARRAY_BUFFER, *VBO);
+    // glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * this->n_particle * 3, &this->particle_position[0]);
 }
 
 // We're going to deprecate this soon

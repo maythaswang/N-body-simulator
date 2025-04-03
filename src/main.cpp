@@ -23,6 +23,8 @@ const char *SCREEN_NAME = "N-BODY-SIMULATION";
 
 void set_debug_mode(bool, bool, GLuint);
 
+void dummy_VAO(GLuint *VAO);
+
 // TODO: Implement visual effects (eg: bloom, particle colour based on mass or stellar class...)
 
 int main(int argc, char *argv[])
@@ -58,7 +60,7 @@ int main(int argc, char *argv[])
 
 	Shader shader_program = Shader();
 
-	//TODO: Bake the shaders in.
+	// TODO: Bake the shaders in.
 
 	// The dir depends on where you call it so if you call it from root, do it as if the current working directory is in root.
 	GLuint vertex_shader = shader_program.compile_shader("./shader_source/light.vert.glsl", GL_VERTEX_SHADER);
@@ -83,11 +85,14 @@ int main(int argc, char *argv[])
 	}
 
 	// Storing particle information
-    GLuint particle_position_SSBO, particle_mass_SSBO; 
+	GLuint particle_position_SSBO, particle_mass_SSBO;
 
 	// TODO: Use this buffer to store the mesh information for instancing instead.
 	GLuint VAO, VBO;
 	Simulator *simulator;
+
+	// TODO: REMOVE THIS LATER 
+	dummy_VAO(&VAO);
 
 	SimulatorIntegrator integrator = (input_parser.get_use_velocity_verlet()) ? INTEGRATOR_VELOCITY_VERLET : INTEGRATOR_EULER;
 	GLfloat gravitational_constant = input_parser.get_gravitational_constant();
@@ -101,13 +106,14 @@ int main(int argc, char *argv[])
 	// }
 	// else
 	// {
-		ParticleParticleGPU simulator_GPU = ParticleParticleGPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
-		simulator = &simulator_GPU;
+	ParticleParticleGPU simulator_GPU = ParticleParticleGPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
+	simulator = &simulator_GPU;
 	// }
 
 	simulator->load_particles(n_particles, particle_position, particle_velocity, particle_acceleration, particle_mass);
-	simulator->initialize_particles(&VAO, &VBO);
+	// simulator->initialize_particles(&VAO, &VBO);
 
+	// This is just here for setting up the logs  (we will do it such that the same input can be import/ export later)
 	simulator->append_setup_log(setup_log_head);
 	simulator->append_setup_log(setup_log_input);
 	simulator->append_setup_log(setup_log_particle);
@@ -118,7 +124,7 @@ int main(int argc, char *argv[])
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
-	
+
 	// set_debug_mode(0,1,2);
 	std::cout << simulator->get_setup_log() << std::endl;
 	std::cout << g_controls_help << std::endl;
@@ -133,12 +139,31 @@ int main(int argc, char *argv[])
 
 	std::cout << "Terminating..." << std::endl;
 
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
+	// glDeleteVertexArrays(1, &VAO);
+	// glDeleteBuffers(1, &VBO);
 	shader_program.delete_shader();
 	simulator->terminate();
 	glfwTerminate();
 	return 0;
+}
+
+// TODO: REMOVE THIS
+void dummy_VAO(GLuint *VAO)
+{
+	glGenVertexArrays(1, VAO);
+	// glGenBuffers(1, VBO);
+
+	glBindVertexArray(*VAO);
+	// glBindBuffer(GL_ARRAY_BUFFER, *VBO);
+	// glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * this->n_particle * 4, &this->particle_position[0], GL_DYNAMIC_DRAW);
+
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void *)0);
+	glEnableVertexAttribArray(0);
+
+	// glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+	// this->VAO = VAO;
+	// this->VBO = VBO;
 }
 
 void set_debug_mode(bool wireframe_on, bool point_size_on, GLuint point_size)
