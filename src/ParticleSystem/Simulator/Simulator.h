@@ -112,7 +112,7 @@ protected:
     // log
     GLuint current_step;
 
-    // Bufs
+    // Bufs (TODO: Deprecate)
     GLuint *VAO;
     GLuint *VBO;
     
@@ -137,17 +137,7 @@ protected:
      */
     Simulator(GLfloat, GLfloat, GLfloat, GLfloat, SimulatorIntegrator);
 
-    /**
-     * @brief Calculate acceleration between the two particles
-     *
-     * @note F = Gmm/r^2 * -r/||r||, F = ma
-     * @note ma = Gmm/r^2 * -r/||r||
-     * @note a = G ∑ m/r^2 * -r/||r||
-     * @param current
-     * @param other
-     * @return acceleration of the particle "current" based on force being exerted from the particle "other"
-     */
-    virtual glm::vec3 calculate_acceleration(uint32_t, uint32_t);
+
 
     /**
      * @brief Update the position of each particle using semi-implicit euler method as the integrator
