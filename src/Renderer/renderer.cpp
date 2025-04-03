@@ -2,18 +2,21 @@
 #include <iostream>
 #include <sstream>
 
-Renderer::Renderer(CallbackManager *callback_manager, GLFWwindow *window, Shader *shader_program, Camera *camera, Simulator *simulator, GLuint VAO)
+Renderer::Renderer(CallbackManager *callback_manager, GLFWwindow *window, Shader *shader_program, Camera *camera, Simulator *simulator, RenderComponents *render_components)
 {
     this->window = window;
     this->shader_program = shader_program;
     this->camera = camera;
     this->simulator = simulator;
     this->callback_manager = callback_manager;
-    this->VAO = VAO;
+    this->render_components = render_components;
 
     this->frame_count = 0;
     this->start_time = glfwGetTime();
     this->previous_time = this->start_time;
+
+    // Configuration
+    this->use_instancing = true; // TODO: We have no handler for this yet
 }
 
 void Renderer::render()
@@ -30,9 +33,18 @@ void Renderer::render()
     this->shader_program->use();
     this->shader_program->set_mat4("modelview", this->camera->get_view_matrix() * this->camera->get_model_matrix());
     this->shader_program->set_mat4("projection", this->camera->get_projection_matrix());
+    this->shader_program->set_bool("use_instancing", this->use_instancing);
 
-    glBindVertexArray(this->VAO);
-    glDrawArrays(GL_POINTS, 0, this->simulator->get_n_particle());
+    glBindVertexArray(this->render_components->VAO);
+    if (!this->use_instancing)
+    {
+        glDrawArrays(GL_POINTS, 0, this->simulator->get_n_particle());
+    }
+    else
+    {
+        glDrawElementsInstanced(GL_TRIANGLES, 3 * this->render_components->n_inds, GL_UNSIGNED_INT, (void *)0, this->simulator->get_n_particle());
+        // glDrawArraysInstanced(GL_TRIANGLES, 0, this->render_components->n_inds, this->simulator->get_n_particle()); // This created some insane stuff (I like it but it gotta go)
+    }
 
     // Post processing
     this->post_processing();
@@ -64,6 +76,7 @@ void Renderer::show_fps()
 }
 
 // Post processing stage
-void Renderer::post_processing(){
+void Renderer::post_processing()
+{
     // TODO: do bloom or sth here
 }

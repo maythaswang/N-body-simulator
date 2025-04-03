@@ -65,8 +65,12 @@ RenderComponents MeshBuilder::build_sphere(GLfloat radius, GLfloat sector_count,
             }
         }
     }
+
+    render_components.n_vert = vertices.size();
+    render_components.n_inds = indices.size();
+
     this->build_render_components(&render_components, vertices, indices);
-    
+
     return render_components;
     // this->generate_sphere_indices(&mesh, sector_count, stack_count);
     // return mesh;
@@ -84,12 +88,12 @@ void MeshBuilder::build_render_components(RenderComponents *render_components, s
 
     // VBO
     glBindBuffer(GL_ARRAY_BUFFER, render_components->VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * vertices.size() * 3, &vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * render_components->n_vert * 3, &vertices[0], GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void *)0);
 
     // EBO
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, render_components->EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * indices.size() * 3, &indices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * render_components->n_inds * 3, &indices[0], GL_STATIC_DRAW);
 
     // Unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0);
