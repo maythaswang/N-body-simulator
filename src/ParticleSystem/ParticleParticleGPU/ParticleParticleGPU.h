@@ -11,7 +11,7 @@ private:
     // Buffer Objects
     // GLuint particle_position_SSBO;
     GLuint particle_velocity_SSBO;
-    GLuint particle_acceleration_SSBO;
+    // GLuint particle_acceleration_SSBO;
     GLuint particle_previous_acceleration_SSBO;
     // GLuint particle_mass_SSBO;
 
