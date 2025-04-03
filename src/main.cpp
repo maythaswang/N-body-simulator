@@ -14,6 +14,7 @@
 #include <ParticleParticleCPU.h>
 #include <ParticleParticleGPU.h>
 #include <InputParser.h>
+#include <MeshBuilder.h>
 
 // For initialization
 const unsigned int SCREEN_WIDTH = 640;
@@ -24,8 +25,10 @@ const char *SCREEN_NAME = "N-BODY-SIMULATION";
 void set_debug_mode(bool, bool, GLuint);
 
 void dummy_VAO(GLuint *VAO);
+void build_mesh(GLuint *VAO, GLuint *VBO); // For instancing
+void terminate(RenderComponents *render_components);
 
-// TODO: Implement visual effects (eg: bloom, particle colour based on mass or stellar class...)
+// TODO: Implement visual effects (eg: bloom, particle colour and scale based on mass or stellar class...)
 
 int main(int argc, char *argv[])
 {
@@ -88,17 +91,21 @@ int main(int argc, char *argv[])
 	GLuint particle_position_SSBO, particle_mass_SSBO;
 
 	// TODO: Use this buffer to store the mesh information for instancing instead.
-	GLuint VAO, VBO;
+	// GLuint VAO, VBO;
 	Simulator *simulator;
 
+	// RenderComponents render_components;
+	MeshBuilder mesh_builder;
+	RenderComponents render_components = mesh_builder.build_sphere(500, 32, 9);
+
 	// TODO: REMOVE THIS LATER
-	dummy_VAO(&VAO);
+	// dummy_VAO(&VAO);
 
 	SimulatorIntegrator integrator = (input_parser.get_use_velocity_verlet()) ? INTEGRATOR_VELOCITY_VERLET : INTEGRATOR_EULER;
 	GLfloat gravitational_constant = input_parser.get_gravitational_constant();
 	GLfloat timestep_size = input_parser.get_timestep_size();
 
-	// TODO: CHANGE THIS TO SMART POINTER LATER ON 
+	// TODO: CHANGE THIS TO SMART POINTER LATER ON
 	if (!input_parser.get_use_GPU())
 	{
 		// ParticleParticleCPU simulator_CPU = ParticleParticleCPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
@@ -120,7 +127,7 @@ int main(int argc, char *argv[])
 	simulator->append_setup_log("\n--------------------------------------------------\n\n");
 
 	CallbackManager callback_manager = CallbackManager(window, &camera, simulator);
-	Renderer renderer = Renderer(&callback_manager, window, &shader_program, &camera, simulator, VAO);
+	Renderer renderer = Renderer(&callback_manager, window, &shader_program, &camera, simulator, render_components.VAO);
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
@@ -141,11 +148,20 @@ int main(int argc, char *argv[])
 
 	// glDeleteVertexArrays(1, &VAO);
 	// glDeleteBuffers(1, &VBO);
+	terminate(&render_components);
 	shader_program.delete_shader();
 	simulator->terminate();
 	delete simulator;
 	glfwTerminate();
 	return 0;
+}
+
+void terminate(RenderComponents *render_components)
+{
+	glDeleteVertexArrays(1, &render_components->VAO);
+	glDeleteBuffers(1, &render_components->VBO);
+	glDeleteBuffers(1, &render_components->EBO);
+	// shader->delete_shader();
 }
 
 // TODO: REMOVE THIS
