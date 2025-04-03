@@ -2,7 +2,7 @@
 
 // Input
 // Maybe implement instancing	
-layout(location = 0) in vec3 v_pos;
+// layout(location = 0) in vec3 v_pos;
 
 
 // Position of item

@@ -18,27 +18,36 @@ Renderer::Renderer(CallbackManager *callback_manager, GLFWwindow *window, Shader
 
 void Renderer::render()
 {
+    // Handle inputs
+    glfwPollEvents();
     this->callback_manager->process_input();
+
+    // Begin
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    // Render
     this->shader_program->use();
     this->shader_program->set_mat4("modelview", this->camera->get_view_matrix() * this->camera->get_model_matrix());
     this->shader_program->set_mat4("projection", this->camera->get_projection_matrix());
 
     glBindVertexArray(this->VAO);
     glDrawArrays(GL_POINTS, 0, this->simulator->get_n_particle());
+
+    // Post processing
+    this->post_processing();
+
+    // End frame
     glfwSwapBuffers(window);
-
     glBindVertexArray(0);
+    this->frame_count += 1;
+    this->show_fps();
 
+    // Prepare for next frame (we don't call this first so that the first frame will have the simulation set at the orignal position)
     if (this->simulator->get_running_state())
     {
         this->simulator->next_step();
     }
-
-    this->frame_count += 1;
-    this->show_fps();
-    glfwPollEvents();
 }
 
 void Renderer::show_fps()
@@ -52,4 +61,9 @@ void Renderer::show_fps()
 
     ss << "N-BODY SIMULATOR. FPS: " << 1.0 / delta_time << ". Time elapsed: " << cur_time;
     glfwSetWindowTitle(this->window, ss.str().c_str());
+}
+
+// Post processing stage
+void Renderer::post_processing(){
+    // TODO: do bloom or sth here
 }
