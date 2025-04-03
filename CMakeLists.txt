@@ -55,7 +55,7 @@ set(PROJECT_SOURCES
     src/ParticleSystem/Simulator/Simulator.cpp
     src/ParticleSystem/ParticleBuilder/ParticleBuilder.cpp
     src/Renderer/Renderer.cpp
-    # src/ParticleSystem/ParticleParticleCPU/ParticleParticleCPU.cpp
+    src/ParticleSystem/ParticleParticleCPU/ParticleParticleCPU.cpp
     src/ParticleSystem/ParticleParticleGPU/ParticleParticleGPU.cpp
     src/InputParser/InputParser.cpp
     src/DefaultTestLoader/DefaultTestLoader.cpp
@@ -73,7 +73,7 @@ set(INCLUDE_DIRS
     src/ParticleSystem/Simulator/
     src/ParticleSystem/ParticleBuilder/
     src/Renderer/
-    # src/ParticleSystem/ParticleParticleCPU/
+    src/ParticleSystem/ParticleParticleCPU/
     src/ParticleSystem/ParticleParticleGPU/
     src/InputParser/
     src/DefaultTestLoader/

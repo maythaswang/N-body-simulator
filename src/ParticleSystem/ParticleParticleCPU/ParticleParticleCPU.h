@@ -18,13 +18,15 @@ private:
      * @param other
      * @return acceleration of the particle "current" based on force being exerted from the particle "other"
      */
-    glm::vec3 calculate_acceleration(uint32_t, uint32_t);
+    glm::vec4 calculate_acceleration(uint32_t, uint32_t);
 
     void update_position_euler() override;
 
     void update_position_velocity_verlet() override;
 
-
+    void init_SSBOs();
 
     void load_particles(GLuint, std::vector<glm::vec4>, std::vector<glm::vec4>, std::vector<glm::vec4>, std::vector<GLfloat>) override;
+
+    void update_SSBO();
 };
