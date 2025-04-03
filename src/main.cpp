@@ -96,8 +96,8 @@ int main(int argc, char *argv[])
 
 	// RenderComponents render_components;
 	MeshBuilder mesh_builder;
-	RenderComponents render_components = mesh_builder.build_sphere(500, 32, 9);
-
+	RenderComponents render_components = mesh_builder.build_sphere(5, 12, 8);
+	std::cout << render_components.n_vert << std::endl;
 	// TODO: REMOVE THIS LATER
 	// dummy_VAO(&VAO);
 
@@ -127,12 +127,12 @@ int main(int argc, char *argv[])
 	simulator->append_setup_log("\n--------------------------------------------------\n\n");
 
 	CallbackManager callback_manager = CallbackManager(window, &camera, simulator);
-	Renderer renderer = Renderer(&callback_manager, window, &shader_program, &camera, simulator, render_components.VAO);
+	Renderer renderer = Renderer(&callback_manager, window, &shader_program, &camera, simulator, &render_components);
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
 
-	// set_debug_mode(0,1,2);
+	set_debug_mode(1,0,0);
 	std::cout << simulator->get_setup_log() << std::endl;
 	std::cout << g_controls_help << std::endl;
 	std::cout << "Starting Simulator in paused state..." << std::endl;

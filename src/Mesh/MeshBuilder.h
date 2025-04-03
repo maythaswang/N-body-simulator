@@ -1,8 +1,6 @@
 #ifndef H_MESH_BUILDER
 #define H_MESH_BUILDER
-#include <GLCommon.h>
-#include <vector>
-#include <glm/glm.hpp>
+#include "RenderComponents.h"
 
 /**
  * @brief TBH im doing this part just because I wanted to try my hand on gpu instancing lol....
@@ -10,10 +8,7 @@
  * interested for further information!!! :)
  */
 
-struct RenderComponents
-{
-    GLuint VAO, VBO, EBO; 
-};
+
 
 /**
  * @brief Build meshes (this time only sphere lol)
