@@ -19,9 +19,9 @@ void ParticleBuilder::spawn_random(GLuint n, glm::vec3 offset, GLfloat radius, G
         glm::vec3 tmp_velocity = glm::vec3(random_number(min_velocity, max_velocity), random_number(min_velocity, max_velocity), random_number(min_velocity, max_velocity));
         GLfloat tmp_mass = random_number(min_mass, max_mass);
 
-        this->particle_position.push_back(tmp_position);
-        this->particle_velocity.push_back(tmp_velocity);
-        this->particle_acceleration.push_back(glm::vec3(0.0f));
+        this->particle_position.push_back(glm::vec4(tmp_position,0));
+        this->particle_velocity.push_back(glm::vec4(tmp_velocity,0));
+        this->particle_acceleration.push_back(glm::vec4(0.0f));
         this->particle_mass.push_back(tmp_mass);
     }
 
@@ -50,9 +50,9 @@ void ParticleBuilder::spawn_globular_cluster(GLuint n, glm::vec3 offset, GLfloat
         glm::vec3 tmp_velocity = this->sample_velocity(tmp_position, offset, min_velocity, max_velocity, is_spiral);
         GLfloat tmp_mass = random_number(min_mass, max_mass);
 
-        this->particle_position.push_back(tmp_position);
-        this->particle_velocity.push_back(tmp_velocity);
-        this->particle_acceleration.push_back(glm::vec3(0.0f));
+        this->particle_position.push_back(glm::vec4(tmp_position,0));
+        this->particle_velocity.push_back(glm::vec4(tmp_velocity,0));
+        this->particle_acceleration.push_back(glm::vec4(0.0f));
         this->particle_mass.push_back(tmp_mass);
     }
 
@@ -75,7 +75,7 @@ void ParticleBuilder::spawn_double_sphere(GLuint n, glm::vec3 offset, GLfloat ra
     this->spawn_sphere((int)std::floor(n / 2), offset, center_radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral);
 }
 
-bool ParticleBuilder::populate_vectors(GLuint *n, std::vector<glm::vec3> *particle_position, std::vector<glm::vec3> *particle_velocity, std::vector<glm::vec3> *particle_acceleration, std::vector<GLfloat> *particle_mass)
+bool ParticleBuilder::populate_vectors(GLuint *n, std::vector<glm::vec4> *particle_position, std::vector<glm::vec4> *particle_velocity, std::vector<glm::vec4> *particle_acceleration, std::vector<GLfloat> *particle_mass)
 {
     if (!this->n_particle || !n || !particle_position || !particle_velocity || !particle_acceleration || !particle_mass)
     {
@@ -141,9 +141,9 @@ void ParticleBuilder::spawn_disc(GLuint n, glm::vec3 offset, GLfloat radius, GLf
         glm::vec3 tmp_velocity = this->sample_velocity(tmp_position, offset, min_velocity, max_velocity, is_spiral);
         GLfloat tmp_mass = random_number(min_mass, max_mass);
 
-        this->particle_position.push_back(tmp_position);
-        this->particle_velocity.push_back(tmp_velocity);
-        this->particle_acceleration.push_back(glm::vec3(0.0f));
+        this->particle_position.push_back(glm::vec4(tmp_position,0));
+        this->particle_velocity.push_back(glm::vec4(tmp_velocity,0));
+        this->particle_acceleration.push_back(glm::vec4(0.0f));
         this->particle_mass.push_back(tmp_mass);
     }
 

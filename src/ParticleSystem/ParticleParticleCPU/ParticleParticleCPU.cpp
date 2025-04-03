@@ -80,3 +80,13 @@ void ParticleParticleCPU::update_position_velocity_verlet()
     // Copy next step acceleration for next iteration
     // std::copy(this->particle_previous_acceleration.begin(), this->particle_previous_acceleration.end(), std::back_inserter(this->particle_acceleration)); // This somewhat segfaults.
 }
+
+void ParticleParticleCPU::load_particles(GLuint n, std::vector<glm::vec4> position, std::vector<glm::vec4> velocity, std::vector<glm::vec4> previous_acceleration, std::vector<GLfloat> mass)
+{
+    this->n_particle = n;
+    this->particle_position = position;
+    this->particle_velocity = velocity;
+    this->particle_previous_acceleration = previous_acceleration;
+    this->particle_mass = mass;
+    this->particle_acceleration.resize(this->n_particle);
+}

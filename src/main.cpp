@@ -11,7 +11,7 @@
 
 #include <Renderer.h>
 #include <StringCommon.h>
-#include <ParticleParticleCPU.h>
+// #include <ParticleParticleCPU.h>
 #include <ParticleParticleGPU.h>
 #include <InputParser.h>
 
@@ -70,9 +70,9 @@ int main(int argc, char *argv[])
 	// ----------------------------------------------------------------------------
 	Camera camera = Camera();
 
-	std::vector<glm::vec3> particle_position;
-	std::vector<glm::vec3> particle_velocity;
-	std::vector<glm::vec3> particle_acceleration;
+	std::vector<glm::vec4> particle_position;
+	std::vector<glm::vec4> particle_velocity;
+	std::vector<glm::vec4> particle_acceleration;
 	std::vector<GLfloat> particle_mass;
 	GLuint n_particles;
 
@@ -82,6 +82,10 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
+	// Storing particle information
+    GLuint particle_position_SSBO, particle_mass_SSBO; 
+
+	// TODO: Use this buffer to store the mesh information for instancing instead.
 	GLuint VAO, VBO;
 	Simulator *simulator;
 
@@ -89,16 +93,17 @@ int main(int argc, char *argv[])
 	GLfloat gravitational_constant = input_parser.get_gravitational_constant();
 	GLfloat timestep_size = input_parser.get_timestep_size();
 
-	if (!input_parser.get_use_GPU())
-	{
-		ParticleParticleCPU simulator_CPU = ParticleParticleCPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
-		simulator = &simulator_CPU;
-	}
-	else
-	{
+	// WARNING: DISABLE CPU IMPLEMENTATION FORNOW
+	// if (!input_parser.get_use_GPU())
+	// {
+	// 	ParticleParticleCPU simulator_CPU = ParticleParticleCPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
+	// 	simulator = &simulator_CPU;
+	// }
+	// else
+	// {
 		ParticleParticleGPU simulator_GPU = ParticleParticleGPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
 		simulator = &simulator_GPU;
-	}
+	// }
 
 	simulator->load_particles(n_particles, particle_position, particle_velocity, particle_acceleration, particle_mass);
 	simulator->initialize_particles(&VAO, &VBO);

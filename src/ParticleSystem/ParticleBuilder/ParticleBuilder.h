@@ -106,7 +106,7 @@ public:
      * @param particle_mass vector of particle's mass
      * @return completion status
      */
-    bool populate_vectors(GLuint *, std::vector<glm::vec3> *, std::vector<glm::vec3> *, std::vector<glm::vec3> *, std::vector<GLfloat> *);
+    bool populate_vectors(GLuint *, std::vector<glm::vec4> *, std::vector<glm::vec4> *, std::vector<glm::vec4> *, std::vector<GLfloat> *);
 
     /**
      * @brief provide summary string of the simulation setup
@@ -116,9 +116,9 @@ public:
     std::string get_summary();
 
 private:
-    std::vector<glm::vec3> particle_position;
-    std::vector<glm::vec3> particle_velocity;
-    std::vector<glm::vec3> particle_acceleration;
+    std::vector<glm::vec4> particle_position;
+    std::vector<glm::vec4> particle_velocity;
+    std::vector<glm::vec4> particle_acceleration;
     std::vector<GLfloat> particle_mass;
     GLuint n_particle;
     std::string setup_summary;
