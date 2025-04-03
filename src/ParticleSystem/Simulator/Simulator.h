@@ -116,9 +116,9 @@ protected:
     GLuint *VAO;
     GLuint *VBO;
     
-    // SSBO for color and position
-    GLuint *particle_position_SSBO; 
-    GLuint *particle_mass_SSBO; 
+    // SSBO for postion and mass (This will govern the postion of each instance and its color:mass)
+    GLuint particle_position_SSBO; 
+    GLuint particle_mass_SSBO; 
     
     SimulatorIntegrator integrator;
     
