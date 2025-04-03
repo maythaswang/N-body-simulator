@@ -30,6 +30,12 @@ private:
      */
     void update_position();
 
+    /**
+     * @brief Fetch SSBO data from GPU
+     * 
+     */
+    void fetch_data();
+
     void load_particles(GLuint, std::vector<glm::vec4>, std::vector<glm::vec4>, std::vector<glm::vec4>, std::vector<GLfloat>) override;
 
     void next_step() override;
