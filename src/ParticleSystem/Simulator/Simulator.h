@@ -23,14 +23,6 @@ public:
     virtual void next_step();
 
     /**
-     * @brief Initialize VAO and VBO with the particle informations
-     * @warning DEPRECATE SOON IN FAVOR OF MOVING TO USING PURE SSBO
-     * @param VAO Vertex Array Object pointer 
-     * @param VBO Vertex Buffer Object pointer
-     */
-    // void initialize_particles(GLuint *, GLuint *);
-
-    /**
      * @brief Load particles information from the input vector into the simulation.
      * @param n_particles number of particles
      * @param position vector of particle position
@@ -111,10 +103,6 @@ protected:
 
     // log
     GLuint current_step;
-
-    // Bufs (TODO: Deprecate)
-    // GLuint *VAO;
-    // GLuint *VBO;
     
     // SSBO for postion and mass (This will govern the postion of each instance and its color:mass)
     GLuint particle_position_SSBO; 
