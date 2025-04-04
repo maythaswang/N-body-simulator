@@ -80,3 +80,11 @@ void Renderer::post_processing()
 {
     // TODO: do bloom or sth here
 }
+
+bool Renderer::get_use_instancing(){
+    return this->use_instancing;
+}
+
+void Renderer::set_use_instancing(bool use_instancing){
+    this->use_instancing = use_instancing;
+}

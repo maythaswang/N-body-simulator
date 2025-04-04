@@ -3,6 +3,10 @@
 
 Camera::Camera()
 {
+    this->set_default_camera();
+}
+
+void Camera::set_default_camera(){
     this->eye = glm::vec3(0, 0, 200.0);
     this->center = glm::vec3(0, 0, 0);
     this->up = glm::vec3(0, 1.0, 0);
@@ -73,8 +77,8 @@ void Camera::translate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
     glm::vec3 direction = glm::normalize(this->center - this->eye);
     glm::vec3 right = glm::normalize(glm::cross(direction, this->up));
 
-    GLfloat x_translate = -mouse_delta_x * this->translation_sensitivity * std::min(distance,100000000.0f);
-    GLfloat y_translate = mouse_delta_y * this->translation_sensitivity * std::min(distance,100000000.0f);
+    GLfloat x_translate = -mouse_delta_x * this->translation_sensitivity * std::min(distance, 100000000.0f);
+    GLfloat y_translate = mouse_delta_y * this->translation_sensitivity * std::min(distance, 100000000.0f);
     glm::vec3 translation_vector = glm::normalize(right) * x_translate + glm::normalize(this->up) * y_translate;
 
     this->eye += translation_vector;
@@ -91,7 +95,6 @@ void Camera::free_forward(GLfloat mouse_delta_y)
     this->center = this->center + direction * zoom_power;
     this->build_view_matrix();
 }
-
 
 void Camera::free_rotate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
 {
@@ -113,8 +116,8 @@ void Camera::free_rotate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
 
     glm::vec3 eye_origin = this->eye - this->center;
     glm::vec3 new_eye = rotation * eye_origin;
-    glm::vec3 direction_to_old =  eye_origin - new_eye;
-    
+    glm::vec3 direction_to_old = eye_origin - new_eye;
+
     this->center = this->center + direction_to_old;
     this->up = rotation * this->up;
     this->build_view_matrix();
