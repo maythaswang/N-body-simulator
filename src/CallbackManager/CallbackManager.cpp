@@ -201,10 +201,21 @@ void CallbackManager::set_keyboard_callback()
                 bool instancing_state = callback_manager->renderer->get_use_instancing();
                 callback_manager->renderer->set_use_instancing(!instancing_state);
 
-                if(instancing_state){
+                if(!instancing_state){
                     std::cout << "Instancing mode enabled." << std::endl;
                 } else {
                     std::cout << "Instancing mode disabled." << std::endl;
+                }
+            }
+
+            if (key == GLFW_KEY_F && action == GLFW_PRESS){
+                bool wireframe_state = callback_manager->renderer->get_use_wireframe();
+                callback_manager->renderer->set_use_wireframe(!wireframe_state);
+
+                if(!wireframe_state){
+                    std::cout << "Wireframe mode enabled." << std::endl;
+                } else {
+                    std::cout << "Wireframe mode disabled." << std::endl;
                 }
             }
 

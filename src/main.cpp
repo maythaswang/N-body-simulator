@@ -22,7 +22,7 @@ const unsigned int SCREEN_HEIGHT = 480;
 const GLfloat SOFTENING_FACTOR = 50;
 const char *SCREEN_NAME = "N-BODY-SIMULATION";
 
-void set_debug_mode(bool, bool, GLuint);
+void print_workgroup_info();
 
 void dummy_VAO(GLuint *VAO);
 void build_mesh(GLuint *VAO, GLuint *VBO); // For instancing
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
 
-	set_debug_mode(1, 0, 0);
+	print_workgroup_info();
 	std::cout << simulator->get_setup_log() << std::endl;
 	std::cout << g_controls_help << std::endl;
 	std::cout << "Starting Simulator in paused state..." << std::endl;
@@ -188,18 +188,8 @@ void dummy_VAO(GLuint *VAO)
 	// this->VBO = VBO;
 }
 
-void set_debug_mode(bool wireframe_on, bool point_size_on, GLuint point_size)
+void print_workgroup_info()
 {
-	if (wireframe_on)
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	}
-
-	if (point_size_on)
-	{
-		glPointSize(point_size);
-	}
-
 	int max_compute_work_group_count[3];
 	int max_compute_work_group_size[3];
 	int max_compute_work_group_invocations;
