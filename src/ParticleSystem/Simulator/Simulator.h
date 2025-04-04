@@ -1,9 +1,13 @@
+#ifndef SIMULATOR_H
+#define SIMULATOR_H
 #pragma once
+
 #include <GLCommon.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/random.hpp>
-#include <SimulatorEnum.h>
+#include "SimulatorEnum.h"
+
 #include <math.h>
 #include <vector>
 #include <iostream>
@@ -23,13 +27,6 @@ public:
     virtual void next_step();
 
     /**
-     * @brief Initialize VAO and VBO with the particle informations
-     * @param VAO Vertex Array Object pointer 
-     * @param VBO Vertex Buffer Object pointer
-     */
-    void initialize_particles(GLuint *, GLuint *);
-
-    /**
      * @brief Load particles information from the input vector into the simulation.
      * @param n_particles number of particles
      * @param position vector of particle position
@@ -37,7 +34,7 @@ public:
      * @param previous_acceleration vector of particle acceleration in the previous step.
      * @param mass vector of particle mass
      */
-    virtual void load_particles(GLuint, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<glm::vec3>, std::vector<GLfloat>);
+    virtual void load_particles(GLuint, std::vector<glm::vec4>, std::vector<glm::vec4>, std::vector<glm::vec4>, std::vector<GLfloat>);
 
     /**
      * @brief Get the running state object
@@ -96,18 +93,25 @@ public:
 
 // I'll just declare it all protected since it's only me working on this.
 protected:
-    std::vector<glm::vec3> particle_position;
-    std::vector<glm::vec3> particle_velocity;
-    std::vector<glm::vec3> particle_acceleration;
-    std::vector<glm::vec3> particle_previous_acceleration;
+    // Particle data
+    std::vector<glm::vec4> particle_position;
+    std::vector<glm::vec4> particle_velocity;
+    std::vector<glm::vec4> particle_previous_acceleration;
     std::vector<GLfloat> particle_mass;
+
+    // Simulation variables
     GLfloat gravitational_constant;
     GLfloat softening_factor;
     GLfloat timestep_size;
     GLuint n_particle;
+
+    // log
     GLuint current_step;
-    GLuint *VAO;
-    GLuint *VBO;
+    
+    // SSBO for postion and mass (This will govern the postion of each instance and its color:mass)
+    GLuint particle_position_SSBO; 
+    GLuint particle_mass_SSBO; 
+    
     SimulatorIntegrator integrator;
     
     std::string setup_log;
@@ -125,17 +129,7 @@ protected:
      */
     Simulator(GLfloat, GLfloat, GLfloat, GLfloat, SimulatorIntegrator);
 
-    /**
-     * @brief Calculate acceleration between the two particles
-     *
-     * @note F = Gmm/r^2 * -r/||r||, F = ma
-     * @note ma = Gmm/r^2 * -r/||r||
-     * @note a = G ∑ m/r^2 * -r/||r||
-     * @param current
-     * @param other
-     * @return acceleration of the particle "current" based on force being exerted from the particle "other"
-     */
-    virtual glm::vec3 calculate_acceleration(uint32_t, uint32_t);
+
 
     /**
      * @brief Update the position of each particle using semi-implicit euler method as the integrator
@@ -155,3 +149,5 @@ protected:
      */
     virtual void update_position_velocity_verlet();
 };
+
+#endif

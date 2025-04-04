@@ -1,8 +1,12 @@
+#ifndef CALLBACK_MANAGER_H
+#define CALLBACK_MANAGER_H
 #pragma once
+
 #include <GLCommon.h>
-#include <Camera.h>
-#include <CameraEnum.h>
-#include <Simulator.h>
+#include <DisplaySystem/Camera/Camera.h>
+#include <ParticleSystem/Simulator/Simulator.h>
+#include <Renderer/Renderer.h>
+#include "CameraEnum.h"
 
 /**
  * @brief Handle Callbacks recieved from window, mouse, keyboards and update the components accordingly
@@ -17,7 +21,7 @@ public:
      * @param window glfw window where we want to use as our display window
      * @param camera the current camera
      */
-    CallbackManager(GLFWwindow *, Camera *, Simulator *);
+    CallbackManager(GLFWwindow *, Camera *, Simulator *, Renderer *);
 
     /**
      * @brief Main function for processing input
@@ -30,6 +34,7 @@ private:
     Camera *camera;
     CameraMode camera_mode;
     Simulator *simulator;
+    Renderer *renderer;
 
     // Mouse states
 
@@ -69,10 +74,9 @@ private:
      */
     void set_keyboard_callback();
 
-
     /**
      * @brief Set the mouse scroll callback
-     * 
+     *
      */
     void set_scroll_callback();
 
@@ -90,15 +94,27 @@ private:
 
     /**
      * @brief Set the camera status to orbiting / free
-     * 
+     *
      * @param camera_orbiting {0: free mode, 1: orbit mode}
      */
     void set_camera_orbiting(bool);
 
     /**
      * @brief Get camera orbiting status
-     * 
+     *
      * @return 1 if camera is in orbit mode
      */
     bool get_camera_orbiting();
+
+    /**
+     * @brief Handle simulation pausing
+     *
+     */
+    void handle_pause();
+
+    void handle_orbit_toggle();
+    void handle_instancing_toggle();
+    void handle_wireframe_toggle();
 };
+
+#endif

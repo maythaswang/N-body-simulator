@@ -1,19 +1,20 @@
 #include <GLCommon.h>
 #include <iostream>
 
-#include <ProgramInit.h>
-#include <Shader.h>
-#include <CallbackManager.h>
-#include <Camera.h>
-#include <WindowFactory.h>
-#include <ParticleBuilder.h>
-#include <Simulator.h>
+#include <ProgramInit/ProgramInit.h>
+#include <Shader/Shader.h>
+#include <CallbackManager/CallbackManager.h>
+#include <DisplaySystem/Camera/Camera.h>
+#include <DisplaySystem/WindowFactory/WindowFactory.h>
+#include <ParticleSystem/ParticleBuilder/ParticleBuilder.h>
+#include <ParticleSystem/Simulator/Simulator.h>
 
-#include <Renderer.h>
+#include <Renderer/Renderer.h>
 #include <StringCommon.h>
-#include <ParticleParticleCPU.h>
-#include <ParticleParticleGPU.h>
-#include <InputParser.h>
+#include <ParticleSystem/ParticleParticleCPU/ParticleParticleCPU.h>
+#include <ParticleSystem/ParticleParticleGPU/ParticleParticleGPU.h>
+#include <InputParser/InputParser.h>
+#include <Mesh/MeshBuilder.h>
 
 // For initialization
 const unsigned int SCREEN_WIDTH = 640;
@@ -21,9 +22,10 @@ const unsigned int SCREEN_HEIGHT = 480;
 const GLfloat SOFTENING_FACTOR = 50;
 const char *SCREEN_NAME = "N-BODY-SIMULATION";
 
-void set_debug_mode(bool, bool, GLuint);
+void print_workgroup_info();
+void terminate(RenderComponents *render_components);
 
-// TODO: Implement visual effects (eg: bloom, particle colour based on mass or stellar class...)
+// TODO: Implement visual effects (eg: bloom, particle colour and scale based on mass or stellar class...)
 
 int main(int argc, char *argv[])
 {
@@ -58,7 +60,7 @@ int main(int argc, char *argv[])
 
 	Shader shader_program = Shader();
 
-	//TODO: Bake the shaders in.
+	// TODO: Bake the shaders in.
 
 	// The dir depends on where you call it so if you call it from root, do it as if the current working directory is in root.
 	GLuint vertex_shader = shader_program.compile_shader("./shader_source/light.vert.glsl", GL_VERTEX_SHADER);
@@ -70,9 +72,10 @@ int main(int argc, char *argv[])
 	// ----------------------------------------------------------------------------
 	Camera camera = Camera();
 
-	std::vector<glm::vec3> particle_position;
-	std::vector<glm::vec3> particle_velocity;
-	std::vector<glm::vec3> particle_acceleration;
+	// Initialize particle data
+	std::vector<glm::vec4> particle_position;
+	std::vector<glm::vec4> particle_velocity;
+	std::vector<glm::vec4> particle_acceleration;
 	std::vector<GLfloat> particle_mass;
 	GLuint n_particles;
 
@@ -82,45 +85,55 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	GLuint VAO, VBO;
+	// Storing particle information
+	GLuint particle_position_SSBO, particle_mass_SSBO;
 	Simulator *simulator;
 
+	// Sphere mesh
+	MeshBuilder mesh_builder;
+	RenderComponents render_components = mesh_builder.build_sphere(1, 12, 8);
+
+	// Simulator setup
 	SimulatorIntegrator integrator = (input_parser.get_use_velocity_verlet()) ? INTEGRATOR_VELOCITY_VERLET : INTEGRATOR_EULER;
 	GLfloat gravitational_constant = input_parser.get_gravitational_constant();
 	GLfloat timestep_size = input_parser.get_timestep_size();
 
+	// TODO: CHANGE THIS TO SMART POINTER LATER ON
 	if (!input_parser.get_use_GPU())
 	{
-		ParticleParticleCPU simulator_CPU = ParticleParticleCPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
-		simulator = &simulator_CPU;
+		simulator = new ParticleParticleCPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
 	}
 	else
 	{
 		ParticleParticleGPU simulator_GPU = ParticleParticleGPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
-		simulator = &simulator_GPU;
+		simulator = new ParticleParticleGPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
 	}
 
 	simulator->load_particles(n_particles, particle_position, particle_velocity, particle_acceleration, particle_mass);
-	simulator->initialize_particles(&VAO, &VBO);
 
+	// TODO: This is just here for setting up the logs  (we will do it such that the same input can be import/ export later)
 	simulator->append_setup_log(setup_log_head);
 	simulator->append_setup_log(setup_log_input);
 	simulator->append_setup_log(setup_log_particle);
 	simulator->append_setup_log("\n--------------------------------------------------\n\n");
 
-
-	CallbackManager callback_manager = CallbackManager(window, &camera, simulator);
-	Renderer renderer = Renderer(&callback_manager, window, &shader_program, &camera, simulator, VAO);
+	Renderer renderer = Renderer( window, &shader_program, &camera, simulator, &render_components);
+	CallbackManager callback_manager = CallbackManager(window, &camera, simulator, &renderer);
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
-	
-	// set_debug_mode(0,1,2);
+
+	print_workgroup_info();
 	std::cout << simulator->get_setup_log() << std::endl;
 	std::cout << g_controls_help << std::endl;
 	std::cout << "Starting Simulator in paused state..." << std::endl;
 	while (!glfwWindowShouldClose(window))
 	{
+		// Process Input
+		glfwPollEvents();
+		callback_manager.process_input();
+
+		// Draw
 		renderer.render();
 	}
 
@@ -129,26 +142,23 @@ int main(int argc, char *argv[])
 
 	std::cout << "Terminating..." << std::endl;
 
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
+	terminate(&render_components);
 	shader_program.delete_shader();
 	simulator->terminate();
+	delete simulator;
 	glfwTerminate();
 	return 0;
 }
 
-void set_debug_mode(bool wireframe_on, bool point_size_on, GLuint point_size)
+void terminate(RenderComponents *render_components)
 {
-	if (wireframe_on)
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	}
+	glDeleteVertexArrays(1, &render_components->VAO);
+	glDeleteBuffers(1, &render_components->VBO);
+	glDeleteBuffers(1, &render_components->EBO);
+}
 
-	if (point_size_on)
-	{
-		glPointSize(point_size);
-	}
-
+void print_workgroup_info()
+{
 	int max_compute_work_group_count[3];
 	int max_compute_work_group_size[3];
 	int max_compute_work_group_invocations;

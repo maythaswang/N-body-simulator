@@ -1,3 +1,5 @@
+#ifndef SHADER_H
+#define SHADER_H
 #pragma once
 #include <GLCommon.h>
 #include <glm/glm.hpp>
@@ -79,3 +81,5 @@ private:
      */
     std::string read_shader_file(std::string);
 };
+
+#endif

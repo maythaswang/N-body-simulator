@@ -1,4 +1,5 @@
-#include <InputParser.h>
+#include "InputParser.h"
+
 int TESTCASE_CAP_CPU = 4;
 int TESTCASE_CAP_GPU = 33;
 GLfloat DEFAULT_TIMESTEP_SIZE = 0.001;
