@@ -2,13 +2,12 @@
 #include <iostream>
 #include <sstream>
 
-Renderer::Renderer(CallbackManager *callback_manager, GLFWwindow *window, Shader *shader_program, Camera *camera, Simulator *simulator, RenderComponents *render_components)
+Renderer::Renderer(GLFWwindow *window, Shader *shader_program, Camera *camera, Simulator *simulator, RenderComponents *render_components)
 {
     this->window = window;
     this->shader_program = shader_program;
     this->camera = camera;
     this->simulator = simulator;
-    this->callback_manager = callback_manager;
     this->render_components = render_components;
 
     this->frame_count = 0;
@@ -21,10 +20,6 @@ Renderer::Renderer(CallbackManager *callback_manager, GLFWwindow *window, Shader
 
 void Renderer::render()
 {
-    // Handle inputs
-    glfwPollEvents();
-    this->callback_manager->process_input();
-
     // Begin
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);

@@ -2,14 +2,19 @@
 #include <StringCommon.h>
 #include <CallbackManager.h>
 
-CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, Simulator *simulator)
+CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, Simulator *simulator, Renderer *renderer)
 {
+    // Components
     this->window = window;
     this->camera = camera;
     this->simulator = simulator;
+    this->renderer = renderer;
+
+    // Camera states
     this->camera_mode = CAMERA_IDLE;
     this->camera_orbiting = true;
 
+    // Mouse states
     this->middle_mouse_down = false;
     this->left_shift_down = false;
     this->left_ctrl_down = false;
@@ -192,11 +197,16 @@ void CallbackManager::set_keyboard_callback()
                 callback_manager->camera->set_default_camera();
             }
 
-            // if (key== GLFW_KEY_K && action == GLFW_PRESS){
-            //     if(callback_manager->ren)
-            //     std::cout << "Instancing mode enabled." << std::endl;
-            //     s
-            // }
+            if (key== GLFW_KEY_K && action == GLFW_PRESS){
+                bool instancing_state = callback_manager->renderer->get_use_instancing();
+                callback_manager->renderer->set_use_instancing(!instancing_state);
+
+                if(instancing_state){
+                    std::cout << "Instancing mode enabled." << std::endl;
+                } else {
+                    std::cout << "Instancing mode disabled." << std::endl;
+                }
+            }
 
         } });
 }

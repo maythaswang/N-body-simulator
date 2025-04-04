@@ -3,6 +3,7 @@
 #include <Camera.h>
 #include <CameraEnum.h>
 #include <Simulator.h>
+#include <renderer.h>
 
 /**
  * @brief Handle Callbacks recieved from window, mouse, keyboards and update the components accordingly
@@ -17,7 +18,7 @@ public:
      * @param window glfw window where we want to use as our display window
      * @param camera the current camera
      */
-    CallbackManager(GLFWwindow *, Camera *, Simulator *);
+    CallbackManager(GLFWwindow *, Camera *, Simulator *, Renderer *);
 
     /**
      * @brief Main function for processing input
@@ -30,6 +31,7 @@ private:
     Camera *camera;
     CameraMode camera_mode;
     Simulator *simulator;
+    Renderer *renderer;
 
     // Mouse states
 
@@ -102,5 +104,9 @@ private:
      */
     bool get_camera_orbiting();
 
+    /**
+     * @brief Handle simulation pausing
+     * 
+     */
     void handle_pause();
 };
