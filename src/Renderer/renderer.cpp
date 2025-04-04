@@ -17,13 +17,19 @@ Renderer::Renderer(GLFWwindow *window, Shader *shader_program, Camera *camera, S
     // Configuration
     this->use_instancing = false;
     this->use_wireframe = false;
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.05f, 0.05f, 0.07f, 1.0f);
+    glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+    glfwSwapInterval(1);
 }
 
 void Renderer::render()
 {
     // Begin
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Render
     this->shader_program->use();
