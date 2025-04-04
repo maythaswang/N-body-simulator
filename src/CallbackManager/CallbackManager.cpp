@@ -144,7 +144,12 @@ void CallbackManager::set_window_resize_callback()
         
         // Set the camera aspect ratio
         CallbackManager * callback_manager = reinterpret_cast<CallbackManager *> ( glfwGetWindowUserPointer ( window ));
-        if (callback_manager) callback_manager->camera->set_aspect( width, height );
+
+        if (callback_manager){
+            if(width || height) {
+            callback_manager->camera->set_aspect( width, height );
+            }
+        }
 
         // set the viewport size
         glViewport(0, 0, width, height); });
@@ -160,20 +165,7 @@ void CallbackManager::set_keyboard_callback()
         if (callback_manager){
             if (key == GLFW_KEY_P && action == GLFW_PRESS)
             {   
-                GLuint current_step = callback_manager->simulator->get_current_step();
-                GLfloat timestep_size = callback_manager->simulator->get_timestep_size();
-                if(callback_manager->simulator->get_running_state())
-                {
-                    std::cout << "The simulation is now paused. Step: " << current_step << ", Time (timestep size): " 
-                    << current_step * timestep_size << "\nPress p to resume..." << std::endl;
-                } 
-                else 
-                {
-                    std::cout << "Resuming simulation..." << std::endl;
-                }
-
-
-                callback_manager->simulator->set_running_state(!callback_manager->simulator->get_running_state());
+                callback_manager->handle_pause();
             } 
 
             if (key == GLFW_KEY_H && action == GLFW_PRESS)
@@ -195,6 +187,23 @@ void CallbackManager::set_keyboard_callback()
             }
 
         } });
+}
+
+void CallbackManager::handle_pause()
+{
+    GLuint current_step = this->simulator->get_current_step();
+    GLfloat timestep_size = this->simulator->get_timestep_size();
+    if (this->simulator->get_running_state())
+    {
+        std::cout << "The simulation is now paused. Step: " << current_step << ", Time (timestep size): "
+                  << current_step * timestep_size << "\nPress p to resume..." << std::endl;
+    }
+    else
+    {
+        std::cout << "Resuming simulation..." << std::endl;
+    }
+
+    this->simulator->set_running_state(!this->simulator->get_running_state());
 }
 
 void CallbackManager::set_scroll_callback()
