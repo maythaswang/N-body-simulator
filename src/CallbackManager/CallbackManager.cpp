@@ -186,6 +186,18 @@ void CallbackManager::set_keyboard_callback()
                 std::cout << msg << std::endl;
             }
 
+            // TODO: Add all below this to README and the help message
+            if (key== GLFW_KEY_R && action == GLFW_PRESS){
+                std::cout << "Camera is reset to origin." << std::endl;
+                callback_manager->camera->set_default_camera();
+            }
+
+            // if (key== GLFW_KEY_K && action == GLFW_PRESS){
+            //     if(callback_manager->ren)
+            //     std::cout << "Instancing mode enabled." << std::endl;
+            //     s
+            // }
+
         } });
 }
 

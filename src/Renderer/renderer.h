@@ -32,6 +32,19 @@ public:
      */
     void render();
 
+    /**
+     * @brief Get the use_instancing variable
+     * 
+     */
+    bool get_use_instancing();
+
+    /**
+     * @brief Set the use_instancing variable
+     * @param use_instancing 
+     * 
+     */
+    void set_use_instancing(bool use_instancing);
+
 private:
     GLFWwindow *window;
     Shader *shader_program;

@@ -125,6 +125,12 @@ public:
      */
     glm::mat4 get_projection_matrix();
 
+    /**
+     * @brief Set the camera settings to default values
+     * 
+     */
+    void set_default_camera();
+
 private:
     glm::vec3 eye;
     glm::vec3 center;
