@@ -1,3 +1,5 @@
+#ifndef CAMERA_ENUM_H
+#define CAMERA_ENUM_H
 #pragma once
 enum CameraMode
 {
@@ -6,3 +8,4 @@ enum CameraMode
     CAMERA_ROTATE,
     CAMERA_TRANSLATE
 };
+#endif

@@ -1,4 +1,7 @@
+#ifndef PARTICLE_BUILDER_H
+#define PARTICLE_BUILDER_H
 #pragma once
+
 #include <GLCommon.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -157,3 +160,5 @@ private:
      */
     std::string format_string_vec3(glm::vec3);
 };
+
+#endif

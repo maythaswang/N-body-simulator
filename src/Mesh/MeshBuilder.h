@@ -1,5 +1,5 @@
-#ifndef H_MESH_BUILDER
-#define H_MESH_BUILDER
+#ifndef MESH_BUILDER_H
+#define MESH_BUILDER_H
 #include "RenderComponents.h"
 
 /**

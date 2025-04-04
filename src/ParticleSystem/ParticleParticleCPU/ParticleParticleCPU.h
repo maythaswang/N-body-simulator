@@ -1,5 +1,9 @@
+#ifndef PARTICLE_PARTICLE_CPU_H
+#define PARTICLE_PARTICLE_CPU_H
 #pragma once
-#include <Simulator.h>
+
+#include <ParticleSystem/Simulator/Simulator.h>
+
 class ParticleParticleCPU : public Simulator
 {
 public:
@@ -30,3 +34,5 @@ private:
 
     void update_SSBO();
 };
+
+#endif

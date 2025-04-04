@@ -1,4 +1,4 @@
-#include <Simulator.h>
+#include "Simulator.h"
 // TODO: Implement Save/Load (both setup only and current state)
 
 Simulator::Simulator(GLfloat n_particle, GLfloat gravitational_constant, GLfloat softening_factor, GLfloat timestep_size, SimulatorIntegrator integrator)
@@ -26,7 +26,7 @@ void Simulator::next_step()
         this->update_position_velocity_verlet();
         break;
     }
-    
+
     this->current_step += 1;
 }
 

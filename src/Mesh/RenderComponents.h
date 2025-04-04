@@ -1,5 +1,5 @@
-#ifndef H_RENDER_COMPONENTS
-#define H_RENDER_COMPONENTS
+#ifndef RENDER_COMPONENTS_H
+#define RENDER_COMPONENTS_H
 #pragma once
 #include <GLCommon.h>
 #include <vector>

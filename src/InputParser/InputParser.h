@@ -1,7 +1,10 @@
+#ifndef INPUT_PARSER_H
+#define INPUT_PARSER_H
 #pragma once
+
 #include <GLcommon.h>
-#include <ParticleBuilder.h>
-#include <DefaultTestLoader.h>
+#include <ParticleSystem/ParticleBuilder/ParticleBuilder.h>
+#include <DefaultTestLoader/DefaultTestLoader.h>
 
 #include <iostream>
 #include <string>
@@ -127,3 +130,5 @@ private:
      */
     void clear_cin();
 };
+
+#endif
