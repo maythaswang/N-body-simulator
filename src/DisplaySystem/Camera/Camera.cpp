@@ -4,6 +4,8 @@
 
 Camera::Camera()
 {
+    this->aspect_w = 640;
+    this->aspect_h = 480;
     this->set_default_camera();
 }
 
@@ -13,8 +15,6 @@ void Camera::set_default_camera(){
     this->up = glm::vec3(0, 1.0, 0);
 
     this->fovy = 90;
-    this->aspect_w = 640;
-    this->aspect_h = 480;
     this->z_near = 0.1;
     this->z_far = 2000000.0;
 
