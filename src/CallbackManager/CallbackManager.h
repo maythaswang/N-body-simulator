@@ -101,4 +101,6 @@ private:
      * @return 1 if camera is in orbit mode
      */
     bool get_camera_orbiting();
+
+    void handle_pause();
 };
