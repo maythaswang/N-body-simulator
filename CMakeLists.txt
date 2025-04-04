@@ -59,24 +59,12 @@ set(PROJECT_SOURCES
     src/ParticleSystem/ParticleParticleGPU/ParticleParticleGPU.cpp
     src/InputParser/InputParser.cpp
     src/DefaultTestLoader/DefaultTestLoader.cpp
+    src/Mesh/MeshBuilder.cpp
 )
 
 set(INCLUDE_DIRS
     include/
-    src/include/
-    src/DisplaySystem/
-    src/DisplaySystem/WindowFactory/
-    src/DisplaySystem/Camera/
-    src/CallbackManager/
-    src/ProgramInit/
-    src/Shader/
-    src/ParticleSystem/Simulator/
-    src/ParticleSystem/ParticleBuilder/
-    src/Renderer/
-    src/ParticleSystem/ParticleParticleCPU/
-    src/ParticleSystem/ParticleParticleGPU/
-    src/InputParser/
-    src/DefaultTestLoader/
+    src/
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})

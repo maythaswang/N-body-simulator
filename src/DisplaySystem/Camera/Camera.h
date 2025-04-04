@@ -1,6 +1,6 @@
+#ifndef CAMERA_H
+#define CAMERA_H
 #pragma once
-#ifndef camera_h
-#define camera_h
 
 #include <GLCommon.h>
 #include <glm/glm.hpp>
@@ -124,6 +124,12 @@ public:
      * @return Projection Matrix
      */
     glm::mat4 get_projection_matrix();
+
+    /**
+     * @brief Set the camera settings to default values
+     * 
+     */
+    void set_default_camera();
 
 private:
     glm::vec3 eye;

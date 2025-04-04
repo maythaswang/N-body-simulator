@@ -1,3 +1,5 @@
+#ifndef PROGRAM_INIT_H
+#define PROGRAM_INIT_H
 #pragma once
 #include <GLCommon.h>
 
@@ -33,3 +35,5 @@ namespace ProgramInit
      */
     void get_max_workgroup_info(int[3], int[3], int *);
 }
+
+#endif

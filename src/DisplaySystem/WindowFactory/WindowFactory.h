@@ -1,7 +1,5 @@
-#pragma once
-// Added guards just in case.
-#ifndef display_h
-#define display_h
+#ifndef WINDOW_FACTORY_H
+#define WINDOW_FACTORY_H
 
 #include <GLCommon.h>
 
