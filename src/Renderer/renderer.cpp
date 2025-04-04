@@ -15,7 +15,7 @@ Renderer::Renderer(GLFWwindow *window, Shader *shader_program, Camera *camera, S
     this->previous_time = this->start_time;
 
     // Configuration
-    this->use_instancing = true;
+    this->use_instancing = false;
     this->use_wireframe = false;
 }
 
