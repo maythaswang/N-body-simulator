@@ -31,17 +31,30 @@ public:
     void render();
 
     /**
-     * @brief Get the use_instancing variable
+     * @brief Get the use_instancing state
      * 
      */
     bool get_use_instancing();
 
     /**
-     * @brief Set the use_instancing variable
+     * @brief Set the use_instancing state
      * @param use_instancing 
      * 
      */
     void set_use_instancing(bool use_instancing);
+
+    /**
+     * @brief Get the use_wireframe state
+     * 
+     */
+    bool get_use_wireframe();
+
+    /**
+     * @brief Set the use_wireframe state
+     * 
+     * @param use_wireframe 
+     */
+    void set_use_wireframe(bool use_wireframe);
 
 private:
     GLFWwindow *window;
@@ -50,7 +63,10 @@ private:
     Simulator *simulator;
     RenderComponents *render_components;
 
-    float use_instancing;
+    // states
+    bool use_wireframe;
+    bool use_instancing;
+
     double start_time; // For calculating fps only
     double previous_time;
     long frame_count;

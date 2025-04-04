@@ -15,7 +15,8 @@ Renderer::Renderer(GLFWwindow *window, Shader *shader_program, Camera *camera, S
     this->previous_time = this->start_time;
 
     // Configuration
-    this->use_instancing = true; // TODO: We have no handler for this yet
+    this->use_instancing = true;
+    this->use_wireframe = false;
 }
 
 void Renderer::render()
@@ -76,10 +77,31 @@ void Renderer::post_processing()
     // TODO: do bloom or sth here
 }
 
-bool Renderer::get_use_instancing(){
+bool Renderer::get_use_instancing()
+{
     return this->use_instancing;
 }
 
-void Renderer::set_use_instancing(bool use_instancing){
+void Renderer::set_use_instancing(bool use_instancing)
+{
     this->use_instancing = use_instancing;
+}
+
+bool Renderer::get_use_wireframe()
+{
+    return this->use_wireframe;
+}
+
+void Renderer::set_use_wireframe(bool use_wireframe)
+{
+    this->use_wireframe = use_wireframe;
+
+    if (use_wireframe)
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+    else
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
 }
