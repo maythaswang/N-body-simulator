@@ -160,85 +160,6 @@ void CallbackManager::set_window_resize_callback()
         glViewport(0, 0, width, height); });
 }
 
-void CallbackManager::set_keyboard_callback()
-{
-    glfwSetWindowUserPointer(this->window, reinterpret_cast<void *>(this));
-
-    glfwSetKeyCallback(this->window, [](GLFWwindow *window, int key, int scancode, int action, int mods)
-                       {
-        CallbackManager * callback_manager = reinterpret_cast<CallbackManager *> ( glfwGetWindowUserPointer ( window ));
-        if (callback_manager){
-            if (key == GLFW_KEY_P && action == GLFW_PRESS)
-            {   
-                callback_manager->handle_pause();
-            } 
-
-            if (key == GLFW_KEY_H && action == GLFW_PRESS)
-            {
-                std::cout << g_controls_help << std::endl;
-            }
-
-            if (key == GLFW_KEY_I && action == GLFW_PRESS){
-                std::cout << callback_manager->simulator->get_setup_log()<< std::endl;
-            }
-            
-            if (key == GLFW_KEY_O && action == GLFW_PRESS){
-                bool is_orbiting = callback_manager->get_camera_orbiting();
-                callback_manager->set_camera_orbiting(!is_orbiting);
-
-                // This one checks the previous state and do the inverse 
-                std::string msg = (is_orbiting) ? "Camera is set to free flying mode." : "Camera is set to orbit mode.";
-                std::cout << msg << std::endl;
-            }
-
-            // TODO: Add all below this to README and the help message
-            if (key== GLFW_KEY_R && action == GLFW_PRESS){
-                std::cout << "Camera is reset to origin." << std::endl;
-                callback_manager->camera->set_default_camera();
-            }
-
-            if (key== GLFW_KEY_K && action == GLFW_PRESS){
-                bool instancing_state = callback_manager->renderer->get_use_instancing();
-                callback_manager->renderer->set_use_instancing(!instancing_state);
-
-                if(!instancing_state){
-                    std::cout << "Instancing mode enabled." << std::endl;
-                } else {
-                    std::cout << "Instancing mode disabled." << std::endl;
-                }
-            }
-
-            if (key == GLFW_KEY_F && action == GLFW_PRESS){
-                bool wireframe_state = callback_manager->renderer->get_use_wireframe();
-                callback_manager->renderer->set_use_wireframe(!wireframe_state);
-
-                if(!wireframe_state){
-                    std::cout << "Wireframe mode enabled." << std::endl;
-                } else {
-                    std::cout << "Wireframe mode disabled." << std::endl;
-                }
-            }
-
-        } });
-}
-
-void CallbackManager::handle_pause()
-{
-    GLuint current_step = this->simulator->get_current_step();
-    GLfloat timestep_size = this->simulator->get_timestep_size();
-    if (this->simulator->get_running_state())
-    {
-        std::cout << "The simulation is now paused. Step: " << current_step << ", Time (timestep size): "
-                  << current_step * timestep_size << "\nPress p to resume..." << std::endl;
-    }
-    else
-    {
-        std::cout << "Resuming simulation..." << std::endl;
-    }
-
-    this->simulator->set_running_state(!this->simulator->get_running_state());
-}
-
 void CallbackManager::set_scroll_callback()
 {
     glfwSetWindowUserPointer(this->window, reinterpret_cast<void *>(this));
@@ -260,3 +181,90 @@ void CallbackManager::set_scroll_callback()
             }
         } });
 }
+
+void CallbackManager::set_keyboard_callback()
+{
+    glfwSetWindowUserPointer(this->window, reinterpret_cast<void *>(this));
+
+    glfwSetKeyCallback(this->window, [](GLFWwindow *window, int key, int scancode, int action, int mods)
+                       {
+        CallbackManager * callback_manager = reinterpret_cast<CallbackManager *> ( glfwGetWindowUserPointer ( window ));
+        if (callback_manager && action == GLFW_PRESS){
+            switch(key){
+                case GLFW_KEY_P: // Pause
+                    callback_manager->handle_pause();
+                    break;
+
+                case GLFW_KEY_H: // Help
+                    std::cout << g_controls_help << std::endl;
+                    break;
+
+                case GLFW_KEY_I: // Show Setup log
+                    std::cout << callback_manager->simulator->get_setup_log()<< std::endl;
+                    break;
+                
+                case GLFW_KEY_O: // Toggle Orbit Mode
+                    callback_manager->handle_orbit_toggle();
+                    break;
+
+                // TODO: Add all below this to README and the help message
+                case GLFW_KEY_R: // Reset camera origin
+                    std::cout << "Camera is reset to origin." << std::endl;
+                    callback_manager->camera->set_default_camera();
+                    break;
+
+                case GLFW_KEY_K: // Toggle Instancing
+                    callback_manager->handle_instancing_toggle();
+                    break;
+
+                case GLFW_KEY_F: // Toggle Wireframe Mode
+                    callback_manager->handle_wireframe_toggle();
+                    break;
+
+                default: 
+                    break;
+            }
+        } });
+}
+
+void CallbackManager::handle_pause()
+{
+    GLuint current_step = this->simulator->get_current_step();
+    GLfloat timestep_size = this->simulator->get_timestep_size();
+    if (this->simulator->get_running_state())
+    {
+        std::cout << "The simulation is now paused. Step: " << current_step << ", Time (timestep size): "
+                  << current_step * timestep_size << "\nPress p to resume..." << std::endl;
+    }
+    else
+    {
+        std::cout << "Resuming simulation..." << std::endl;
+    }
+
+    this->simulator->set_running_state(!this->simulator->get_running_state());
+}
+
+void CallbackManager::handle_orbit_toggle()
+{
+    bool is_orbiting = this->get_camera_orbiting();
+    this->set_camera_orbiting(!is_orbiting);
+    std::string msg = (is_orbiting) ? "Camera is set to free flying mode." : "Camera is set to orbit mode.";
+    std::cout << msg << std::endl;
+}
+
+void CallbackManager::handle_instancing_toggle()
+{
+    bool instancing_state = this->renderer->get_use_instancing();
+    this->renderer->set_use_instancing(!instancing_state);
+    std::string msg = (instancing_state) ? "Instancing mode disabled." : "Instancing mode enabled.";
+    std::cout << msg << std::endl;
+}
+
+void CallbackManager::handle_wireframe_toggle()
+{
+    bool wireframe_state = this->renderer->get_use_wireframe();
+    this->renderer->set_use_wireframe(!wireframe_state);
+    std::string msg = (wireframe_state) ? "Wireframe mode disabled." : "Wireframe mode enabled.";
+    std::cout << msg << std::endl;
+}
+
