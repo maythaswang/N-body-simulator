@@ -126,18 +126,23 @@ int main(int argc, char *argv[])
 	simulator->append_setup_log(setup_log_particle);
 	simulator->append_setup_log("\n--------------------------------------------------\n\n");
 
-	CallbackManager callback_manager = CallbackManager(window, &camera, simulator);
-	Renderer renderer = Renderer(&callback_manager, window, &shader_program, &camera, simulator, &render_components);
+	Renderer renderer = Renderer( window, &shader_program, &camera, simulator, &render_components);
+	CallbackManager callback_manager = CallbackManager(window, &camera, simulator, &renderer);
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
 
-	set_debug_mode(1,0,0);
+	set_debug_mode(1, 0, 0);
 	std::cout << simulator->get_setup_log() << std::endl;
 	std::cout << g_controls_help << std::endl;
 	std::cout << "Starting Simulator in paused state..." << std::endl;
 	while (!glfwWindowShouldClose(window))
 	{
+		// Process Input
+		glfwPollEvents();
+		callback_manager.process_input();
+
+		// Draw
 		renderer.render();
 	}
 
