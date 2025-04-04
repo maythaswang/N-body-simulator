@@ -1,6 +1,6 @@
+#ifndef CAMERA_H
+#define CAMERA_H
 #pragma once
-#ifndef camera_h
-#define camera_h
 
 #include <GLCommon.h>
 #include <glm/glm.hpp>

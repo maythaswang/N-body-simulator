@@ -1,6 +1,10 @@
+#ifndef PARTICLE_PARTICLE_GPU_H
+#define PARTICLE_PARTICLE_GPU_H
 #pragma once
-#include <Simulator.h>
-#include <Shader.h>
+
+#include <ParticleSystem/Simulator/Simulator.h>
+#include <Shader/Shader.h>
+
 class ParticleParticleGPU : public Simulator
 {
 public:
@@ -51,3 +55,5 @@ private:
      */
     void update_position_vector(glm::vec4 *);
 };
+
+#endif

@@ -1,9 +1,13 @@
+#ifndef SIMULATOR_H
+#define SIMULATOR_H
 #pragma once
+
 #include <GLCommon.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/random.hpp>
-#include <SimulatorEnum.h>
+#include "SimulatorEnum.h"
+
 #include <math.h>
 #include <vector>
 #include <iostream>
@@ -145,3 +149,5 @@ protected:
      */
     virtual void update_position_velocity_verlet();
 };
+
+#endif

@@ -1,9 +1,12 @@
+#ifndef CALLBACK_MANAGER_H
+#define CALLBACK_MANAGER_H
 #pragma once
+
 #include <GLCommon.h>
-#include <Camera.h>
-#include <CameraEnum.h>
-#include <Simulator.h>
-#include <renderer.h>
+#include <DisplaySystem/Camera/Camera.h>
+#include <ParticleSystem/Simulator/Simulator.h>
+#include <Renderer/Renderer.h>
+#include "CameraEnum.h"
 
 /**
  * @brief Handle Callbacks recieved from window, mouse, keyboards and update the components accordingly
@@ -71,10 +74,9 @@ private:
      */
     void set_keyboard_callback();
 
-
     /**
      * @brief Set the mouse scroll callback
-     * 
+     *
      */
     void set_scroll_callback();
 
@@ -92,21 +94,23 @@ private:
 
     /**
      * @brief Set the camera status to orbiting / free
-     * 
+     *
      * @param camera_orbiting {0: free mode, 1: orbit mode}
      */
     void set_camera_orbiting(bool);
 
     /**
      * @brief Get camera orbiting status
-     * 
+     *
      * @return 1 if camera is in orbit mode
      */
     bool get_camera_orbiting();
 
     /**
      * @brief Handle simulation pausing
-     * 
+     *
      */
     void handle_pause();
 };
+
+#endif

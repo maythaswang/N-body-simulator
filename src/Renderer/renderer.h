@@ -1,9 +1,12 @@
+#ifndef RENDERER_H
+#define RENDERER_H
 #pragma once
+
 #include <GLCommon.h>
-#include <Shader.h>
-#include <Camera.h>
-#include <Simulator.h>
-#include <RenderComponents.h>
+#include <Shader/Shader.h>
+#include <DisplaySystem/Camera/Camera.h>
+#include <ParticleSystem/Simulator/Simulator.h>
+#include <Mesh/RenderComponents.h>
 
 /**
  * @brief Handle rendering frames onto window.
@@ -79,3 +82,5 @@ private:
 
     void post_processing();
 };
+
+#endif

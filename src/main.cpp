@@ -1,20 +1,20 @@
 #include <GLCommon.h>
 #include <iostream>
 
-#include <ProgramInit.h>
-#include <Shader.h>
-#include <CallbackManager.h>
-#include <Camera.h>
-#include <WindowFactory.h>
-#include <ParticleBuilder.h>
-#include <Simulator.h>
+#include <ProgramInit/ProgramInit.h>
+#include <Shader/Shader.h>
+#include <CallbackManager/CallbackManager.h>
+#include <DisplaySystem/Camera/Camera.h>
+#include <DisplaySystem/WindowFactory/WindowFactory.h>
+#include <ParticleSystem/ParticleBuilder/ParticleBuilder.h>
+#include <ParticleSystem/Simulator/Simulator.h>
 
-#include <Renderer.h>
+#include <Renderer/Renderer.h>
 #include <StringCommon.h>
-#include <ParticleParticleCPU.h>
-#include <ParticleParticleGPU.h>
-#include <InputParser.h>
-#include <MeshBuilder.h>
+#include <ParticleSystem/ParticleParticleCPU/ParticleParticleCPU.h>
+#include <ParticleSystem/ParticleParticleGPU/ParticleParticleGPU.h>
+#include <InputParser/InputParser.h>
+#include <Mesh/MeshBuilder.h>
 
 // For initialization
 const unsigned int SCREEN_WIDTH = 640;
