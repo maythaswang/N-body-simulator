@@ -72,8 +72,6 @@ RenderComponents MeshBuilder::build_sphere(GLfloat radius, GLfloat sector_count,
     this->build_render_components(&render_components, vertices, indices);
 
     return render_components;
-    // this->generate_sphere_indices(&mesh, sector_count, stack_count);
-    // return mesh;
 }
 
 void MeshBuilder::build_render_components(RenderComponents *render_components, std::vector<glm::vec3> vertices, std::vector<glm::ivec3> indices)
@@ -99,11 +97,3 @@ void MeshBuilder::build_render_components(RenderComponents *render_components, s
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
-
-// void MeshBuilder::generate_sphere_indices(RenderingComponents *mesh, GLuint sector_count, GLuint stack_count)
-// {
-
-//     // Copy the indices into the mesh struct
-//     mesh->indices.resize(indices.size());
-//     std::copy(indices.begin(), indices.end(), mesh->indices.begin());
-// }

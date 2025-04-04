@@ -3,16 +3,10 @@
 #include "RenderComponents.h"
 
 /**
- * @brief TBH im doing this part just because I wanted to try my hand on gpu instancing lol....
+ * @brief Build meshes (this time only sphere lol)
+ * @note TBH im doing this part just because I wanted to try my hand on gpu instancing lol....
  * The implementation for sphere is fully based from songho.ca so please check it out if you are
  * interested for further information!!! :)
- */
-
-
-
-/**
- * @brief Build meshes (this time only sphere lol)
- *
  */
 class MeshBuilder
 {
@@ -29,15 +23,6 @@ public:
      * @return Mesh object storing vertices and indices
      */
     RenderComponents build_sphere(GLfloat radius, GLfloat sector_count, GLfloat stack_count);
-
-    // /**
-    //  * @brief generate indices for sphere
-    //  *
-    //  * @param mesh Mesh struct
-    //  * @param sector_count longitude
-    //  * @param stack_count latitude
-    //  */
-    // void generate_sphere_indices(RenderingComponents *, GLuint sector_count, GLuint stack_count);
 
 private:
     /**

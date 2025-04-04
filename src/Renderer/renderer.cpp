@@ -39,7 +39,6 @@ void Renderer::render()
     else
     {
         glDrawElementsInstanced(GL_TRIANGLES, 3 * this->render_components->n_inds, GL_UNSIGNED_INT, (void *)0, this->simulator->get_n_particle());
-        // glDrawArraysInstanced(GL_TRIANGLES, 0, this->render_components->n_inds, this->simulator->get_n_particle()); // This created some insane stuff (I like it but it gotta go)
     }
 
     // Post processing
