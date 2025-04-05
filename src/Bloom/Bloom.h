@@ -1,5 +1,5 @@
-#ifndef POST_PROCESSOR_H
-#define POST_PROCESSOR_H
+#ifndef BLOOM_H
+#define BLOOM_H
 #pragma once
 #include <GLCommon.h>
 #include <Shader/Shader.h>
@@ -8,13 +8,14 @@
  * @brief This class basically allows top-down for applying post-processing shader, the final shader will have to summarize the generated textures and 
  * @warning ACTUALLY YOU KNOW WHAT, THIS DOESN'T REALLY WORK.... I'LL JUST LIE DOWN AND CRY
  * @note For this to actually work, this will require a proper texture management system (global?) that stores intermediate shader texture from each stages
+ * @note Allow building only once
  */
 
-class PostProcessor
+class Bloom
 {
 public:
-    PostProcessor(GLfloat screen_h, GLfloat screen_w);
-    ~PostProcessor();
+    Bloom(GLfloat screen_h, GLfloat screen_w);
+    ~Bloom();
     
     /**
      * @brief Bind to render framebuffer for post processing
@@ -35,6 +36,12 @@ public:
      * 
      */
     void draw_result();
+
+    /**
+     * @brief Build PostProcessor
+     * @warning Can be done only once
+     */
+    void build_post_processor();
         
 private: 
     GLuint rect_VAO, rect_VBO; // Rectangle for result screen
