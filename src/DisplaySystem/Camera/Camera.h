@@ -131,6 +131,9 @@ public:
      */
     void set_default_camera();
 
+    GLfloat get_aspect_w();
+    GLfloat get_aspect_h();
+
 private:
     glm::vec3 eye;
     glm::vec3 center;

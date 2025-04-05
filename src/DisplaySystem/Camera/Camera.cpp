@@ -192,3 +192,11 @@ void Camera::build_projection_matrix()
 {
     this->projection_mat = glm::perspective(glm::radians(this->fovy), this->aspect_w / this->aspect_h, this->z_near, this->z_far);
 }
+
+GLfloat Camera::get_aspect_w(){
+    return this->aspect_w;
+}
+
+GLfloat Camera::get_aspect_h(){
+    return this->aspect_h;
+}

@@ -60,6 +60,7 @@ set(PROJECT_SOURCES
     src/InputParser/InputParser.cpp
     src/DefaultTestLoader/DefaultTestLoader.cpp
     src/Mesh/MeshBuilder.cpp
+    src/PostProcessingSystem/PostProcessor/PostProcessor.cpp
 )
 
 set(INCLUDE_DIRS
