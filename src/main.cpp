@@ -15,6 +15,7 @@
 #include <ParticleSystem/ParticleParticleGPU/ParticleParticleGPU.h>
 #include <InputParser/InputParser.h>
 #include <Mesh/MeshBuilder.h>
+#include <PostProcessingSystem/PostProcessor/PostProcessor.h>
 
 // For initialization
 const unsigned int SCREEN_WIDTH = 640;
@@ -117,8 +118,12 @@ int main(int argc, char *argv[])
 	simulator->append_setup_log(setup_log_particle);
 	simulator->append_setup_log("\n--------------------------------------------------\n\n");
 
-	Renderer renderer = Renderer( window, &shader_program, &camera, simulator, &render_components);
+	Renderer renderer = Renderer(window, &shader_program, &camera, simulator, &render_components);
 	CallbackManager callback_manager = CallbackManager(window, &camera, simulator, &renderer);
+
+	// Post Processor
+	// ----------------------------------------------------------------------------
+	// PostProcessor post_processor = PostProcessor(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
@@ -133,8 +138,15 @@ int main(int argc, char *argv[])
 		glfwPollEvents();
 		callback_manager.process_input();
 
+		// Post Processing setup
+		// post_processor.bind_render_FBO();
+
 		// Draw
 		renderer.render();
+
+		// Post Processing 
+		// post_processor.bind_default_FBO();
+		// post_processor.draw_result();
 	}
 
 	// Termination Subroutine
