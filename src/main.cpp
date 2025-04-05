@@ -15,7 +15,7 @@
 #include <ParticleSystem/ParticleParticleGPU/ParticleParticleGPU.h>
 #include <InputParser/InputParser.h>
 #include <Mesh/MeshBuilder.h>
-#include <PostProcessingSystem/PostProcessor/PostProcessor.h>
+#include <Bloom/Bloom.h>
 
 // For initialization
 const unsigned int SCREEN_WIDTH = 640;
