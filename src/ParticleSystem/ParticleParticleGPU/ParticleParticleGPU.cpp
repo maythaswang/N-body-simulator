@@ -91,13 +91,13 @@ void ParticleParticleGPU::init_compute_shader()
     switch (this->integrator)
     {
     case INTEGRATOR_EULER:
-        compute_shader = shader_program.compile_shader("./shader_source/update_position_euler.comp.glsl", GL_COMPUTE_SHADER);
+        compute_shader = shader_program.compile_shader("./shader_source/update_position_euler.comp", GL_COMPUTE_SHADER);
         break;
     case INTEGRATOR_VELOCITY_VERLET:
-        compute_shader = shader_program.compile_shader("./shader_source/update_position_velocity_verlet.comp.glsl", GL_COMPUTE_SHADER);
+        compute_shader = shader_program.compile_shader("./shader_source/update_position_velocity_verlet.comp", GL_COMPUTE_SHADER);
         break;
     default:
-        compute_shader = shader_program.compile_shader("./shader_source/update_position_velocity_verlet.comp.glsl", GL_COMPUTE_SHADER);
+        compute_shader = shader_program.compile_shader("./shader_source/update_position_velocity_verlet.comp", GL_COMPUTE_SHADER);
         break;
     }
     shader_program.link_shader(compute_shader);

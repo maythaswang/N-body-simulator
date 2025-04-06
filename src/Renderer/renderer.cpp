@@ -51,7 +51,7 @@ void Renderer::render()
     this->post_processing();
 
     // End frame
-    glfwSwapBuffers(window);
+    // glfwSwapBuffers(window);
     glBindVertexArray(0);
     this->frame_count += 1;
     this->show_fps();
