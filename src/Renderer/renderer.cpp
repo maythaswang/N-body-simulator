@@ -49,9 +49,6 @@ void Renderer::render()
         glDrawElementsInstanced(GL_TRIANGLES, 3 * this->render_components->n_inds, GL_UNSIGNED_INT, (void *)0, this->simulator->get_n_particle());
     }
 
-    // Post processing
-    this->post_processing();
-
     // End frame
     // glfwSwapBuffers(window);
     glBindVertexArray(0);
@@ -76,12 +73,6 @@ void Renderer::show_fps()
 
     ss << "N-BODY SIMULATOR. FPS: " << 1.0 / delta_time << ". Time elapsed: " << cur_time;
     glfwSetWindowTitle(this->window, ss.str().c_str());
-}
-
-// Post processing stage
-void Renderer::post_processing()
-{
-    // TODO: do bloom or sth here
 }
 
 bool Renderer::get_use_instancing()
