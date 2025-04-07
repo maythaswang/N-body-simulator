@@ -151,6 +151,7 @@ int main(int argc, char *argv[])
 		// Post Processing
 		if (bloom.get_enabled())
 		{
+			bloom.apply_effect();
 			bloom.bind_default_FBO();
 			bloom.draw_result();
 		}

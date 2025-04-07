@@ -21,8 +21,8 @@ Renderer::Renderer(GLFWwindow *window, Shader *shader_program, Camera *camera, S
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
-    // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClearColor(0.05f, 0.05f, 0.07f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    // glClearColor(0.05f, 0.05f, 0.07f, 1.0f);
     glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
     glfwSwapInterval(1);
 }

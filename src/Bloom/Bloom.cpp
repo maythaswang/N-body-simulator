@@ -55,15 +55,22 @@ void Bloom::init()
 
     // Bind texture to FBO
     glBindFramebuffer(GL_FRAMEBUFFER, this->pingpong_FBO[0]);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->pingpong_FBO[0], 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->pingpong_texture[0], 0);
     init_success &= this->check_FBO();
 
     glBindFramebuffer(GL_FRAMEBUFFER, this->pingpong_FBO[1]);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->pingpong_FBO[1], 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->pingpong_texture[1], 0);
     init_success &= this->check_FBO();
 
     // Prepare shader
     this->gaussian_blur_shader = Shader();
+    GLuint gaussian_blur_shader_vs = gaussian_blur_shader.compile_shader("./shader_source/bloom/gaussian_blur.vs", GL_VERTEX_SHADER);
+    GLuint gaussian_blur_shader_fs = gaussian_blur_shader.compile_shader("./shader_source/bloom/gaussian_blur.fs", GL_FRAGMENT_SHADER);
+    this->gaussian_blur_shader.link_shader(gaussian_blur_shader_vs);
+    this->gaussian_blur_shader.link_shader(gaussian_blur_shader_fs);
+
+    this->gaussian_blur_shader.use();
+    this->gaussian_blur_shader.set_int("u_prev_texture", 0);
 
     // Stage 2
     // ---------------------------------------------------
@@ -104,6 +111,35 @@ void Bloom::setup_texture(GLuint tex_id)
 
 void Bloom::apply_effect()
 {
+    // glDisable(GL_DEPTH_TEST);
+    bool is_vertical = true, initial_run = true;
+    int blur_intensity = 8;
+    this->gaussian_blur_shader.use();
+
+    for (int i = 0; i < blur_intensity; i++)
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, this->pingpong_FBO[!is_vertical]);
+        glBindVertexArray(this->rect_VAO);
+        
+        this->gaussian_blur_shader.set_bool("is_horizontal", !is_vertical);
+
+        glActiveTexture(GL_TEXTURE0);
+        if (initial_run)
+        {
+            glBindTexture(GL_TEXTURE_2D, this->color_threshold_texture);
+            initial_run = false;
+        }
+        else
+        {
+            glBindTexture(GL_TEXTURE_2D, this->pingpong_texture[is_vertical]);
+        }
+
+        glDisable(GL_DEPTH_TEST);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        is_vertical = !is_vertical;
+    }
+
+    glBindVertexArray(0);
 }
 
 void Bloom::bind_render_FBO()
@@ -175,12 +211,12 @@ void Bloom::draw_result()
 {
     this->bloom_combine_shader.use();
     glBindVertexArray(this->rect_VAO);
-    
+
     // Bind texture
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, this->color_texture);
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, this->color_threshold_texture);
+    glBindTexture(GL_TEXTURE_2D, this->pingpong_texture[0]);
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
