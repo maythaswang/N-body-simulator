@@ -10,7 +10,10 @@ out vec4 FragColor;
 void main() {
     vec3 color = texture(u_color_texture, tex_coord).rgb;
     vec3 blur = texture(u_blur_texture, tex_coord).rgb;
-    color += blur*0.8;
+    color += blur;
+
+    // color = vec3(1.0) - exp(-color * 1);
+    // color = pow(color, vec3(1.0/2.2));
 
     FragColor = vec4(color,1.0f);
     
