@@ -30,22 +30,29 @@ Renderer::Renderer(GLFWwindow *window, Shader *shader_program, Camera *camera, S
 void Renderer::render()
 {
     // Begin
+    glEnable(GL_DEPTH_TEST);
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Render
     this->shader_program->use();
     this->shader_program->set_mat4("modelview", this->camera->get_view_matrix() * this->camera->get_model_matrix());
     this->shader_program->set_mat4("projection", this->camera->get_projection_matrix());
-    this->shader_program->set_bool("use_instancing", this->use_instancing);
     this->shader_program->set_bool("use_mass_size", this->use_msize);
 
     glBindVertexArray(this->render_components->VAO);
     if (!this->use_instancing)
     {
+        this->shader_program->set_bool("use_instancing", this->use_instancing);
         glDrawArrays(GL_POINTS, 0, this->simulator->get_n_particle());
     }
     else
     {
+        // Fake solution but it works.
+        this->shader_program->set_bool("use_instancing", !this->use_instancing);
+        glDrawArrays(GL_POINTS, 0, this->simulator->get_n_particle());
+
+        this->shader_program->set_bool("use_instancing", this->use_instancing);
         glDrawElementsInstanced(GL_TRIANGLES, 3 * this->render_components->n_inds, GL_UNSIGNED_INT, (void *)0, this->simulator->get_n_particle());
     }
 

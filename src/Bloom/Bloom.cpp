@@ -40,6 +40,13 @@ void Bloom::init()
     GLuint attachments[2] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
     glDrawBuffers(2, attachments);
 
+    glGenRenderbuffers(1, &this->render_depth_buffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, this->render_depth_buffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, this->screen_w, this->screen_h);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, this->render_depth_buffer);
+
+    glDepthFunc(GL_LESS);
+
     init_success &= this->check_FBO();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -112,14 +119,14 @@ void Bloom::apply_effect()
 {
     // glDisable(GL_DEPTH_TEST);
     bool is_vertical = true, initial_run = true;
-    int blur_intensity = 16;
+    int blur_intensity = 8;
     this->gaussian_blur_shader.use();
 
     for (int i = 0; i < blur_intensity; i++)
     {
         glBindFramebuffer(GL_FRAMEBUFFER, this->pingpong_FBO[!is_vertical]);
         glBindVertexArray(this->rect_VAO);
-        
+
         this->gaussian_blur_shader.set_bool("is_horizontal", !is_vertical);
 
         glActiveTexture(GL_TEXTURE0);
@@ -174,6 +181,9 @@ void Bloom::resize(GLfloat screen_w, GLfloat screen_h)
 
     glBindTexture(GL_TEXTURE_2D, this->pingpong_texture[1]);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, this->screen_w, this->screen_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+    glBindRenderbuffer(GL_RENDERBUFFER, this->render_depth_buffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, this->screen_w, this->screen_h);
 }
 
 void Bloom::generate_rectangle()
