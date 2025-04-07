@@ -59,6 +59,10 @@ public:
      */
     void set_use_wireframe(bool use_wireframe);
 
+    bool get_use_msize();
+
+    void set_use_msize(bool use_msize);
+
 private:
     GLFWwindow *window;
     Shader *shader_program;
@@ -69,6 +73,7 @@ private:
     // states
     bool use_wireframe;
     bool use_instancing;
+    bool use_msize; // mass-size
 
     double start_time; // For calculating fps only
     double previous_time;

@@ -17,6 +17,7 @@ Renderer::Renderer(GLFWwindow *window, Shader *shader_program, Camera *camera, S
     // Configuration
     this->use_instancing = false;
     this->use_wireframe = false;
+    this->use_msize = false;
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
@@ -36,6 +37,7 @@ void Renderer::render()
     this->shader_program->set_mat4("modelview", this->camera->get_view_matrix() * this->camera->get_model_matrix());
     this->shader_program->set_mat4("projection", this->camera->get_projection_matrix());
     this->shader_program->set_bool("use_instancing", this->use_instancing);
+    this->shader_program->set_bool("use_mass_size", this->use_msize);
 
     glBindVertexArray(this->render_components->VAO);
     if (!this->use_instancing)
@@ -109,4 +111,14 @@ void Renderer::set_use_wireframe(bool use_wireframe)
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
+}
+
+bool Renderer::get_use_msize()
+{
+    return this->use_msize;
+}
+
+void Renderer::set_use_msize(bool use_msize)
+{
+    this->use_msize = use_msize;
 }
