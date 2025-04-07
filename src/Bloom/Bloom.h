@@ -55,6 +55,7 @@ private:
 
     // Stage 0: get the rendered color texture
     GLuint render_FBO; // Store result from rendering stage (ID 0)
+    GLuint render_depth_buffer;
     GLuint color_texture, color_threshold_texture;
 
     // Stage 1: 2-pass gaussian blur

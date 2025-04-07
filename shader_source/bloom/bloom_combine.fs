@@ -13,7 +13,7 @@ out vec4 FragColor;
 void main() {
     vec3 color = texture(u_color_texture, tex_coord).rgb;
     vec3 blur = texture(u_blur_texture, tex_coord).rgb;
-    color += blur*0.2;
+    color += blur*0.6;
 
     // Reinhard tone mapping
     // color = color/ (color + vec3(1.0));

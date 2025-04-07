@@ -23,8 +23,8 @@ uniform bool use_mass_size;
 out float star_mass;
 
 float calculate_mass_scaler(int id){
-  float scale = mass[id] / 100000;
-  return min(scale, 10.0f);
+  float scale = mass[id] / 1000000;
+  return min(scale, 15.0f);
 }
 
 void main() {
