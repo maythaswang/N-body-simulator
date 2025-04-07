@@ -16,42 +16,72 @@ Bloom::~Bloom()
 
 void Bloom::init()
 {
+    GLenum fbo_status;
+    bool init_success = 1;
+
     // Stage 0
     // ---------------------------------------------------
 
     // Render FrameBuffer
     glGenFramebuffers(1, &this->render_FBO);
-    // glBindFramebuffer(GL_FRAMEBUFFER, this->render_FBO);
 
-    // Color texture
+    // Color textures
     glGenTextures(1, &this->color_texture);
     this->setup_texture(this->color_texture);
-
     glGenTextures(1, &this->color_threshold_texture);
     this->setup_texture(this->color_threshold_texture);
 
+    // Bind texture to FBO
+    glBindFramebuffer(GL_FRAMEBUFFER, this->render_FBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->color_texture, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, this->color_threshold_texture, 0);
+
+    // use 2 attachment for this buffer
+    GLuint attachments[2] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
+    glDrawBuffers(2, attachments);
+
+    init_success &= this->check_FBO();
+
     // Stage 1
     // ---------------------------------------------------
-    this->gaussian_blur_shader = Shader();
 
+    // Pingpong 2 pass gaussian FBO
+    glGenFramebuffers(2, this->pingpong_FBO);
+
+    // Gen textures
     glGenTextures(2, this->pingpong_texture);
     this->setup_texture(this->pingpong_texture[0]);
     this->setup_texture(this->pingpong_texture[1]);
 
+    // Bind texture to FBO
+    glBindFramebuffer(GL_FRAMEBUFFER, this->pingpong_FBO[0]);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->pingpong_FBO[0], 0);
+    init_success &= this->check_FBO();
+
+    glBindFramebuffer(GL_FRAMEBUFFER, this->pingpong_FBO[1]);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->pingpong_FBO[1], 0);
+    init_success &= this->check_FBO();
+
+    // Prepare shader
+    this->gaussian_blur_shader = Shader();
+
     // Stage 2
     // ---------------------------------------------------
+
+    // Prepare shader
     this->bloom_combine_shader = Shader();
+    GLuint bloom_combine_shader_vs = bloom_combine_shader.compile_shader("./shader_source/bloom/bloom_combine.vs", GL_VERTEX_SHADER);
+    GLuint bloom_combine_shader_fs = bloom_combine_shader.compile_shader("./shader_source/bloom/bloom_combine.fs", GL_FRAGMENT_SHADER);
+    bloom_combine_shader.link_shader(bloom_combine_shader_vs);
+    bloom_combine_shader.link_shader(bloom_combine_shader_fs);
 
-    glGenTextures(1, &this->bloom_combine_texture);
-    this->setup_texture(this->bloom_combine_texture);
+    // Pre-set uniforms
+    bloom_combine_shader.use();
+    bloom_combine_shader.set_int("u_color_texture", 0);
+    bloom_combine_shader.set_int("u_blur_texture", 1);
 
-    // Stage 3
-    // ---------------------------------------------------
-    this->draw_final_shader = Shader();
-    GLuint draw_final_shader_vs = draw_final_shader.compile_shader("./shader_source/bloom/draw_final_texture.vs", GL_VERTEX_SHADER);
-    GLuint draw_final_shader_fs = draw_final_shader.compile_shader("./shader_source/bloom/draw_final_texture.fs", GL_FRAGMENT_SHADER);
-    draw_final_shader.link_shader(draw_final_shader_vs);
-    draw_final_shader.link_shader(draw_final_shader_fs);
+    // Reset Frame Buffer
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void Bloom::setup_texture(GLuint tex_id)
@@ -72,8 +102,13 @@ void Bloom::setup_texture(GLuint tex_id)
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex_id, 0);
 }
 
+void Bloom::apply_effect()
+{
+}
+
 void Bloom::bind_render_FBO()
 {
+    // Stage 0
     glBindFramebuffer(GL_FRAMEBUFFER, this->render_FBO);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
     glEnable(GL_DEPTH_TEST);
@@ -82,8 +117,8 @@ void Bloom::bind_render_FBO()
 void Bloom::bind_default_FBO()
 {
     // color buffer and depth buffer is not cleared here
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
     glDisable(GL_DEPTH_TEST);
 }
 
@@ -93,18 +128,16 @@ void Bloom::resize(GLfloat screen_w, GLfloat screen_h)
     this->screen_h = screen_h;
 
     // Do this for all textures
-    // glBindTexture(GL_TEXTURE_2D, this->color_texture);
-    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, this->screen_w, this->screen_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glBindTexture(GL_TEXTURE_2D, this->color_texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, this->screen_w, this->screen_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
-    // glBindTexture(GL_TEXTURE_2D, this->color_threshold_texture);
-    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, this->screen_w, this->screen_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glBindTexture(GL_TEXTURE_2D, this->color_threshold_texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, this->screen_w, this->screen_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
-    // glBindTexture(GL_TEXTURE_2D, this->pingpong_texture[0]);
-    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, this->screen_w, this->screen_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glBindTexture(GL_TEXTURE_2D, this->pingpong_texture[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, this->screen_w, this->screen_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
-    // glBindTexture(GL_TEXTURE_2D, this->pingpong_texture[1]);
-    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, this->screen_w, this->screen_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-    glBindTexture(GL_TEXTURE_2D, this->bloom_combine_texture);
+    glBindTexture(GL_TEXTURE_2D, this->pingpong_texture[1]);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, this->screen_w, this->screen_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 }
 
@@ -140,16 +173,33 @@ void Bloom::generate_rectangle()
 
 void Bloom::draw_result()
 {
-    this->draw_final_shader.use();
+    this->bloom_combine_shader.use();
     glBindVertexArray(this->rect_VAO);
+    
+    // Bind texture
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, this->color_texture);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, this->color_threshold_texture);
+
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
 }
 
-void Bloom::set_enabled(bool enabled){
+void Bloom::set_enabled(bool enabled)
+{
     this->enabled = enabled;
 }
 
-bool Bloom::get_enabled(){
+bool Bloom::get_enabled()
+{
     return this->enabled;
+}
+
+bool Bloom::check_FBO()
+{
+    bool failed = glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE;
+    if (failed)
+        std::cout << "Framebuffer not complete!" << std::endl;
+    return !failed;
 }
