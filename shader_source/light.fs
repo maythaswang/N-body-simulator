@@ -36,10 +36,11 @@ void main(){
     // Technically this should not be necessary for our case
     float luminance = dot(vec3(0.2126,0.7152,0.0722), color);
     // FragColorThreshold = vec4(1.0,1.0,1.0,1.0);
-    if(luminance > 1){
+
+    if(luminance > 0.5){
         FragColorThreshold = vec4(color,1.0f);
     } else {
-        FragColorThreshold = vec4(color,1.0f);
+        FragColorThreshold = vec4(0.0f);
         // FragColorThreshold = vec4(0.0f);
     }
 
