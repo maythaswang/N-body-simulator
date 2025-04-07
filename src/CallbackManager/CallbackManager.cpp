@@ -227,6 +227,10 @@ void CallbackManager::set_keyboard_callback()
                     callback_manager->handle_bloom_toggle();
                     break;
 
+                case GLFW_KEY_M: // Toggle mass-size
+                    callback_manager->handle_msize_toggle();
+                    break;
+
                 default: 
                     break;
             }
@@ -282,3 +286,10 @@ void CallbackManager::handle_bloom_toggle()
     std::cout << msg << std::endl;
 }
 
+void CallbackManager::handle_msize_toggle()
+{
+    bool msize_state = this->renderer->get_use_msize();
+    this->renderer->set_use_msize(!msize_state);
+    std::string msg = (msize_state) ? "mass-size disabled." : "mass-size enabled.";
+    std::cout << msg << std::endl;
+}
