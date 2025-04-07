@@ -58,16 +58,13 @@ private:
     GLuint color_texture, color_threshold_texture;
 
     // Stage 1: 2-pass gaussian blur
-    GLuint pingpong_FBO;
+    GLuint pingpong_FBO[2];
     GLuint pingpong_texture[2];
     Shader gaussian_blur_shader;
 
     // Stage 2: Combine color and 2-pass gaussian blur
-    GLuint bloom_combine_FBO, bloom_combine_texture;
+    GLuint bloom_combine_FBO;
     Shader bloom_combine_shader;
-
-    // Stage 3: Draw texture to screen
-    Shader draw_final_shader;
 
     /**
      * @brief Initialize FBOs and textures
@@ -88,6 +85,8 @@ private:
      *
      */
     void generate_rectangle();
+
+    bool check_FBO();
 };
 
 #endif
