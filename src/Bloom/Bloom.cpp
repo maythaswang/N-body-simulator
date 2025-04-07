@@ -41,6 +41,7 @@ void Bloom::init()
     glDrawBuffers(2, attachments);
 
     init_success &= this->check_FBO();
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     // Stage 1
     // ---------------------------------------------------
@@ -72,6 +73,7 @@ void Bloom::init()
     this->gaussian_blur_shader.use();
     this->gaussian_blur_shader.set_int("u_prev_texture", 0);
 
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     // Stage 2
     // ---------------------------------------------------
 
@@ -86,9 +88,6 @@ void Bloom::init()
     bloom_combine_shader.use();
     bloom_combine_shader.set_int("u_color_texture", 0);
     bloom_combine_shader.set_int("u_blur_texture", 1);
-
-    // Reset Frame Buffer
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void Bloom::setup_texture(GLuint tex_id)
@@ -113,7 +112,7 @@ void Bloom::apply_effect()
 {
     // glDisable(GL_DEPTH_TEST);
     bool is_vertical = true, initial_run = true;
-    int blur_intensity = 8;
+    int blur_intensity = 16;
     this->gaussian_blur_shader.use();
 
     for (int i = 0; i < blur_intensity; i++)
