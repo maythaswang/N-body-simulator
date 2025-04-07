@@ -16,7 +16,7 @@ void Camera::set_default_camera(){
 
     this->fovy = 90;
     this->z_near = 0.1;
-    this->z_far = 20000000.0;
+    this->z_far = 200000000.0;
 
     this->rotation_sensitivity = 0.9;
     this->zoom_sensitivity = 1;

@@ -19,10 +19,11 @@ vec3 color_by_linearized_depth(float depth)
 // FIX THIS LATER
 vec3 get_color(){
     vec3 star_color = vec3(1.0f, 0.88f, 0.49f);
-    // vec4 star_color = color_by_linearized_depth(gl_FragCoord.z);
-    // if(star_mass > 10000){ 
-    //     star_color = vec4(1.0f, 0.7f, 0.7f, 0.7f);
-    // }
+    // vec3 star_color = vec3(0.5f, 0.44f, 0.25f);
+    // vec3 star_color = vec3(2.0f, 1.76f, 0.49f);
+    if(star_mass > 10000){ 
+        star_color = vec3(1.0f, 0.3f, 0.3f);
+    }
 
     return star_color;
 }
@@ -37,7 +38,7 @@ void main(){
     float luminance = dot(vec3(0.2126,0.7152,0.0722), color);
     // FragColorThreshold = vec4(1.0,1.0,1.0,1.0);
 
-    if(luminance > 0.5){
+    if(luminance > 0.3){
         FragColorThreshold = vec4(color,1.0f);
     } else {
         FragColorThreshold = vec4(0.0f);
