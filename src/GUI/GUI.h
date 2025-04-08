@@ -11,7 +11,7 @@
 class GUI
 {
 public:
-    GUI(GLFWwindow * window);
+    GUI(GLFWwindow * window, InputProcessor * input_processor);
     ~GUI();
     
     void init();
@@ -20,6 +20,7 @@ public:
 
 private:
     GLFWwindow * window;
+    InputProcessor * input_processor;
     ImGuiIO* io;
 
     void control_panel();

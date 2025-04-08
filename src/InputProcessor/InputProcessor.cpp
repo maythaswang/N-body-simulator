@@ -106,6 +106,8 @@ void InputProcessor::imm_handle_show_help_msg()
 void InputProcessor::imm_handle_gui_toggle()
 {
     this->gui_on = !this->gui_on;
+    std::string msg = (this->gui_on) ? "GUI enabled. (press N to disable)" : "GUI disabled. (press N to enable)";
+    std::cout << msg << std::endl;
 }
 
 bool InputProcessor::get_simulator_running()
