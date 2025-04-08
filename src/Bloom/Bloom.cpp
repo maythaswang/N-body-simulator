@@ -289,13 +289,24 @@ void Bloom::set_exposure(GLfloat exposure)
     this->exposure = exposure;
 }
 
+void Bloom::set_blur_intensity(GLfloat blur_intensity)
+{
+    this->bloom_combine_shader.use();
+    this->bloom_combine_shader.set_float("u_blur_intensity", blur_intensity);
+    this->blur_intensity = blur_intensity;
+}
+
+
+
 void Bloom::reset_default()
 {
     this->bloom_combine_shader.use();
     this->bloom_combine_shader.set_float("u_gamma", default_gamma);
     this->bloom_combine_shader.set_float("u_exposure", default_exposure);
+    this->bloom_combine_shader.set_float("u_blur_intensity", default_blur_intensity);
     this->exposure = default_exposure;
     this->gamma = default_gamma;
+    this->blur_intensity = default_blur_intensity;
 }
 
 GLfloat Bloom::get_gamma(){
@@ -305,3 +316,8 @@ GLfloat Bloom::get_gamma(){
 GLfloat Bloom::get_exposure(){
     return this->exposure;
 }
+
+GLfloat Bloom::get_blur_intensity(){
+    return this->blur_intensity;
+}
+
