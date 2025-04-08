@@ -1,0 +1,25 @@
+#ifndef GUI_H
+#define GUI_H
+#pragma once
+
+#include <GLcommon.h>
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
+class GUI
+{
+public:
+    GUI(GLFWwindow * window);
+    ~GUI();
+    
+    void init();
+    void render_control_panel();
+    void terminate();
+
+private:
+    GLFWwindow * window;
+    ImGuiIO* io;
+};
+
+#endif

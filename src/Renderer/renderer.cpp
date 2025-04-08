@@ -33,8 +33,11 @@ void Renderer::render()
 {
     // Begin
     glEnable(GL_DEPTH_TEST);
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (use_wireframe)
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
 
     // Render
     this->shader_program->use();
@@ -61,6 +64,8 @@ void Renderer::render()
     // End frame
     // glfwSwapBuffers(window);
     glBindVertexArray(0);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // Reset to normal mode
+
     this->frame_count += 1;
     this->show_fps();
 
@@ -103,14 +108,14 @@ void Renderer::set_use_wireframe(bool use_wireframe)
 {
     this->use_wireframe = use_wireframe;
 
-    if (use_wireframe)
-    {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    }
-    else
-    {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
+    // if (use_wireframe)
+    // {
+    //     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    // }
+    // else
+    // {
+    //     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    // }
 }
 
 bool Renderer::get_use_msize()
