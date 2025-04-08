@@ -6,9 +6,12 @@
 #include <Renderer/Renderer.h>
 #include <Bloom/Bloom.h>
 
+#include <StringCommon.h>
+
 /**
- * @brief Basically store states of everything
- * 
+ * @brief Basically store states of everything apart from camera stuffs
+ * @note for camera stuffs I delegate everything to callback
+ *
  */
 class InputProcessor
 {
@@ -18,66 +21,20 @@ public:
 
     // Put on public so ImGui can edit this directly
 
-    // Hotkeys only
-    bool gui_on;
-
-    // Button variable
-    bool pause_on;
-
     // Checkbox variable
     // I will use previous checking to avoid setting uniform every call
-    bool instancing_on[2];
-    bool wireframe_on[2];
-    bool msize_on[2];
-    bool mcolor_on[2];
+    // 0 = new, 1 = prev
+    bool bloom_on[2] = {0, 0};
+    bool instancing_on[2] = {0, 0};
+    bool wireframe_on[2] = {0, 0};
+    bool msize_on[2] = {0, 0};
+    bool mcolor_on[2] = {0, 0};
 
     /**
      * @brief Compare new input with previous input and handle the toggling
-     * 
-     */
-    void process_input();
-
-    /**
-     * @brief Handle simulation pausing
      *
      */
-    void handle_pause();
-
-    /**
-     * @brief Handle toggling renderer instancing mode
-     * 
-     */
-    void handle_instancing_toggle();
-
-    /**
-     * @brief Handle toggling renderer wireframe mode
-     * 
-     */
-    void handle_wireframe_toggle();
-
-    /**
-     * @brief Handle toggling bloom
-     * 
-     */
-    void handle_bloom_toggle();
-
-    /**
-     * @brief Handle toggling renderer mass-size
-     * 
-     */
-    void handle_msize_toggle();
-
-    /**
-     * @brief Handle toggling renderer mass-color
-     * 
-     */
-    void handle_mcolor_toggle();
-
-    void handle_show_setup_log();
-
-    void handle_show_help_msg();
-
-    void handle_gui_toggle();
+    void process_input();
 
     void set_blur_intensity(GLfloat intensity);
 
@@ -85,8 +42,59 @@ public:
 
     void set_exposure(GLfloat exposure);
 
-private:
+    // Immediate functions (no need to check every loop, trigger when called)
+    void imm_handle_show_setup_log();
+    void imm_handle_show_help_msg();
+    void imm_handle_gui_toggle();
 
+    /**
+     * @brief Handle simulation pausing
+     *
+     */
+    void imm_handle_pause();
+
+    // Get-Set
+    bool get_simulator_running();
+    bool get_gui_on();
+
+private:
+    Simulator *simulator;
+    Renderer *renderer;
+    Bloom *bloom;
+
+    // Read only form outside
+    bool simulator_running = 0;
+    bool gui_on = 1;
+
+    /**
+     * @brief Handle toggling renderer instancing mode
+     *
+     */
+    void handle_instancing_toggle();
+
+    /**
+     * @brief Handle toggling renderer wireframe mode
+     *
+     */
+    void handle_wireframe_toggle();
+
+    /**
+     * @brief Handle toggling bloom
+     *
+     */
+    void handle_bloom_toggle();
+
+    /**
+     * @brief Handle toggling renderer mass-size
+     *
+     */
+    void handle_msize_toggle();
+
+    /**
+     * @brief Handle toggling renderer mass-color
+     *
+     */
+    void handle_mcolor_toggle();
 };
 
 #endif

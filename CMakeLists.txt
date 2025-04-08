@@ -72,6 +72,7 @@ set(PROJECT_SOURCES
     src/Mesh/MeshBuilder.cpp
     src/Bloom/Bloom.cpp
     src/GUI/GUI.cpp
+    src/InputProcessor/InputProcessor.cpp
 )
 
 set(INCLUDE_DIRS
