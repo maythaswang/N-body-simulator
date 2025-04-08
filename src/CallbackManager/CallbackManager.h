@@ -109,17 +109,7 @@ private:
      */
     bool get_camera_orbiting();
 
-    /**
-     * @brief Handle simulation pausing
-     *
-     */
-    // void handle_pause();
     void handle_orbit_toggle();
-    // void handle_instancing_toggle();
-    // void handle_wireframe_toggle();
-    // void handle_bloom_toggle();
-    // void handle_msize_toggle();
-    // void handle_mcolor_toggle();
 };
 
 #endif
