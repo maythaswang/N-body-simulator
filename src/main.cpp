@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
 			bloom.draw_result();
 		}
 
-		gui.render_control_panel();
+		gui.render_gui();
 		glfwSwapBuffers(window);
 	}
 
