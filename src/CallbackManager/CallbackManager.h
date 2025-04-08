@@ -113,7 +113,6 @@ private:
      *
      */
     void handle_pause();
-
     void handle_orbit_toggle();
     void handle_instancing_toggle();
     void handle_wireframe_toggle();

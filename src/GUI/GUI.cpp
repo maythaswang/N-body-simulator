@@ -28,16 +28,15 @@ void GUI::init()
     ImGui_ImplOpenGL3_Init("#version 430");
 }
 
-void GUI::render_control_panel()
+void GUI::render_gui()
 {
     // Clean the back buffer and assign the new color to it
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::Begin("Test window");
-    ImGui::Text("Test text!");
-    ImGui::End();
+    // Render Components
+    this->control_panel();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -54,6 +53,20 @@ void GUI::render_control_panel()
         glfwMakeContextCurrent(backup_current_context);
     }
 }
+
+void GUI::control_panel(){
+    ImGui::Begin("Test window");
+    ImGui::Text("Test text!");
+    // ImGui::Checkbox("do something", &do_something);
+
+    if (ImGui::Button("Pause")){
+        // Pause 
+    }   
+    ImGui::SameLine();
+    ImGui::Text("pausing?");
+    ImGui::End();
+}
+
 void GUI::terminate()
 {
     ImGui_ImplOpenGL3_Shutdown();

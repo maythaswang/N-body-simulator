@@ -14,12 +14,14 @@ public:
     ~GUI();
     
     void init();
-    void render_control_panel();
+    void render_gui();
     void terminate();
 
 private:
     GLFWwindow * window;
     ImGuiIO* io;
+
+    void control_panel();
 };
 
 #endif
