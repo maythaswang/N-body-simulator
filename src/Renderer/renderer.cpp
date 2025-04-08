@@ -17,35 +17,49 @@ Renderer::Renderer(GLFWwindow *window, Shader *shader_program, Camera *camera, S
     // Configuration
     this->use_instancing = false;
     this->use_wireframe = false;
+    this->use_msize = false;
+    this->use_bloom = false;
+    this->use_mcolor = false;
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    // glClearColor(0.05f, 0.05f, 0.07f, 1.0f);
+    glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+    glfwSwapInterval(1);
 }
 
 void Renderer::render()
 {
     // Begin
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Render
     this->shader_program->use();
     this->shader_program->set_mat4("modelview", this->camera->get_view_matrix() * this->camera->get_model_matrix());
     this->shader_program->set_mat4("projection", this->camera->get_projection_matrix());
-    this->shader_program->set_bool("use_instancing", this->use_instancing);
+    this->shader_program->set_bool("use_mass_size", this->use_msize);
 
     glBindVertexArray(this->render_components->VAO);
     if (!this->use_instancing)
     {
+        this->shader_program->set_bool("use_instancing", this->use_instancing);
         glDrawArrays(GL_POINTS, 0, this->simulator->get_n_particle());
     }
     else
     {
+        // Fake solution but it works.
+        this->shader_program->set_bool("use_instancing", !this->use_instancing);
+        glDrawArrays(GL_POINTS, 0, this->simulator->get_n_particle());
+
+        this->shader_program->set_bool("use_instancing", this->use_instancing);
         glDrawElementsInstanced(GL_TRIANGLES, 3 * this->render_components->n_inds, GL_UNSIGNED_INT, (void *)0, this->simulator->get_n_particle());
     }
 
-    // Post processing
-    this->post_processing();
-
     // End frame
-    glfwSwapBuffers(window);
+    // glfwSwapBuffers(window);
     glBindVertexArray(0);
     this->frame_count += 1;
     this->show_fps();
@@ -68,12 +82,6 @@ void Renderer::show_fps()
 
     ss << "N-BODY SIMULATOR. FPS: " << 1.0 / delta_time << ". Time elapsed: " << cur_time;
     glfwSetWindowTitle(this->window, ss.str().c_str());
-}
-
-// Post processing stage
-void Renderer::post_processing()
-{
-    // TODO: do bloom or sth here
 }
 
 bool Renderer::get_use_instancing()
@@ -103,4 +111,38 @@ void Renderer::set_use_wireframe(bool use_wireframe)
     {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
+}
+
+bool Renderer::get_use_msize()
+{
+    return this->use_msize;
+}
+
+void Renderer::set_use_msize(bool use_msize)
+{
+    this->use_msize = use_msize;
+}
+
+bool Renderer::get_use_bloom()
+{
+    return this->use_bloom;
+}
+
+void Renderer::set_use_bloom(bool use_bloom)
+{
+    this->use_bloom = use_bloom;
+    this->shader_program->use();
+    this->shader_program->set_bool("bloom_enabled", use_bloom);
+}
+
+bool Renderer::get_use_mcolor()
+{
+    return this->use_mcolor;
+}
+
+void Renderer::set_use_mcolor(bool use_mcolor)
+{
+    this->use_mcolor = use_mcolor;
+    this->shader_program->use();
+    this->shader_program->set_bool("use_mass_color", use_mcolor);
 }

@@ -18,19 +18,32 @@ layout (std430, binding = 3) buffer particle_mass {
 uniform mat4 modelview;
 uniform mat4 projection;
 uniform bool use_instancing;
+uniform bool use_mass_size;
 
 out float star_mass;
 
+float calculate_mass_scaler(int id){
+  float scale = mass[id] / 1000000;
+  return min(scale, 15.0f);
+}
+
 void main() {
-//   gl_PointSize = 10.0f;
-  // gl_Position = projection * modelview * vec4(v_pos, 1.0);
   vec4 new_pos = vec4(0.0);
+  float mass_size = 1; 
+
   if(!use_instancing){
     new_pos = position[gl_VertexID];
+    star_mass = mass[gl_VertexID];
   } else {
-    new_pos = position[gl_InstanceID] + vec4(v_pos,1.0);
+    if(use_mass_size){
+      mass_size += calculate_mass_scaler(gl_InstanceID);
+    }
+
+
+    new_pos = position[gl_InstanceID] + vec4(mass_size * v_pos,1.0);
+  
+    star_mass = mass[gl_InstanceID];
   }
   new_pos.w=1;
 	gl_Position = projection * modelview * new_pos;
-  star_mass = mass[gl_VertexID];
 }

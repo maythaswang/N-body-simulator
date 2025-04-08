@@ -15,6 +15,7 @@
 #include <ParticleSystem/ParticleParticleGPU/ParticleParticleGPU.h>
 #include <InputParser/InputParser.h>
 #include <Mesh/MeshBuilder.h>
+#include <Bloom/Bloom.h>
 
 // For initialization
 const unsigned int SCREEN_WIDTH = 640;
@@ -24,8 +25,6 @@ const char *SCREEN_NAME = "N-BODY-SIMULATION";
 
 void print_workgroup_info();
 void terminate(RenderComponents *render_components);
-
-// TODO: Implement visual effects (eg: bloom, particle colour and scale based on mass or stellar class...)
 
 int main(int argc, char *argv[])
 {
@@ -63,8 +62,8 @@ int main(int argc, char *argv[])
 	// TODO: Bake the shaders in.
 
 	// The dir depends on where you call it so if you call it from root, do it as if the current working directory is in root.
-	GLuint vertex_shader = shader_program.compile_shader("./shader_source/light.vert.glsl", GL_VERTEX_SHADER);
-	GLuint fragment_shader = shader_program.compile_shader("./shader_source/light.frag.glsl", GL_FRAGMENT_SHADER);
+	GLuint vertex_shader = shader_program.compile_shader("./shader_source/light.vs", GL_VERTEX_SHADER);
+	GLuint fragment_shader = shader_program.compile_shader("./shader_source/light.fs", GL_FRAGMENT_SHADER);
 	shader_program.link_shader(vertex_shader);
 	shader_program.link_shader(fragment_shader);
 
@@ -117,8 +116,13 @@ int main(int argc, char *argv[])
 	simulator->append_setup_log(setup_log_particle);
 	simulator->append_setup_log("\n--------------------------------------------------\n\n");
 
-	Renderer renderer = Renderer( window, &shader_program, &camera, simulator, &render_components);
-	CallbackManager callback_manager = CallbackManager(window, &camera, simulator, &renderer);
+	Renderer renderer = Renderer(window, &shader_program, &camera, simulator, &render_components);
+
+	// Post Processor
+	// ----------------------------------------------------------------------------
+	Bloom bloom = Bloom(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	CallbackManager callback_manager = CallbackManager(window, &camera, simulator, &renderer, &bloom);
 
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
@@ -127,14 +131,30 @@ int main(int argc, char *argv[])
 	std::cout << simulator->get_setup_log() << std::endl;
 	std::cout << g_controls_help << std::endl;
 	std::cout << "Starting Simulator in paused state..." << std::endl;
+
 	while (!glfwWindowShouldClose(window))
 	{
 		// Process Input
 		glfwPollEvents();
 		callback_manager.process_input();
 
+		// Post Processing setup
+		if (bloom.get_enabled())
+		{
+			bloom.bind_render_FBO();
+		}
 		// Draw
 		renderer.render();
+
+		// Post Processing
+		if (bloom.get_enabled())
+		{
+			bloom.apply_effect();
+			bloom.bind_default_FBO();
+			bloom.draw_result();
+		}
+
+		glfwSwapBuffers(window);
 	}
 
 	// Termination Subroutine
@@ -146,6 +166,7 @@ int main(int argc, char *argv[])
 	shader_program.delete_shader();
 	simulator->terminate();
 	delete simulator;
+	bloom.terminate();
 	glfwTerminate();
 	return 0;
 }

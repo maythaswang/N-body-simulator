@@ -6,6 +6,7 @@
 #include <DisplaySystem/Camera/Camera.h>
 #include <ParticleSystem/Simulator/Simulator.h>
 #include <Renderer/Renderer.h>
+#include <Bloom/Bloom.h>
 #include "CameraEnum.h"
 
 /**
@@ -21,7 +22,7 @@ public:
      * @param window glfw window where we want to use as our display window
      * @param camera the current camera
      */
-    CallbackManager(GLFWwindow *, Camera *, Simulator *, Renderer *);
+    CallbackManager(GLFWwindow *, Camera *, Simulator *, Renderer *, Bloom *);
 
     /**
      * @brief Main function for processing input
@@ -35,6 +36,7 @@ private:
     CameraMode camera_mode;
     Simulator *simulator;
     Renderer *renderer;
+    Bloom *bloom;
 
     // Mouse states
 
@@ -115,6 +117,9 @@ private:
     void handle_orbit_toggle();
     void handle_instancing_toggle();
     void handle_wireframe_toggle();
+    void handle_bloom_toggle();
+    void handle_msize_toggle();
+    void handle_mcolor_toggle();
 };
 
 #endif

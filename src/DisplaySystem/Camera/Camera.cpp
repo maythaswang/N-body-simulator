@@ -16,7 +16,7 @@ void Camera::set_default_camera(){
 
     this->fovy = 90;
     this->z_near = 0.1;
-    this->z_far = 2000000.0;
+    this->z_far = 200000000.0;
 
     this->rotation_sensitivity = 0.9;
     this->zoom_sensitivity = 1;
@@ -191,4 +191,12 @@ void Camera::build_view_matrix()
 void Camera::build_projection_matrix()
 {
     this->projection_mat = glm::perspective(glm::radians(this->fovy), this->aspect_w / this->aspect_h, this->z_near, this->z_far);
+}
+
+GLfloat Camera::get_aspect_w(){
+    return this->aspect_w;
+}
+
+GLfloat Camera::get_aspect_h(){
+    return this->aspect_h;
 }
