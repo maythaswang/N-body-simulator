@@ -71,6 +71,12 @@ public:
 
     void set_use_mcolor(bool use_mcolor);
 
+    void set_exposure(GLfloat exposure);
+    void set_gamma(GLfloat gamma);
+    GLfloat get_exposure();
+    GLfloat get_gamma();
+    void reset_default();
+
 private:
     GLFWwindow *window;
     Shader *shader_program;
@@ -78,6 +84,11 @@ private:
     Simulator *simulator;
     RenderComponents *render_components;
 
+    // Default values
+    GLfloat default_exposure = 1.0;
+    GLfloat default_gamma = 2.2;
+    GLfloat exposure, gamma;
+    
     // states
     bool use_wireframe;
     bool use_instancing;

@@ -5,6 +5,12 @@ InputProcessor::InputProcessor(Simulator *simulator, Renderer *renderer, Bloom *
     this->simulator = simulator;
     this->renderer = renderer;
     this->bloom = bloom;
+
+
+    this->renderer_gamma =  this->renderer->get_gamma();
+    this->renderer_exposure =  this->renderer->get_exposure();
+    this->bloom_gamma =  this->bloom->get_gamma();
+    this->bloom_exposure =  this->bloom->get_exposure();
 }
 InputProcessor::~InputProcessor()
 {
@@ -118,4 +124,38 @@ bool InputProcessor::get_simulator_running()
 bool InputProcessor::get_gui_on()
 {
     return this->gui_on;
+}
+
+void InputProcessor::imm_update_bloom_gamma()
+{
+    this->bloom->set_gamma(this->bloom_gamma);
+}
+
+void InputProcessor::imm_update_bloom_exposure()
+{
+    this->bloom->set_exposure(this->bloom_exposure);
+}
+
+void InputProcessor::imm_update_renderer_gamma()
+{
+    this->renderer->set_gamma(this->renderer_gamma);
+}
+
+void InputProcessor::imm_update_renderer_exposure()
+{
+    this->renderer->set_exposure(this->renderer_exposure);
+}
+
+void InputProcessor::imm_reset_renderer()
+{
+    this->renderer->reset_default();
+    this->renderer_gamma =  this->renderer->get_gamma();
+    this->renderer_exposure =  this->renderer->get_exposure();
+}
+
+void InputProcessor::imm_reset_bloom()
+{
+    this->bloom->reset_default();
+    this->bloom_gamma =  this->bloom->get_gamma();
+    this->bloom_exposure =  this->bloom->get_exposure();
 }

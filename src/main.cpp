@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
 
-	print_workgroup_info();
+	// print_workgroup_info();
 	std::cout << simulator->get_setup_log() << std::endl;
 	std::cout << g_controls_help << std::endl;
 	std::cout << "Starting Simulator in paused state..." << std::endl;

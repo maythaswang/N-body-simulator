@@ -61,7 +61,7 @@ void GUI::render_gui()
 void GUI::control_panel()
 {
     ImGui::Begin("Control Panel");
-    
+
     // Information Section
     ImGui::SeparatorText("N-BODY SIMULATOR");
     ImGui::Text("If you wish to disable GUI, press (N)");
@@ -81,11 +81,10 @@ void GUI::control_panel()
     msg = (this->input_processor->get_simulator_running()) ? "Running." : "Paused.";
     ImGui::Text(msg.c_str());
 
+    ImGui::SeparatorText("VISUAL EFFECTS");
 
-    ImGui::SeparatorText("EFFECTS");
-    
     // 2 Columns for effects
-    ImGui::Columns(2, "Buttons", true);
+    ImGui::Columns(2, "VISUAL_EFFECT_CHECKBOX", true);
 
     ImGui::Checkbox("Instancing", &this->input_processor->instancing_on[0]);
     ImGui::Checkbox("Wireframe", &this->input_processor->wireframe_on[0]);
@@ -96,8 +95,38 @@ void GUI::control_panel()
     ImGui::Checkbox("Mass-Size", &this->input_processor->msize_on[0]);
     ImGui::Checkbox("Mass-Color", &this->input_processor->mcolor_on[0]);
 
-    ImGui::Columns(1); 
+    ImGui::Columns(1);
 
+    ImGui::SeparatorText("COLOR CORRECTION");
+    if(ImGui::SliderFloat("Renderer Gamma", &this->input_processor->renderer_gamma, 0.0f, 3.0f)){
+        this->input_processor->imm_update_renderer_gamma();
+    }
+    if(ImGui::SliderFloat("Renderer Exposure", &this->input_processor->renderer_exposure, 0.0f, 5.0f)){
+        this->input_processor->imm_update_renderer_exposure();
+    }
+
+    if(ImGui::SliderFloat("Bloom Gamma", &this->input_processor->bloom_gamma, 0.0f, 3.0f)){
+        this->input_processor->imm_update_bloom_gamma();
+    };
+    if(ImGui::SliderFloat("Bloom Exposure", &this->input_processor->bloom_exposure, 0.0f, 5.0f)){
+        this->input_processor->imm_update_bloom_exposure();
+    };
+
+    ImGui::Columns(2, "COLOR_CORRECTION_RESET", true);
+
+    if (ImGui::Button("Reset Bloom Shader"))
+    {
+        this->input_processor->imm_reset_bloom();
+    }
+
+    ImGui::NextColumn();
+
+    if (ImGui::Button("Reset Renderer Shader"))
+    {
+        this->input_processor->imm_reset_renderer();
+    }
+
+    ImGui::Columns(1);
 
     ImGui::End();
 }

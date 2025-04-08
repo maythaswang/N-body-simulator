@@ -27,6 +27,7 @@ Renderer::Renderer(GLFWwindow *window, Shader *shader_program, Camera *camera, S
     // glClearColor(0.05f, 0.05f, 0.07f, 1.0f);
     glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
     glfwSwapInterval(1);
+    this->reset_default();
 }
 
 void Renderer::render()
@@ -67,7 +68,7 @@ void Renderer::render()
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // Reset to normal mode
 
     this->frame_count += 1;
-    this->show_fps();
+    // this->show_fps();
 
     // Prepare for next frame (we don't call this first so that the first frame will have the simulation set at the orignal position)
     if (this->simulator->get_running_state())
@@ -150,4 +151,37 @@ void Renderer::set_use_mcolor(bool use_mcolor)
     this->use_mcolor = use_mcolor;
     this->shader_program->use();
     this->shader_program->set_bool("use_mass_color", use_mcolor);
+}
+
+void Renderer::set_gamma(GLfloat gamma)
+{
+    this->shader_program->use();
+    this->shader_program->set_float("u_gamma", gamma);
+    this->gamma = gamma;
+}
+
+void Renderer::set_exposure(GLfloat exposure)
+{
+    this->shader_program->use();
+    this->shader_program->set_float("u_exposure", exposure);
+    this->exposure = exposure;
+}
+
+void Renderer::reset_default()
+{
+    this->shader_program->use();
+    this->shader_program->set_float("u_gamma", default_gamma);
+    this->shader_program->set_float("u_exposure", default_exposure);
+    this->gamma = default_gamma;
+    this->exposure = default_exposure;
+}
+
+GLfloat Renderer::get_gamma()
+{
+    return this->gamma;
+}
+
+GLfloat Renderer::get_exposure()
+{
+    return this->exposure;
 }

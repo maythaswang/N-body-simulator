@@ -45,8 +45,19 @@ public:
     void set_enabled(bool);
 
     void terminate();
+    
+    void set_exposure(GLfloat exposure);
+    void set_gamma(GLfloat gamma);
+    GLfloat get_exposure();
+    GLfloat get_gamma();
+    void reset_default();
 private:
     bool enabled;
+
+    // Default values
+    GLfloat default_exposure = 2.0;
+    GLfloat default_gamma = 2.2;
+    GLfloat exposure, gamma;
 
     // Rectangle for drawing to screen
     GLuint rect_VAO, rect_VBO;
