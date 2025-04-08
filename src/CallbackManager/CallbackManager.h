@@ -119,6 +119,7 @@ private:
     void handle_wireframe_toggle();
     void handle_bloom_toggle();
     void handle_msize_toggle();
+    void handle_mcolor_toggle();
 };
 
 #endif
