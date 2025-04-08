@@ -63,6 +63,14 @@ public:
 
     void set_use_msize(bool use_msize);
 
+    bool get_use_bloom();
+    
+    void set_use_bloom(bool use_bloom);
+
+    bool get_use_mcolor();
+
+    void set_use_mcolor(bool use_mcolor);
+
 private:
     GLFWwindow *window;
     Shader *shader_program;
@@ -74,6 +82,8 @@ private:
     bool use_wireframe;
     bool use_instancing;
     bool use_msize; // mass-size
+    bool use_bloom;
+    bool use_mcolor; // mass-color
 
     double start_time; // For calculating fps only
     double previous_time;

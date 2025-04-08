@@ -230,6 +230,10 @@ void CallbackManager::set_keyboard_callback()
                 case GLFW_KEY_M: // Toggle mass-size
                     callback_manager->handle_msize_toggle();
                     break;
+                
+                case GLFW_KEY_C: // Toggle mass-color
+                    callback_manager->handle_mcolor_toggle();
+                    break;
 
                 default: 
                     break;
@@ -282,6 +286,7 @@ void CallbackManager::handle_bloom_toggle()
 {
     bool bloom_state = this->bloom->get_enabled();
     this->bloom->set_enabled(!bloom_state);
+    this->renderer->set_use_bloom(!bloom_state);
     std::string msg = (bloom_state) ? "Bloom disabled." : "Bloom enabled.";
     std::cout << msg << std::endl;
 }
@@ -291,5 +296,13 @@ void CallbackManager::handle_msize_toggle()
     bool msize_state = this->renderer->get_use_msize();
     this->renderer->set_use_msize(!msize_state);
     std::string msg = (msize_state) ? "mass-size disabled." : "mass-size enabled.";
+    std::cout << msg << std::endl;
+}
+
+void CallbackManager::handle_mcolor_toggle()
+{
+    bool mcolor_state = this->renderer->get_use_mcolor();
+    this->renderer->set_use_mcolor(!mcolor_state);
+    std::string msg = (mcolor_state) ? "mass-color disabled." : "mass-color enabled.";
     std::cout << msg << std::endl;
 }

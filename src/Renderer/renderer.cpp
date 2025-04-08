@@ -18,6 +18,8 @@ Renderer::Renderer(GLFWwindow *window, Shader *shader_program, Camera *camera, S
     this->use_instancing = false;
     this->use_wireframe = false;
     this->use_msize = false;
+    this->use_bloom = false;
+    this->use_mcolor = false;
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
@@ -119,4 +121,28 @@ bool Renderer::get_use_msize()
 void Renderer::set_use_msize(bool use_msize)
 {
     this->use_msize = use_msize;
+}
+
+bool Renderer::get_use_bloom()
+{
+    return this->use_bloom;
+}
+
+void Renderer::set_use_bloom(bool use_bloom)
+{
+    this->use_bloom = use_bloom;
+    this->shader_program->use();
+    this->shader_program->set_bool("bloom_enabled", use_bloom);
+}
+
+bool Renderer::get_use_mcolor()
+{
+    return this->use_mcolor;
+}
+
+void Renderer::set_use_mcolor(bool use_mcolor)
+{
+    this->use_mcolor = use_mcolor;
+    this->shader_program->use();
+    this->shader_program->set_bool("use_mass_color", use_mcolor);
 }
