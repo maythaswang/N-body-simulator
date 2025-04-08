@@ -16,6 +16,7 @@
 #include <InputParser/InputParser.h>
 #include <Mesh/MeshBuilder.h>
 #include <Bloom/Bloom.h>
+#include <GUI/GUI.h>
 
 // For initialization
 const unsigned int SCREEN_WIDTH = 640;
@@ -123,7 +124,7 @@ int main(int argc, char *argv[])
 	Bloom bloom = Bloom(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	CallbackManager callback_manager = CallbackManager(window, &camera, simulator, &renderer, &bloom);
-
+	GUI gui = GUI(window);
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
 
@@ -154,6 +155,7 @@ int main(int argc, char *argv[])
 			bloom.draw_result();
 		}
 
+		gui.render_control_panel();
 		glfwSwapBuffers(window);
 	}
 
@@ -161,7 +163,7 @@ int main(int argc, char *argv[])
 	// ----------------------------------------------------------------------------
 
 	std::cout << "Terminating..." << std::endl;
-
+	gui.terminate();
 	terminate(&render_components);
 	shader_program.delete_shader();
 	simulator->terminate();
