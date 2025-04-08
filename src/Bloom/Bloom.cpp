@@ -12,6 +12,7 @@ Bloom::Bloom(GLfloat screen_w, GLfloat screen_h)
 
 Bloom::~Bloom()
 {
+    terminate();
 }
 
 void Bloom::init()
@@ -247,4 +248,26 @@ bool Bloom::check_FBO()
     if (failed)
         std::cout << "Framebuffer not complete!" << std::endl;
     return !failed;
+}
+
+void Bloom::terminate(){
+    // Rectangle
+    glDeleteVertexArrays(1, &this->rect_VAO);
+    glDeleteBuffers(1, &this->rect_VBO);
+    
+    // FBO
+    glDeleteFramebuffers(1, &this->render_FBO);
+    glDeleteFramebuffers(2, this->pingpong_FBO);
+
+    // RBO
+    glDeleteRenderbuffers(1, &this->render_depth_buffer);
+
+    // Textures
+    glDeleteTextures(1, &this->color_texture);
+    glDeleteTextures(1, &this->color_threshold_texture);
+    glDeleteTextures(2, this->pingpong_texture);
+
+    // Shaders
+    this->gaussian_blur_shader.delete_shader();
+    this->bloom_combine_shader.delete_shader();
 }

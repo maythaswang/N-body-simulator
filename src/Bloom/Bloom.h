@@ -44,6 +44,7 @@ public:
 
     void set_enabled(bool);
 
+    void terminate();
 private:
     bool enabled;
 
@@ -64,7 +65,6 @@ private:
     Shader gaussian_blur_shader;
 
     // Stage 2: Combine color and 2-pass gaussian blur
-    GLuint bloom_combine_FBO;
     Shader bloom_combine_shader;
 
     /**
@@ -88,6 +88,7 @@ private:
     void generate_rectangle();
 
     bool check_FBO();
+
 };
 
 #endif

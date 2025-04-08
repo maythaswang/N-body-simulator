@@ -168,6 +168,7 @@ int main(int argc, char *argv[])
 	shader_program.delete_shader();
 	simulator->terminate();
 	delete simulator;
+	bloom.terminate();
 	glfwTerminate();
 	return 0;
 }
