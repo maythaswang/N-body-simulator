@@ -30,6 +30,8 @@ public:
     bool msize_on[2] = {0, 0};
     bool mcolor_on[2] = {0, 0};
 
+    GLfloat renderer_gamma, bloom_gamma, renderer_exposure, bloom_exposure;
+
     /**
      * @brief Compare new input with previous input and handle the toggling
      *
@@ -46,6 +48,15 @@ public:
     void imm_handle_show_setup_log();
     void imm_handle_show_help_msg();
     void imm_handle_gui_toggle();
+
+    // GUI exclusives
+    void imm_update_bloom_gamma();
+    void imm_update_bloom_exposure();
+    void imm_update_renderer_gamma();
+    void imm_update_renderer_exposure();
+    void imm_reset_renderer();
+    void imm_reset_bloom();
+
 
     /**
      * @brief Handle simulation pausing
