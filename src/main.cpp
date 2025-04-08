@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
 	InputProcessor input_processor = InputProcessor(simulator, &renderer, &bloom);
 	
 	CallbackManager callback_manager = CallbackManager(window, &camera, &input_processor, &bloom);
-	GUI gui = GUI(window);
+	GUI gui = GUI(window, &input_processor);
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
 

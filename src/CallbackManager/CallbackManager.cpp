@@ -2,7 +2,7 @@
 #include <StringCommon.h>
 #include "CallbackManager.h"
 
-CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, InputProcessor * input_processor, Bloom *bloom)
+CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, InputProcessor *input_processor, Bloom *bloom)
 {
     // Components
     this->window = window;
@@ -232,6 +232,10 @@ void CallbackManager::set_keyboard_callback()
                 
                 case GLFW_KEY_C: // Toggle mass-color
                     callback_manager->input_processor->mcolor_on[0] = !callback_manager->input_processor->mcolor_on[0];
+                    break;
+
+                case GLFW_KEY_N: // Toggle GUI
+                    callback_manager->input_processor->imm_handle_gui_toggle();
                     break;
 
                 default: 
