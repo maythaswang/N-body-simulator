@@ -2,13 +2,12 @@
 #include <StringCommon.h>
 #include "CallbackManager.h"
 
-CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, Simulator *simulator, Renderer *renderer, Bloom *bloom)
+CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, InputProcessor * input_processor, Bloom *bloom)
 {
     // Components
     this->window = window;
     this->camera = camera;
-    this->simulator = simulator;
-    this->renderer = renderer;
+    this->input_processor = input_processor;
     this->bloom = bloom;
 
     // Camera states
@@ -194,15 +193,15 @@ void CallbackManager::set_keyboard_callback()
         if (callback_manager && action == GLFW_PRESS){
             switch(key){
                 case GLFW_KEY_P: // Pause
-                    callback_manager->handle_pause();
+                    callback_manager->input_processor->imm_handle_pause();
                     break;
 
                 case GLFW_KEY_H: // Help
-                    std::cout << g_controls_help << std::endl;
+                    callback_manager->input_processor->imm_handle_show_help_msg();
                     break;
 
                 case GLFW_KEY_I: // Show Setup log
-                    std::cout << callback_manager->simulator->get_setup_log()<< std::endl;
+                    callback_manager->input_processor->imm_handle_show_setup_log();
                     break;
                 
                 case GLFW_KEY_O: // Toggle Orbit Mode
@@ -216,23 +215,23 @@ void CallbackManager::set_keyboard_callback()
                     break;
 
                 case GLFW_KEY_K: // Toggle Instancing
-                    callback_manager->handle_instancing_toggle();
+                    callback_manager->input_processor->instancing_on[0] = !callback_manager->input_processor->instancing_on[0];
                     break;
 
                 case GLFW_KEY_F: // Toggle Wireframe Mode
-                    callback_manager->handle_wireframe_toggle();
+                    callback_manager->input_processor->wireframe_on[0] = !callback_manager->input_processor->wireframe_on[0];
                     break;
 
                 case GLFW_KEY_B: // Toggle Bloom
-                    callback_manager->handle_bloom_toggle();
+                    callback_manager->input_processor->bloom_on[0] = !callback_manager->input_processor->bloom_on[0];
                     break;
 
                 case GLFW_KEY_M: // Toggle mass-size
-                    callback_manager->handle_msize_toggle();
+                    callback_manager->input_processor->msize_on[0] = !callback_manager->input_processor->msize_on[0];
                     break;
                 
                 case GLFW_KEY_C: // Toggle mass-color
-                    callback_manager->handle_mcolor_toggle();
+                    callback_manager->input_processor->mcolor_on[0] = !callback_manager->input_processor->mcolor_on[0];
                     break;
 
                 default: 
@@ -241,22 +240,22 @@ void CallbackManager::set_keyboard_callback()
         } });
 }
 
-void CallbackManager::handle_pause()
-{
-    GLuint current_step = this->simulator->get_current_step();
-    GLfloat timestep_size = this->simulator->get_timestep_size();
-    if (this->simulator->get_running_state())
-    {
-        std::cout << "The simulation is now paused. Step: " << current_step << ", Time (timestep size): "
-                  << current_step * timestep_size << "\nPress p to resume..." << std::endl;
-    }
-    else
-    {
-        std::cout << "Resuming simulation..." << std::endl;
-    }
+// void CallbackManager::handle_pause()
+// {
+//     GLuint current_step = this->simulator->get_current_step();
+//     GLfloat timestep_size = this->simulator->get_timestep_size();
+//     if (this->simulator->get_running_state())
+//     {
+//         std::cout << "The simulation is now paused. Step: " << current_step << ", Time (timestep size): "
+//                   << current_step * timestep_size << "\nPress p to resume..." << std::endl;
+//     }
+//     else
+//     {
+//         std::cout << "Resuming simulation..." << std::endl;
+//     }
 
-    this->simulator->set_running_state(!this->simulator->get_running_state());
-}
+//     this->simulator->set_running_state(!this->simulator->get_running_state());
+// }
 
 void CallbackManager::handle_orbit_toggle()
 {
@@ -266,43 +265,43 @@ void CallbackManager::handle_orbit_toggle()
     std::cout << msg << std::endl;
 }
 
-void CallbackManager::handle_instancing_toggle()
-{
-    bool instancing_state = this->renderer->get_use_instancing();
-    this->renderer->set_use_instancing(!instancing_state);
-    std::string msg = (instancing_state) ? "Instancing mode disabled." : "Instancing mode enabled.";
-    std::cout << msg << std::endl;
-}
+// void CallbackManager::handle_instancing_toggle()
+// {
+//     bool instancing_state = this->renderer->get_use_instancing();
+//     this->renderer->set_use_instancing(!instancing_state);
+//     std::string msg = (instancing_state) ? "Instancing mode disabled." : "Instancing mode enabled.";
+//     std::cout << msg << std::endl;
+// }
 
-void CallbackManager::handle_wireframe_toggle()
-{
-    bool wireframe_state = this->renderer->get_use_wireframe();
-    this->renderer->set_use_wireframe(!wireframe_state);
-    std::string msg = (wireframe_state) ? "Wireframe mode disabled." : "Wireframe mode enabled.";
-    std::cout << msg << std::endl;
-}
+// void CallbackManager::handle_wireframe_toggle()
+// {
+//     bool wireframe_state = this->renderer->get_use_wireframe();
+//     this->renderer->set_use_wireframe(!wireframe_state);
+//     std::string msg = (wireframe_state) ? "Wireframe mode disabled." : "Wireframe mode enabled.";
+//     std::cout << msg << std::endl;
+// }
 
-void CallbackManager::handle_bloom_toggle()
-{
-    bool bloom_state = this->bloom->get_enabled();
-    this->bloom->set_enabled(!bloom_state);
-    this->renderer->set_use_bloom(!bloom_state);
-    std::string msg = (bloom_state) ? "Bloom disabled." : "Bloom enabled.";
-    std::cout << msg << std::endl;
-}
+// void CallbackManager::handle_bloom_toggle()
+// {
+//     bool bloom_state = this->bloom->get_enabled();
+//     this->bloom->set_enabled(!bloom_state);
+//     this->renderer->set_use_bloom(!bloom_state);
+//     std::string msg = (bloom_state) ? "Bloom disabled." : "Bloom enabled.";
+//     std::cout << msg << std::endl;
+// }
 
-void CallbackManager::handle_msize_toggle()
-{
-    bool msize_state = this->renderer->get_use_msize();
-    this->renderer->set_use_msize(!msize_state);
-    std::string msg = (msize_state) ? "mass-size disabled." : "mass-size enabled.";
-    std::cout << msg << std::endl;
-}
+// void CallbackManager::handle_msize_toggle()
+// {
+//     bool msize_state = this->renderer->get_use_msize();
+//     this->renderer->set_use_msize(!msize_state);
+//     std::string msg = (msize_state) ? "mass-size disabled." : "mass-size enabled.";
+//     std::cout << msg << std::endl;
+// }
 
-void CallbackManager::handle_mcolor_toggle()
-{
-    bool mcolor_state = this->renderer->get_use_mcolor();
-    this->renderer->set_use_mcolor(!mcolor_state);
-    std::string msg = (mcolor_state) ? "mass-color disabled." : "mass-color enabled.";
-    std::cout << msg << std::endl;
-}
+// void CallbackManager::handle_mcolor_toggle()
+// {
+//     bool mcolor_state = this->renderer->get_use_mcolor();
+//     this->renderer->set_use_mcolor(!mcolor_state);
+//     std::string msg = (mcolor_state) ? "mass-color disabled." : "mass-color enabled.";
+//     std::cout << msg << std::endl;
+// }

@@ -16,6 +16,7 @@
 #include <InputParser/InputParser.h>
 #include <Mesh/MeshBuilder.h>
 #include <Bloom/Bloom.h>
+#include <InputProcessor/InputProcessor.h>
 #include <GUI/GUI.h>
 
 // For initialization
@@ -123,7 +124,10 @@ int main(int argc, char *argv[])
 	// ----------------------------------------------------------------------------
 	Bloom bloom = Bloom(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	CallbackManager callback_manager = CallbackManager(window, &camera, simulator, &renderer, &bloom);
+	// Input Management
+	InputProcessor input_processor = InputProcessor(simulator, &renderer, &bloom);
+	
+	CallbackManager callback_manager = CallbackManager(window, &camera, &input_processor, &bloom);
 	GUI gui = GUI(window);
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
@@ -138,6 +142,7 @@ int main(int argc, char *argv[])
 		// Process Input
 		glfwPollEvents();
 		callback_manager.process_input();
+		input_processor.process_input();
 
 		// Post Processing setup
 		if (bloom.get_enabled())
