@@ -51,7 +51,6 @@ vec3 get_color(){
 
 void main(){
     // FragColor = vec4(1.0f, 0.88f, 0.49f, 0.7f);
-
     vec3 color = vec3(5.0f, 2.0f, 0.6f);
 
     // Maybe we have enable/disable gradient
@@ -61,15 +60,12 @@ void main(){
     FragColor = vec4(color,1.0f);
     
     // REC 709 Standard luminance
-    // Technically this should not be necessary for our case
     float luminance = dot(vec3(0.2126,0.7152,0.0722), color);
-    // FragColorThreshold = vec4(1.0,1.0,1.0,1.0);
 
     if(luminance > 0.2){
         FragColorThreshold = vec4(color,1.0f);
     } else {
         FragColorThreshold = vec4(0.0f);
-        // FragColorThreshold = vec4(0.0f);
     }
 
     if(!bloom_enabled){
@@ -78,7 +74,7 @@ void main(){
         color = vec3(1.0) - exp(-color * u_exposure);
 
         // Gamma correction
-        float u_gamma = 2.2; //2.2
+        float u_gamma = 2.2;
         color = pow(color, vec3(1.0/u_gamma));
         FragColor = vec4(color,1.0f);
     }
