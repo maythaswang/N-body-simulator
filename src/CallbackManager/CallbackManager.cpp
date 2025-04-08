@@ -2,13 +2,14 @@
 #include <StringCommon.h>
 #include "CallbackManager.h"
 
-CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, Simulator *simulator, Renderer *renderer)
+CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, Simulator *simulator, Renderer *renderer, Bloom *bloom)
 {
     // Components
     this->window = window;
     this->camera = camera;
     this->simulator = simulator;
     this->renderer = renderer;
+    this->bloom = bloom;
 
     // Camera states
     this->camera_mode = CAMERA_IDLE;
@@ -153,6 +154,7 @@ void CallbackManager::set_window_resize_callback()
         if (callback_manager){
             if(width || height) {
             callback_manager->camera->set_aspect( width, height );
+            callback_manager->bloom->resize(width, height);
             }
         }
 
@@ -221,6 +223,18 @@ void CallbackManager::set_keyboard_callback()
                     callback_manager->handle_wireframe_toggle();
                     break;
 
+                case GLFW_KEY_B: // Toggle Bloom
+                    callback_manager->handle_bloom_toggle();
+                    break;
+
+                case GLFW_KEY_M: // Toggle mass-size
+                    callback_manager->handle_msize_toggle();
+                    break;
+                
+                case GLFW_KEY_C: // Toggle mass-color
+                    callback_manager->handle_mcolor_toggle();
+                    break;
+
                 default: 
                     break;
             }
@@ -268,3 +282,27 @@ void CallbackManager::handle_wireframe_toggle()
     std::cout << msg << std::endl;
 }
 
+void CallbackManager::handle_bloom_toggle()
+{
+    bool bloom_state = this->bloom->get_enabled();
+    this->bloom->set_enabled(!bloom_state);
+    this->renderer->set_use_bloom(!bloom_state);
+    std::string msg = (bloom_state) ? "Bloom disabled." : "Bloom enabled.";
+    std::cout << msg << std::endl;
+}
+
+void CallbackManager::handle_msize_toggle()
+{
+    bool msize_state = this->renderer->get_use_msize();
+    this->renderer->set_use_msize(!msize_state);
+    std::string msg = (msize_state) ? "mass-size disabled." : "mass-size enabled.";
+    std::cout << msg << std::endl;
+}
+
+void CallbackManager::handle_mcolor_toggle()
+{
+    bool mcolor_state = this->renderer->get_use_mcolor();
+    this->renderer->set_use_mcolor(!mcolor_state);
+    std::string msg = (mcolor_state) ? "mass-color disabled." : "mass-color enabled.";
+    std::cout << msg << std::endl;
+}
