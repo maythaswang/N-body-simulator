@@ -26,8 +26,6 @@ const char *SCREEN_NAME = "N-BODY-SIMULATION";
 void print_workgroup_info();
 void terminate(RenderComponents *render_components);
 
-// TODO: Implement visual effects (eg: bloom, particle colour and scale based on mass or stellar class...)
-
 int main(int argc, char *argv[])
 {
 	// Accept Inputs

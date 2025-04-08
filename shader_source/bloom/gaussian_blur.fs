@@ -7,9 +7,6 @@ uniform bool is_horizontal;
 
 out vec4 FragColor;
 
-// In case want to switch to the constant version
-// const float weight[5] = float[] (0.227027, 0.1945946, 0.1216216, 0.054054, 0.016216);
-
 const int BLUR_RADIUS = 7; // basically ceil(kernel/2)
 const float sigma = 1.9;
 float weight[BLUR_RADIUS];

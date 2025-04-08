@@ -31,7 +31,6 @@ void main() {
   vec4 new_pos = vec4(0.0);
   float mass_size = 1; 
 
-  // For system that are too large (far away) you might want to disable instancing 
   if(!use_instancing){
     new_pos = position[gl_VertexID];
     star_mass = mass[gl_VertexID];
