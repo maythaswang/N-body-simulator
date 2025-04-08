@@ -30,7 +30,7 @@ public:
     bool msize_on[2] = {0, 0};
     bool mcolor_on[2] = {0, 0};
 
-    GLfloat renderer_gamma, bloom_gamma, renderer_exposure, bloom_exposure;
+    GLfloat renderer_gamma, bloom_gamma, renderer_exposure, bloom_exposure, bloom_blur_intensity;
 
     /**
      * @brief Compare new input with previous input and handle the toggling
@@ -52,6 +52,7 @@ public:
     // GUI exclusives
     void imm_update_bloom_gamma();
     void imm_update_bloom_exposure();
+    void imm_update_bloom_blur_intensity();
     void imm_update_renderer_gamma();
     void imm_update_renderer_exposure();
     void imm_reset_renderer();

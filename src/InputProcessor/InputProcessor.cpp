@@ -11,6 +11,7 @@ InputProcessor::InputProcessor(Simulator *simulator, Renderer *renderer, Bloom *
     this->renderer_exposure =  this->renderer->get_exposure();
     this->bloom_gamma =  this->bloom->get_gamma();
     this->bloom_exposure =  this->bloom->get_exposure();
+    this->bloom_blur_intensity =  this->bloom->get_blur_intensity();
 }
 InputProcessor::~InputProcessor()
 {
@@ -136,6 +137,11 @@ void InputProcessor::imm_update_bloom_exposure()
     this->bloom->set_exposure(this->bloom_exposure);
 }
 
+void InputProcessor::imm_update_bloom_blur_intensity()
+{
+    this->bloom->set_blur_intensity(this->bloom_blur_intensity);
+}
+
 void InputProcessor::imm_update_renderer_gamma()
 {
     this->renderer->set_gamma(this->renderer_gamma);
@@ -158,4 +164,5 @@ void InputProcessor::imm_reset_bloom()
     this->bloom->reset_default();
     this->bloom_gamma =  this->bloom->get_gamma();
     this->bloom_exposure =  this->bloom->get_exposure();
+    this->bloom_blur_intensity =  this->bloom->get_blur_intensity();
 }

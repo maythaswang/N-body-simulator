@@ -96,6 +96,9 @@ void GUI::control_panel()
     ImGui::Checkbox("Mass-Color", &this->input_processor->mcolor_on[0]);
 
     ImGui::Columns(1);
+    if(ImGui::SliderFloat("Bloom Intensity", &this->input_processor->bloom_blur_intensity, 0.0f, 1.0f)){
+        this->input_processor->imm_update_bloom_blur_intensity();
+    }
 
     ImGui::SeparatorText("COLOR CORRECTION");
     if(ImGui::SliderFloat("Renderer Gamma", &this->input_processor->renderer_gamma, 0.0f, 3.0f)){

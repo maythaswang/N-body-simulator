@@ -7,13 +7,14 @@ uniform sampler2D u_blur_texture;
 
 uniform float u_exposure;
 uniform float u_gamma;
+uniform float u_blur_intensity;
 
 out vec4 FragColor;
 
 void main() {
     vec3 color = texture(u_color_texture, tex_coord).rgb;
     vec3 blur = texture(u_blur_texture, tex_coord).rgb;
-    color += blur*0.4;
+    color += blur*u_blur_intensity;
 
     // Reinhard tone mapping
     // color = color/ (color + vec3(1.0));
