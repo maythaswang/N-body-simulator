@@ -244,23 +244,6 @@ void CallbackManager::set_keyboard_callback()
         } });
 }
 
-// void CallbackManager::handle_pause()
-// {
-//     GLuint current_step = this->simulator->get_current_step();
-//     GLfloat timestep_size = this->simulator->get_timestep_size();
-//     if (this->simulator->get_running_state())
-//     {
-//         std::cout << "The simulation is now paused. Step: " << current_step << ", Time (timestep size): "
-//                   << current_step * timestep_size << "\nPress p to resume..." << std::endl;
-//     }
-//     else
-//     {
-//         std::cout << "Resuming simulation..." << std::endl;
-//     }
-
-//     this->simulator->set_running_state(!this->simulator->get_running_state());
-// }
-
 void CallbackManager::handle_orbit_toggle()
 {
     bool is_orbiting = this->get_camera_orbiting();
@@ -268,44 +251,3 @@ void CallbackManager::handle_orbit_toggle()
     std::string msg = (is_orbiting) ? "Camera is set to free flying mode." : "Camera is set to orbit mode.";
     std::cout << msg << std::endl;
 }
-
-// void CallbackManager::handle_instancing_toggle()
-// {
-//     bool instancing_state = this->renderer->get_use_instancing();
-//     this->renderer->set_use_instancing(!instancing_state);
-//     std::string msg = (instancing_state) ? "Instancing mode disabled." : "Instancing mode enabled.";
-//     std::cout << msg << std::endl;
-// }
-
-// void CallbackManager::handle_wireframe_toggle()
-// {
-//     bool wireframe_state = this->renderer->get_use_wireframe();
-//     this->renderer->set_use_wireframe(!wireframe_state);
-//     std::string msg = (wireframe_state) ? "Wireframe mode disabled." : "Wireframe mode enabled.";
-//     std::cout << msg << std::endl;
-// }
-
-// void CallbackManager::handle_bloom_toggle()
-// {
-//     bool bloom_state = this->bloom->get_enabled();
-//     this->bloom->set_enabled(!bloom_state);
-//     this->renderer->set_use_bloom(!bloom_state);
-//     std::string msg = (bloom_state) ? "Bloom disabled." : "Bloom enabled.";
-//     std::cout << msg << std::endl;
-// }
-
-// void CallbackManager::handle_msize_toggle()
-// {
-//     bool msize_state = this->renderer->get_use_msize();
-//     this->renderer->set_use_msize(!msize_state);
-//     std::string msg = (msize_state) ? "mass-size disabled." : "mass-size enabled.";
-//     std::cout << msg << std::endl;
-// }
-
-// void CallbackManager::handle_mcolor_toggle()
-// {
-//     bool mcolor_state = this->renderer->get_use_mcolor();
-//     this->renderer->set_use_mcolor(!mcolor_state);
-//     std::string msg = (mcolor_state) ? "mass-color disabled." : "mass-color enabled.";
-//     std::cout << msg << std::endl;
-// }
