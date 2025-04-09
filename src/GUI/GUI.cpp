@@ -81,6 +81,9 @@ void GUI::control_panel()
     msg = (this->input_processor->get_simulator_running()) ? "Running." : "Paused.";
     ImGui::Text(msg.c_str());
 
+    // ImGui::SeparatorText("CAMERA");
+    // ImGui::Text("Eye: <%.3f, %.3f, %.3f>", );
+
     ImGui::SeparatorText("VISUAL EFFECTS");
 
     // 2 Columns for effects
