@@ -17,6 +17,9 @@
 class InputParser
 {
 public:
+    // So that it stops screaming
+    InputParser();
+
     /**
      * @brief Construct a new InputParser object
      *
@@ -132,7 +135,7 @@ private:
 
     /**
      * @brief Update particle builder setup log
-     * 
+     *
      */
     void update_particle_builder_setup_log();
 };

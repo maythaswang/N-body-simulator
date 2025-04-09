@@ -5,6 +5,10 @@ int TESTCASE_CAP_GPU = 33;
 GLfloat DEFAULT_TIMESTEP_SIZE = 0.001;
 GLfloat DEFAULT_GRAVITATIONAL_CONSTANT = 0.8;
 
+InputParser::InputParser()
+{
+}
+
 InputParser::InputParser(ParticleBuilder *particle_builder)
 {
     this->particle_builder = particle_builder;
@@ -344,7 +348,8 @@ void InputParser::clear_cin()
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the remaining \n
 }
 
-void InputParser::update_particle_builder_setup_log(){
+void InputParser::update_particle_builder_setup_log()
+{
     this->particle_builder->head_setup_data.use_GPU = this->use_GPU;
     this->particle_builder->head_setup_data.use_default = this->use_default_test;
     this->particle_builder->head_setup_data.integrator = this->use_velocity_verlet;
