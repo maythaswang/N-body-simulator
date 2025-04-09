@@ -11,6 +11,7 @@
 
 /**
  * @brief Handle Callbacks recieved from window, mouse, keyboards and update the components accordingly
+ * @note Mouse-Camera controls are exclusive to this class (we don't want it on gui, ps. im too lazy to refactor)
  *
  */
 class CallbackManager
@@ -93,8 +94,6 @@ private:
      *
      */
     void update_camera_position();
-
-    void handle_orbit_toggle();
 };
 
 #endif

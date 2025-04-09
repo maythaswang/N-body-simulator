@@ -48,6 +48,8 @@ public:
     void imm_handle_show_setup_log();
     void imm_handle_show_help_msg();
     void imm_handle_gui_toggle();
+    void imm_handle_camera_orbit_toggle();
+    void imm_handle_camera_reset();
 
     // GUI exclusives
     void imm_update_bloom_gamma();

@@ -127,8 +127,6 @@ void Camera::free_rotate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
     this->build_view_matrix();
 }
 
-// The only mutator method avaliable for use as of now is SetAspect.
-
 void Camera::set_eye(glm::vec3 eye)
 {
     this->eye = eye;
@@ -210,23 +208,29 @@ CameraMode Camera::get_camera_mode()
 {
     return this->camera_mode;
 }
-void Camera::set_camera_mode(CameraMode camera_mode){
+void Camera::set_camera_mode(CameraMode camera_mode)
+{
     this->camera_mode = camera_mode;
 }
 
-bool Camera::get_is_orbiting(){
+bool Camera::get_is_orbiting()
+{
     return this->is_orbiting;
 }
-void Camera::set_is_orbiting(bool is_orbiting){
+void Camera::set_is_orbiting(bool is_orbiting)
+{
     this->is_orbiting = is_orbiting;
 }
 
-glm::vec3 Camera::get_eye(){
+glm::vec3 Camera::get_eye()
+{
     return this->eye;
 }
-glm::vec3 Camera::get_center(){
+glm::vec3 Camera::get_center()
+{
     return this->center;
 }
-glm::vec3 Camera::get_up(){
+glm::vec3 Camera::get_up()
+{
     return this->up;
 }
