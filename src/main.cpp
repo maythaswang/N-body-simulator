@@ -13,7 +13,7 @@
 #include <StringCommon.h>
 #include <ParticleSystem/ParticleParticleCPU/ParticleParticleCPU.h>
 #include <ParticleSystem/ParticleParticleGPU/ParticleParticleGPU.h>
-#include <InputParser/InputParser.h>
+#include <SetupSystem/InputParser/InputParser.h>
 #include <Mesh/MeshBuilder.h>
 #include <Bloom/Bloom.h>
 #include <InputProcessor/InputProcessor.h>

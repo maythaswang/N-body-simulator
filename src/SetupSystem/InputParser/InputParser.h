@@ -5,7 +5,7 @@
 #include <GLcommon.h>
 #include "SetupPayload.h"
 #include <ParticleSystem/ParticleBuilder/ParticleBuilder.h>
-#include <DefaultTestLoader/DefaultTestLoader.h>
+#include <SetupSystem/DefaultTestLoader/DefaultTestLoader.h>
 
 #include <iostream>
 #include <string>
