@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
 	Bloom bloom = Bloom(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	// Input Management
-	InputProcessor input_processor = InputProcessor(simulator, &renderer, &bloom);
+	InputProcessor input_processor = InputProcessor(simulator, &renderer, &bloom, &camera);
 	
 	CallbackManager callback_manager = CallbackManager(window, &camera, &input_processor, &bloom);
 	GUI gui = GUI(window, &input_processor);

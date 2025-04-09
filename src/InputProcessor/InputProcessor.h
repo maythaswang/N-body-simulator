@@ -16,7 +16,7 @@
 class InputProcessor
 {
 public:
-    InputProcessor(Simulator *simulator, Renderer *renderer, Bloom *bloom);
+    InputProcessor(Simulator *simulator, Renderer *renderer, Bloom *bloom, Camera *camera);
     ~InputProcessor();
 
     // Put on public so ImGui can edit this directly
@@ -58,7 +58,6 @@ public:
     void imm_reset_renderer();
     void imm_reset_bloom();
 
-
     /**
      * @brief Handle simulation pausing
      *
@@ -68,11 +67,16 @@ public:
     // Get-Set
     bool get_simulator_running();
     bool get_gui_on();
+    glm::vec3 get_camera_eye();
+    glm::vec3 get_camera_center();
+    glm::vec3 get_camera_up();
+    bool get_camera_is_orbiting();
 
 private:
     Simulator *simulator;
     Renderer *renderer;
     Bloom *bloom;
+    Camera *camera;
 
     // Read only form outside
     bool simulator_running = 0;
