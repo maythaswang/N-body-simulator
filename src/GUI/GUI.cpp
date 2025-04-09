@@ -7,6 +7,7 @@ GUI::GUI(GLFWwindow *window, InputProcessor *input_processor, ParticleBuilder *p
     this->input_processor = input_processor;
     this->particle_builder = particle_builder;
     this->setup_data_panel_on = false;
+    this->save_file_panel_on = false;
     this->init();
 }
 
@@ -68,6 +69,7 @@ void GUI::control_panel()
 {
     ImGui::Begin("Control Panel");
     std::string msg;
+    char filename[256] = "";
 
     // Information Section
     //-------------------------------------------
@@ -89,7 +91,40 @@ void GUI::control_panel()
         this->input_processor->imm_handle_pause();
     }
 
+    // Simulation Saving
+    //-------------------------------------------
     ImGui::Checkbox("Setup Information Panel", &this->setup_data_panel_on);
+    if (ImGui::Button("Save Simulation"))
+    {
+        this->save_file_panel_on = true;
+        // Pause simulation before begin saving
+        if(this->input_processor->get_simulator_running()){
+            this->input_processor->imm_handle_pause();
+        }
+    }
+
+    if (this->save_file_panel_on)
+    {
+        ImGui::OpenPopup("Save simulation?");
+        if (ImGui::BeginPopupModal("Save simulation?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+        {
+            ImGui::InputText("File Name", filename, IM_ARRAYSIZE(filename));
+            if (ImGui::Button("Confirm Save file"))
+            {
+                // std::cout << "Opening file: " << filename << std::endl;
+                this->save_file_panel_on = false;
+                // Handle File saving here
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel"))
+            {
+                this->save_file_panel_on = false;
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::EndPopup();
+        }
+    }
 
     // Camera Section
     //-------------------------------------------
@@ -256,7 +291,7 @@ void GUI::setup_data_panel()
 
     // Random
     if (this->particle_builder->particle_random_log.size() > 0)
-    {   
+    {
         ImGui::SeparatorText("Random Cluster");
         if (ImGui::BeginTable("Random Cluster", 7))
         {
@@ -294,7 +329,7 @@ void GUI::setup_data_panel()
         }
     }
 
-    // Globular Cluster 
+    // Globular Cluster
     if (this->particle_builder->particle_globular_cluster_log.size() > 0)
     {
         ImGui::SeparatorText("Globular Cluster");
@@ -340,7 +375,7 @@ void GUI::setup_data_panel()
         }
     }
 
-    // Spherical Cluster 
+    // Spherical Cluster
     if (this->particle_builder->particle_sphere_surface_log.size() > 0)
     {
         ImGui::SeparatorText("Spherical Surface Cluster");
