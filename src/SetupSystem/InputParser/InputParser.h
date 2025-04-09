@@ -3,7 +3,6 @@
 #pragma once
 
 #include <GLcommon.h>
-#include "SetupPayload.h"
 #include <ParticleSystem/ParticleBuilder/ParticleBuilder.h>
 #include <SetupSystem/DefaultTestLoader/DefaultTestLoader.h>
 

@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/random.hpp>
+#include <SetupSystem/SetupPayload.h>
 #include <math.h>
 #include <vector>
 #include <string>
@@ -118,12 +119,22 @@ public:
      */
     std::string get_summary();
 
+    // Setup Summary (publicly accessible for GUI to handle more stuffs)
+    // In summary, I am getting lazy...
+    HeadSetupData head_setup_data;
+    std::vector<ParticleDiscSetupData> particle_disc_log;
+    std::vector<ParticleRandomSetupData> particle_random_log;
+    std::vector<ParticleGlobularClusterSetupData> particle_globular_cluster_log;
+    std::vector<ParticleSphereSurfaceSetupData> particle_sphere_surface_log;
+
 private:
     std::vector<glm::vec4> particle_position;
     std::vector<glm::vec4> particle_velocity;
     std::vector<glm::vec4> particle_acceleration;
     std::vector<GLfloat> particle_mass;
     GLuint n_particle;
+
+    // Setup Summary
     std::string setup_summary;
 
     /**
