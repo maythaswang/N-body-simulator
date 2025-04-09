@@ -36,11 +36,6 @@ int main(int argc, char *argv[])
 	ParticleBuilder particle_builder = ParticleBuilder();
 	InputParser input_parser = InputParser(&particle_builder);
 	input_parser.accept_input();
-	std::string setup_log_head = "+------------------------------------------------+\n"
-								 "| Setup Summary                                  |\n"
-								 "+------------------------------------------------+\n";
-	std::string setup_log_input = input_parser.get_summary();
-	std::string setup_log_particle = particle_builder.get_summary();
 
 	// Initialization Subroutine
 	// ----------------------------------------------------------------------------
@@ -86,8 +81,6 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	// Storing particle information
-	// GLuint particle_position_SSBO, particle_mass_SSBO;
 	Simulator *simulator;
 
 	// Sphere mesh
@@ -95,9 +88,9 @@ int main(int argc, char *argv[])
 	RenderComponents render_components = mesh_builder.build_sphere(1, 12, 8);
 
 	// Simulator setup
-	SimulatorIntegrator integrator = (input_parser.get_use_velocity_verlet()) ? INTEGRATOR_VELOCITY_VERLET : INTEGRATOR_EULER;
-	GLfloat gravitational_constant = input_parser.get_gravitational_constant();
-	GLfloat timestep_size = input_parser.get_timestep_size();
+	SimulatorIntegrator integrator = (particle_builder.head_setup_data.integrator) ? INTEGRATOR_VELOCITY_VERLET : INTEGRATOR_EULER;
+	GLfloat gravitational_constant = particle_builder.head_setup_data.gravitational_constant;
+	GLfloat timestep_size = particle_builder.head_setup_data.timestep_size;
 
 	// TODO: CHANGE THIS TO SMART POINTER LATER ON
 	if (!input_parser.get_use_GPU())
@@ -112,12 +105,6 @@ int main(int argc, char *argv[])
 
 	simulator->load_particles(n_particles, particle_position, particle_velocity, particle_acceleration, particle_mass);
 
-	// TODO: This is just here for setting up the logs  (we will do it such that the same input can be import/ export later)
-	simulator->append_setup_log(setup_log_head);
-	simulator->append_setup_log(setup_log_input);
-	simulator->append_setup_log(setup_log_particle);
-	simulator->append_setup_log("\n--------------------------------------------------\n\n");
-
 	Renderer renderer = Renderer(window, &shader_program, &camera, simulator, &render_components);
 
 	// Post Processor
@@ -125,14 +112,15 @@ int main(int argc, char *argv[])
 	Bloom bloom = Bloom(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	// Input Management
+	// ----------------------------------------------------------------------------
 	InputProcessor input_processor = InputProcessor(simulator, &renderer, &bloom, &camera);
-	
 	CallbackManager callback_manager = CallbackManager(window, &camera, &input_processor, &bloom);
 	GUI gui = GUI(window, &input_processor, &particle_builder);
+
+
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
 
-	// print_workgroup_info();
 	std::cout << simulator->get_setup_log() << std::endl;
 	std::cout << g_controls_help << std::endl;
 	std::cout << "Starting Simulator in paused state..." << std::endl;
