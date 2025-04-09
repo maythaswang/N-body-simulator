@@ -57,6 +57,8 @@ void InputParser::accept_input()
         std::cout << "The manual setup will now begin..." << std::endl;
         this->manual_setup();
     }
+
+    this->update_particle_builder_setup_log();
 }
 
 void InputParser::manual_setup()
@@ -340,4 +342,13 @@ void InputParser::input_YN(bool &output, std::string message)
 void InputParser::clear_cin()
 {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the remaining \n
+}
+
+void InputParser::update_particle_builder_setup_log(){
+    this->particle_builder->head_setup_data.use_GPU = this->use_GPU;
+    this->particle_builder->head_setup_data.use_default = this->use_default_test;
+    this->particle_builder->head_setup_data.integrator = this->use_velocity_verlet;
+    this->particle_builder->head_setup_data.default_test_number = this->default_test;
+    this->particle_builder->head_setup_data.gravitational_constant = this->gravitational_constant;
+    this->particle_builder->head_setup_data.timestep_size = this->timestep_size;
 }

@@ -129,6 +129,12 @@ private:
      *
      */
     void clear_cin();
+
+    /**
+     * @brief Update particle builder setup log
+     * 
+     */
+    void update_particle_builder_setup_log();
 };
 
 #endif
