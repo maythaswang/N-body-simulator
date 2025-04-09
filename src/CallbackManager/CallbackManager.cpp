@@ -10,10 +10,6 @@ CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, InputProces
     this->input_processor = input_processor;
     this->bloom = bloom;
 
-    // Camera states
-    // this->camera_mode = CAMERA_IDLE;
-    // this->camera_orbiting = true;
-
     // Mouse states
     this->middle_mouse_down = false;
     this->left_shift_down = false;

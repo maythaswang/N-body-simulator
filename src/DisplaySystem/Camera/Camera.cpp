@@ -220,3 +220,13 @@ bool Camera::get_is_orbiting(){
 void Camera::set_is_orbiting(bool is_orbiting){
     this->is_orbiting = is_orbiting;
 }
+
+glm::vec3 Camera::get_eye(){
+    return this->eye;
+}
+glm::vec3 Camera::get_center(){
+    return this->center;
+}
+glm::vec3 Camera::get_up(){
+    return this->up;
+}

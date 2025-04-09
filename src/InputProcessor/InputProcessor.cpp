@@ -1,17 +1,17 @@
 #include "InputProcessor.h"
 
-InputProcessor::InputProcessor(Simulator *simulator, Renderer *renderer, Bloom *bloom)
+InputProcessor::InputProcessor(Simulator *simulator, Renderer *renderer, Bloom *bloom, Camera *camera)
 {
     this->simulator = simulator;
     this->renderer = renderer;
     this->bloom = bloom;
+    this->camera = camera;
 
-
-    this->renderer_gamma =  this->renderer->get_gamma();
-    this->renderer_exposure =  this->renderer->get_exposure();
-    this->bloom_gamma =  this->bloom->get_gamma();
-    this->bloom_exposure =  this->bloom->get_exposure();
-    this->bloom_blur_intensity =  this->bloom->get_blur_intensity();
+    this->renderer_gamma = this->renderer->get_gamma();
+    this->renderer_exposure = this->renderer->get_exposure();
+    this->bloom_gamma = this->bloom->get_gamma();
+    this->bloom_exposure = this->bloom->get_exposure();
+    this->bloom_blur_intensity = this->bloom->get_blur_intensity();
 }
 InputProcessor::~InputProcessor()
 {
@@ -155,14 +155,30 @@ void InputProcessor::imm_update_renderer_exposure()
 void InputProcessor::imm_reset_renderer()
 {
     this->renderer->reset_default();
-    this->renderer_gamma =  this->renderer->get_gamma();
-    this->renderer_exposure =  this->renderer->get_exposure();
+    this->renderer_gamma = this->renderer->get_gamma();
+    this->renderer_exposure = this->renderer->get_exposure();
 }
 
 void InputProcessor::imm_reset_bloom()
 {
     this->bloom->reset_default();
-    this->bloom_gamma =  this->bloom->get_gamma();
-    this->bloom_exposure =  this->bloom->get_exposure();
-    this->bloom_blur_intensity =  this->bloom->get_blur_intensity();
+    this->bloom_gamma = this->bloom->get_gamma();
+    this->bloom_exposure = this->bloom->get_exposure();
+    this->bloom_blur_intensity = this->bloom->get_blur_intensity();
+}
+
+glm::vec3 InputProcessor::get_camera_eye(){
+    return this->camera->get_eye();
+}
+
+glm::vec3 InputProcessor::get_camera_center(){
+    return this->camera->get_center();
+}
+
+glm::vec3 InputProcessor::get_camera_up(){
+    return this->camera->get_up();
+}
+
+bool InputProcessor::get_camera_is_orbiting(){
+    return this->camera->get_is_orbiting();
 }

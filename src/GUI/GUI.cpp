@@ -61,19 +61,13 @@ void GUI::render_gui()
 void GUI::control_panel()
 {
     ImGui::Begin("Control Panel");
+    std::string msg;
 
     // Information Section
+    //-------------------------------------------
     ImGui::SeparatorText("N-BODY SIMULATOR");
     ImGui::Text("If you wish to disable GUI, press (N)");
     ImGui::TextColored(ImVec4(1.0, 0.9, 0.7, 1.0), "Performance: %.3f ms/frame (%.1f FPS)", 1000.0f / this->io->Framerate, this->io->Framerate);
-
-    // Pause / Resume Button
-    std::string msg = (this->input_processor->get_simulator_running()) ? "PAUSE" : "RESUME";
-
-    if (ImGui::Button(msg.c_str()))
-    {
-        this->input_processor->imm_handle_pause();
-    }
 
     // Pause / Resume Status
     ImGui::Text("Simulator Status:");
@@ -81,12 +75,33 @@ void GUI::control_panel()
     msg = (this->input_processor->get_simulator_running()) ? "Running." : "Paused.";
     ImGui::Text(msg.c_str());
 
-    // ImGui::SeparatorText("CAMERA");
-    // ImGui::Text("Eye: <%.3f, %.3f, %.3f>", );
+    // Pause / Resume Button
+    msg = (this->input_processor->get_simulator_running()) ? "PAUSE" : "RESUME";
 
+    if (ImGui::Button(msg.c_str()))
+    {
+        this->input_processor->imm_handle_pause();
+    }
+
+    // Camera Section
+    //-------------------------------------------
+    ImGui::SeparatorText("CAMERA");
+    msg = (this->input_processor->get_camera_is_orbiting())? "ORBIT" : "FREE-FLYING";
+    ImGui::TextColored(ImVec4(1.0, 0.9, 0.7, 1.0), "CAMERA MODE:");
+    ImGui::SameLine();
+    ImGui::TextColored(ImVec4(1.0, 0.9, 0.7, 1.0), msg.c_str());
+
+    glm::vec3 eye = this->input_processor->get_camera_eye();
+    glm::vec3 center = this->input_processor->get_camera_center();
+    glm::vec3 up = this->input_processor->get_camera_up();
+    ImGui::Text("Eye: <%.3f, %.3f, %.3f>", eye.x, eye.y, eye.z);
+    ImGui::Text("Center: <%.3f, %.3f, %.3f>", center.x, center.y, center.z);
+    ImGui::Text("Up: <%.3f, %.3f, %.3f>", up.x, up.y, up.z);
+
+
+    // Visual Effects Section
+    //-------------------------------------------
     ImGui::SeparatorText("VISUAL EFFECTS");
-
-    // 2 Columns for effects
     ImGui::Columns(2, "VISUAL_EFFECT_CHECKBOX", true);
 
     ImGui::Checkbox("Instancing", &this->input_processor->instancing_on[0]);
@@ -118,6 +133,8 @@ void GUI::control_panel()
         this->input_processor->imm_update_bloom_exposure();
     };
 
+    // Color correction Section
+    //-------------------------------------------
     ImGui::Columns(2, "COLOR_CORRECTION_RESET", true);
 
     if (ImGui::Button("Reset Bloom Shader"))

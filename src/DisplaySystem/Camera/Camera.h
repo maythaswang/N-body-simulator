@@ -141,6 +141,10 @@ public:
     bool get_is_orbiting();
     void set_is_orbiting(bool);
 
+    glm::vec3 get_eye();
+    glm::vec3 get_center();
+    glm::vec3 get_up();
+
 private:
     CameraMode camera_mode;
     bool is_orbiting;
