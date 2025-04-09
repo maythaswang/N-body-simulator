@@ -11,8 +11,8 @@ CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, InputProces
     this->bloom = bloom;
 
     // Camera states
-    this->camera_mode = CAMERA_IDLE;
-    this->camera_orbiting = true;
+    // this->camera_mode = CAMERA_IDLE;
+    // this->camera_orbiting = true;
 
     // Mouse states
     this->middle_mouse_down = false;
@@ -49,24 +49,23 @@ void CallbackManager::update_camera_mode()
 {
     if (!this->middle_mouse_down)
     {
-        this->camera_mode = CAMERA_IDLE;
+        this->camera->set_camera_mode(CAMERA_IDLE);
         this->old_mouse_pos_x = this->mouse_pos_x;
         this->old_mouse_pos_y = this->mouse_pos_y;
     }
-
-    if (this->camera_mode == CAMERA_IDLE)
+    else if (this->camera->get_camera_mode() == CAMERA_IDLE & this->middle_mouse_down)
     {
-        if (this->left_ctrl_down & this->middle_mouse_down)
+        if (this->left_ctrl_down)
         {
-            this->camera_mode = CAMERA_ZOOM;
+            this->camera->set_camera_mode(CAMERA_ZOOM);
         }
-        else if (this->left_shift_down & this->middle_mouse_down)
+        else if (this->left_shift_down)
         {
-            this->camera_mode = CAMERA_TRANSLATE;
+            this->camera->set_camera_mode(CAMERA_TRANSLATE);
         }
-        else if (this->middle_mouse_down)
+        else
         {
-            this->camera_mode = CAMERA_ROTATE;
+            this->camera->set_camera_mode(CAMERA_ROTATE);
         }
     }
 }
@@ -76,12 +75,12 @@ void CallbackManager::update_camera_position()
     double delta_mouse_pos_x = this->mouse_pos_x - this->old_mouse_pos_x;
     double delta_mouse_pos_y = this->mouse_pos_y - this->old_mouse_pos_y;
 
-    switch (this->camera_mode)
+    switch (this->camera->get_camera_mode())
     {
     case CAMERA_IDLE:
         break;
     case CAMERA_ZOOM:
-        if (this->camera_orbiting)
+        if (this->camera->get_is_orbiting())
         {
             this->camera->zoom(delta_mouse_pos_y);
         }
@@ -92,7 +91,7 @@ void CallbackManager::update_camera_position()
 
         break;
     case CAMERA_ROTATE:
-        if (this->camera_orbiting)
+        if (this->camera->get_is_orbiting())
         {
 
             this->camera->rotate(delta_mouse_pos_x, delta_mouse_pos_y);
@@ -113,15 +112,6 @@ void CallbackManager::update_camera_position()
 
     this->old_mouse_pos_x = mouse_pos_x;
     this->old_mouse_pos_y = mouse_pos_y;
-}
-
-void CallbackManager::set_camera_orbiting(bool camera_orbiting)
-{
-    this->camera_orbiting = camera_orbiting;
-}
-bool CallbackManager::get_camera_orbiting()
-{
-    return this->camera_orbiting;
 }
 
 void CallbackManager::set_cursor_position_callback()
@@ -169,9 +159,9 @@ void CallbackManager::set_scroll_callback()
                           {
         CallbackManager * callback_manager = reinterpret_cast<CallbackManager *> ( glfwGetWindowUserPointer ( window ));
         if (callback_manager){
-            if(callback_manager->camera_mode == CAMERA_IDLE)
+            if(callback_manager->camera->get_camera_mode() == CAMERA_IDLE)
             {
-                if(callback_manager->camera_orbiting)
+                if(callback_manager->camera->get_is_orbiting())
                 {
                     callback_manager->camera->zoom(-y_offset*1000);
                 }
@@ -246,8 +236,8 @@ void CallbackManager::set_keyboard_callback()
 
 void CallbackManager::handle_orbit_toggle()
 {
-    bool is_orbiting = this->get_camera_orbiting();
-    this->set_camera_orbiting(!is_orbiting);
+    bool is_orbiting = this->camera->get_is_orbiting();
+    this->camera->set_is_orbiting(!is_orbiting);
     std::string msg = (is_orbiting) ? "Camera is set to free flying mode." : "Camera is set to orbit mode.";
     std::cout << msg << std::endl;
 }

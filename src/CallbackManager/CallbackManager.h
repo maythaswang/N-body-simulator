@@ -8,7 +8,6 @@
 #include <Renderer/Renderer.h>
 #include <Bloom/Bloom.h>
 #include <InputProcessor/InputProcessor.h>
-#include "CameraEnum.h"
 
 /**
  * @brief Handle Callbacks recieved from window, mouse, keyboards and update the components accordingly
@@ -34,18 +33,18 @@ public:
 private:
     GLFWwindow *window;
     Camera *camera;
-    CameraMode camera_mode;
+    // CameraMode camera_mode;
 
     InputProcessor *input_processor;
     Bloom *bloom;
 
     // Mouse states
 
-    bool middle_mouse_down;
+    bool middle_mouse_down; // enable control-modes
     bool left_shift_down; // for translation
     bool left_ctrl_down;  // for zoom
 
-    bool camera_orbiting;
+    // bool camera_orbiting;
 
     double old_mouse_pos_x;
     double old_mouse_pos_y;
@@ -94,20 +93,6 @@ private:
      *
      */
     void update_camera_position();
-
-    /**
-     * @brief Set the camera status to orbiting / free
-     *
-     * @param camera_orbiting {0: free mode, 1: orbit mode}
-     */
-    void set_camera_orbiting(bool);
-
-    /**
-     * @brief Get camera orbiting status
-     *
-     * @return 1 if camera is in orbit mode
-     */
-    bool get_camera_orbiting();
 
     void handle_orbit_toggle();
 };

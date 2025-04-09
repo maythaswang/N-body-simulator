@@ -6,10 +6,13 @@ Camera::Camera()
 {
     this->aspect_w = 640;
     this->aspect_h = 480;
+    this->is_orbiting = true;
+    this->camera_mode = CAMERA_IDLE;
     this->set_default_camera();
 }
 
-void Camera::set_default_camera(){
+void Camera::set_default_camera()
+{
     this->eye = glm::vec3(0, 0, 200.0);
     this->center = glm::vec3(0, 0, 0);
     this->up = glm::vec3(0, 1.0, 0);
@@ -193,10 +196,27 @@ void Camera::build_projection_matrix()
     this->projection_mat = glm::perspective(glm::radians(this->fovy), this->aspect_w / this->aspect_h, this->z_near, this->z_far);
 }
 
-GLfloat Camera::get_aspect_w(){
+GLfloat Camera::get_aspect_w()
+{
     return this->aspect_w;
 }
 
-GLfloat Camera::get_aspect_h(){
+GLfloat Camera::get_aspect_h()
+{
     return this->aspect_h;
+}
+
+CameraMode Camera::get_camera_mode()
+{
+    return this->camera_mode;
+}
+void Camera::set_camera_mode(CameraMode camera_mode){
+    this->camera_mode = camera_mode;
+}
+
+bool Camera::get_is_orbiting(){
+    return this->is_orbiting;
+}
+void Camera::set_is_orbiting(bool is_orbiting){
+    this->is_orbiting = is_orbiting;
 }
