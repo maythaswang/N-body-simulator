@@ -26,6 +26,7 @@ private:
     ImGuiIO* io;
 
     bool setup_data_panel_on;
+    bool save_file_panel_on;
 
     void control_panel();
     void setup_data_panel();
