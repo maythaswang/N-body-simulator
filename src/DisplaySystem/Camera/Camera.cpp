@@ -23,7 +23,8 @@ void Camera::set_default_camera()
 
     this->rotation_sensitivity = 1;
     this->zoom_sensitivity = 1;
-    this->translation_sensitivity = 0.000001;
+    this->translation_sensitivity = 1;
+    this->free_forward_sensitivity = 0.001;
 
     this->build_model_matrix();
     this->build_view_matrix();
@@ -41,6 +42,8 @@ void Camera::rotate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
     glm::quat rotation_yaw = glm::angleAxis(glm::radians(yaw), norm_up);
     glm::quat rotation_pitch = glm::angleAxis(glm::radians(pitch), right);
     glm::quat rotation = rotation_pitch * rotation_yaw;
+
+
 
     this->eye = rotation * this->eye;
     this->up = rotation * this->up;
@@ -75,8 +78,13 @@ void Camera::translate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
     glm::vec3 direction = glm::normalize(this->center - this->eye);
     glm::vec3 right = glm::normalize(glm::cross(direction, this->up));
 
-    GLfloat x_translate = -mouse_delta_x * this->translation_sensitivity * std::min(distance, 100000000.0f);
-    GLfloat y_translate = mouse_delta_y * this->translation_sensitivity * std::min(distance, 100000000.0f);
+    // Calculate sensitivity (log)
+    GLfloat scale = 5.0f;
+    GLfloat rate_of_growth = 0.000001f;
+    GLfloat sensitivity = glm::max(scale * glm::log2(rate_of_growth * distance + 1), 0.01f);
+
+    GLfloat x_translate = -mouse_delta_x * sensitivity;
+    GLfloat y_translate = mouse_delta_y * sensitivity;
     glm::vec3 translation_vector = glm::normalize(right) * x_translate + glm::normalize(this->up) * y_translate;
 
     this->eye += translation_vector;

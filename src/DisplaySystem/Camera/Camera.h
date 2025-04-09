@@ -167,6 +167,7 @@ private:
     GLfloat rotation_sensitivity;
     GLfloat translation_sensitivity;
     GLfloat zoom_sensitivity;
+    GLfloat free_forward_sensitivity;
 
     /**
      * @brief Build model matrix.
