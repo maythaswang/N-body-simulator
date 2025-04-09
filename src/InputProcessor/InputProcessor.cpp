@@ -167,18 +167,36 @@ void InputProcessor::imm_reset_bloom()
     this->bloom_blur_intensity = this->bloom->get_blur_intensity();
 }
 
-glm::vec3 InputProcessor::get_camera_eye(){
+glm::vec3 InputProcessor::get_camera_eye()
+{
     return this->camera->get_eye();
 }
 
-glm::vec3 InputProcessor::get_camera_center(){
+glm::vec3 InputProcessor::get_camera_center()
+{
     return this->camera->get_center();
 }
 
-glm::vec3 InputProcessor::get_camera_up(){
+glm::vec3 InputProcessor::get_camera_up()
+{
     return this->camera->get_up();
 }
 
-bool InputProcessor::get_camera_is_orbiting(){
+bool InputProcessor::get_camera_is_orbiting()
+{
     return this->camera->get_is_orbiting();
+}
+
+void InputProcessor::imm_handle_camera_orbit_toggle()
+{
+    bool is_orbiting = this->camera->get_is_orbiting();
+    this->camera->set_is_orbiting(!is_orbiting);
+    std::string msg = (is_orbiting) ? "Camera is set to free flying mode." : "Camera is set to orbit mode.";
+    std::cout << msg << std::endl;
+}
+
+void InputProcessor::imm_handle_camera_reset()
+{
+    std::cout << "Camera is reset to origin." << std::endl;
+    this->camera->set_default_camera();
 }

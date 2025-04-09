@@ -86,7 +86,7 @@ void GUI::control_panel()
     // Camera Section
     //-------------------------------------------
     ImGui::SeparatorText("CAMERA");
-    msg = (this->input_processor->get_camera_is_orbiting())? "ORBIT" : "FREE-FLYING";
+    msg = (this->input_processor->get_camera_is_orbiting()) ? "ORBIT" : "FREE-FLYING";
     ImGui::TextColored(ImVec4(1.0, 0.9, 0.7, 1.0), "CAMERA MODE:");
     ImGui::SameLine();
     ImGui::TextColored(ImVec4(1.0, 0.9, 0.7, 1.0), msg.c_str());
@@ -98,6 +98,16 @@ void GUI::control_panel()
     ImGui::Text("Center: <%.3f, %.3f, %.3f>", center.x, center.y, center.z);
     ImGui::Text("Up: <%.3f, %.3f, %.3f>", up.x, up.y, up.z);
 
+    if (ImGui::Button("Reset camera position"))
+    {
+        this->input_processor->imm_handle_camera_reset();
+    }
+    ImGui::SameLine();
+
+    if (ImGui::Button("Switch Mode"))
+    {
+        this->input_processor->imm_handle_camera_orbit_toggle();
+    }
 
     // Visual Effects Section
     //-------------------------------------------
@@ -114,22 +124,27 @@ void GUI::control_panel()
     ImGui::Checkbox("Mass-Color", &this->input_processor->mcolor_on[0]);
 
     ImGui::Columns(1);
-    if(ImGui::SliderFloat("Bloom Intensity", &this->input_processor->bloom_blur_intensity, 0.0f, 1.0f)){
+    if (ImGui::SliderFloat("Bloom Intensity", &this->input_processor->bloom_blur_intensity, 0.0f, 1.0f))
+    {
         this->input_processor->imm_update_bloom_blur_intensity();
     }
 
     ImGui::SeparatorText("COLOR CORRECTION");
-    if(ImGui::SliderFloat("Renderer Gamma", &this->input_processor->renderer_gamma, 0.0f, 3.0f)){
+    if (ImGui::SliderFloat("Renderer Gamma", &this->input_processor->renderer_gamma, 0.0f, 3.0f))
+    {
         this->input_processor->imm_update_renderer_gamma();
     }
-    if(ImGui::SliderFloat("Renderer Exposure", &this->input_processor->renderer_exposure, 0.0f, 5.0f)){
+    if (ImGui::SliderFloat("Renderer Exposure", &this->input_processor->renderer_exposure, 0.0f, 5.0f))
+    {
         this->input_processor->imm_update_renderer_exposure();
     }
 
-    if(ImGui::SliderFloat("Bloom Gamma", &this->input_processor->bloom_gamma, 0.0f, 3.0f)){
+    if (ImGui::SliderFloat("Bloom Gamma", &this->input_processor->bloom_gamma, 0.0f, 3.0f))
+    {
         this->input_processor->imm_update_bloom_gamma();
     };
-    if(ImGui::SliderFloat("Bloom Exposure", &this->input_processor->bloom_exposure, 0.0f, 5.0f)){
+    if (ImGui::SliderFloat("Bloom Exposure", &this->input_processor->bloom_exposure, 0.0f, 5.0f))
+    {
         this->input_processor->imm_update_bloom_exposure();
     };
 

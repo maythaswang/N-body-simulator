@@ -155,11 +155,12 @@ void CallbackManager::set_scroll_callback()
                           {
         CallbackManager * callback_manager = reinterpret_cast<CallbackManager *> ( glfwGetWindowUserPointer ( window ));
         if (callback_manager){
+            // Hard Zoom
             if(callback_manager->camera->get_camera_mode() == CAMERA_IDLE)
             {
                 if(callback_manager->camera->get_is_orbiting())
                 {
-                    callback_manager->camera->zoom(-y_offset*1000);
+                    callback_manager->camera->zoom(-y_offset * 1000);
                 }
                 else 
                 {
@@ -191,13 +192,12 @@ void CallbackManager::set_keyboard_callback()
                     break;
                 
                 case GLFW_KEY_O: // Toggle Orbit Mode
-                    callback_manager->handle_orbit_toggle();
+                    callback_manager->input_processor->imm_handle_camera_orbit_toggle();
                     break;
 
                 // TODO: Add all below this to README and the help message
                 case GLFW_KEY_R: // Reset camera origin
-                    std::cout << "Camera is reset to origin." << std::endl;
-                    callback_manager->camera->set_default_camera();
+                    callback_manager->input_processor->imm_handle_camera_reset();
                     break;
 
                 case GLFW_KEY_K: // Toggle Instancing
@@ -228,12 +228,4 @@ void CallbackManager::set_keyboard_callback()
                     break;
             }
         } });
-}
-
-void CallbackManager::handle_orbit_toggle()
-{
-    bool is_orbiting = this->camera->get_is_orbiting();
-    this->camera->set_is_orbiting(!is_orbiting);
-    std::string msg = (is_orbiting) ? "Camera is set to free flying mode." : "Camera is set to orbit mode.";
-    std::cout << msg << std::endl;
 }
