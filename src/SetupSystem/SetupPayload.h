@@ -18,7 +18,7 @@ struct HeadSetupData{
 struct ParticleDiscSetupData{
     GLuint num_particles;
     glm::vec3 offset;
-    GLfloat radius;
+    GLfloat radius, width;
     GLfloat min_mass, max_mass;
     GLfloat min_velocity, max_velocity;
     bool is_spiral, is_dense_center;
@@ -35,7 +35,7 @@ struct ParticleRandomSetupData {
 struct ParticleGlobularClusterSetupData {
     GLuint num_particles;
     glm::vec3 offset;
-    GLfloat radius;
+    GLfloat radius, center_radius;
     GLfloat min_mass, max_mass;
     GLfloat min_velocity, max_velocity;
     bool is_spiral;

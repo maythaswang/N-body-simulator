@@ -20,13 +20,25 @@ void ParticleBuilder::spawn_random(GLuint n, glm::vec3 offset, GLfloat radius, G
         glm::vec3 tmp_velocity = glm::vec3(random_number(min_velocity, max_velocity), random_number(min_velocity, max_velocity), random_number(min_velocity, max_velocity));
         GLfloat tmp_mass = random_number(min_mass, max_mass);
 
-        this->particle_position.push_back(glm::vec4(tmp_position,0));
-        this->particle_velocity.push_back(glm::vec4(tmp_velocity,0));
+        this->particle_position.push_back(glm::vec4(tmp_position, 0));
+        this->particle_velocity.push_back(glm::vec4(tmp_velocity, 0));
         this->particle_acceleration.push_back(glm::vec4(0.0f));
         this->particle_mass.push_back(tmp_mass);
     }
 
     this->n_particle += n;
+
+    // Add log for legacy support case
+    ParticleRandomSetupData log;
+    log.num_particles = n;
+    log.offset = offset;
+    log.radius = radius;
+    log.min_mass = min_mass;
+    log.max_mass = max_mass;
+    log.min_velocity = min_velocity;
+    log.max_velocity = max_velocity;
+    this->particle_random_log.push_back(log);
+
     this->setup_summary.append("Random: " + std::to_string(n) + ' ' + this->format_string_vec3(offset) + ' ' + std::to_string(radius) + " (" + std::to_string(min_mass) + ", " + std::to_string(max_mass) + ") " + "(" + std::to_string(min_velocity) + ", " + std::to_string(max_velocity) + ") " + "\n");
 }
 
@@ -37,7 +49,7 @@ void ParticleBuilder::spawn_globular_cluster(GLuint n, glm::vec3 offset, GLfloat
     GLfloat new_radius = std::max(radius, 0.0000001f);
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::normal_distribution<float> d(0, new_radius/2);
+    std::normal_distribution<float> d(0, new_radius / 2);
 
     GLfloat radius_multiplier;
     for (int i = 0; i < n; i++)
@@ -51,15 +63,27 @@ void ParticleBuilder::spawn_globular_cluster(GLuint n, glm::vec3 offset, GLfloat
         glm::vec3 tmp_velocity = this->sample_velocity(tmp_position, offset, min_velocity, max_velocity, is_spiral);
         GLfloat tmp_mass = random_number(min_mass, max_mass);
 
-        this->particle_position.push_back(glm::vec4(tmp_position,0));
-        this->particle_velocity.push_back(glm::vec4(tmp_velocity,0));
+        this->particle_position.push_back(glm::vec4(tmp_position, 0));
+        this->particle_velocity.push_back(glm::vec4(tmp_velocity, 0));
         this->particle_acceleration.push_back(glm::vec4(0.0f));
         this->particle_mass.push_back(tmp_mass);
     }
 
     this->n_particle += n;
+
+    ParticleGlobularClusterSetupData log;
     if (!outer_only)
     {
+        log.num_particles = n;
+        log.offset = offset;
+        log.radius = radius;
+        log.center_radius = center_radius;
+        log.min_mass = min_mass;
+        log.max_mass = max_mass;
+        log.min_velocity = min_velocity;
+        log.max_velocity = max_velocity;
+        log.is_spiral = is_spiral;
+        this->particle_globular_cluster_log.push_back(log);
         this->setup_summary.append("Globular Cluster: " + std::to_string(n) + ' ' + this->format_string_vec3(offset) + ' ' + std::to_string(radius) + ' ' + std::to_string(center_radius) + " (" + std::to_string(min_mass) + ", " + std::to_string(max_mass) + ") " + "(" + std::to_string(min_velocity) + ", " + std::to_string(max_velocity) + ") " + std::to_string(is_spiral) + ' ' + std::to_string(outer_only) + "\n");
     }
 }
@@ -68,6 +92,17 @@ void ParticleBuilder::spawn_sphere(GLuint n, glm::vec3 offset, GLfloat radius, G
 {
     this->spawn_globular_cluster(n, offset, 0, radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral, 1);
     this->setup_summary.append("Sphere Surface: " + std::to_string(n) + ' ' + this->format_string_vec3(offset) + ' ' + std::to_string(radius) + ' ' + " (" + std::to_string(min_mass) + ", " + std::to_string(max_mass) + ") " + "(" + std::to_string(min_velocity) + ", " + std::to_string(max_velocity) + ") " + std::to_string(is_spiral) + "\n");
+
+    ParticleSphereSurfaceSetupData log;
+    log.num_particles = n;
+    log.offset = offset;
+    log.radius = radius;
+    log.min_mass = min_mass;
+    log.max_mass = max_mass;
+    log.min_velocity = min_velocity;
+    log.max_velocity = max_velocity;
+    log.is_spiral = is_spiral;
+    this->particle_sphere_surface_log.push_back(log);
 }
 
 void ParticleBuilder::spawn_double_sphere(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat center_radius, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity, bool is_spiral)
@@ -129,7 +164,7 @@ void ParticleBuilder::spawn_disc(GLuint n, glm::vec3 offset, GLfloat radius, GLf
     GLfloat new_radius = std::max(radius, 0.0000001f);
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::normal_distribution<float> d(0, new_radius/2);
+    std::normal_distribution<float> d(0, new_radius / 2);
 
     for (int i = 0; i < n; i++)
     {
@@ -137,19 +172,32 @@ void ParticleBuilder::spawn_disc(GLuint n, glm::vec3 offset, GLfloat radius, GLf
         {
             new_radius = std::abs(d(gen));
         }
-        glm::vec2 disc_pos = glm::diskRand(new_radius+ 1.0f);
+        glm::vec2 disc_pos = glm::diskRand(new_radius + 1.0f);
         glm::vec3 tmp_position = glm::vec3(disc_pos.x, disc_pos.y, this->random_number(-width, width)) + offset;
         glm::vec3 tmp_velocity = this->sample_velocity(tmp_position, offset, min_velocity, max_velocity, is_spiral);
         GLfloat tmp_mass = random_number(min_mass, max_mass);
 
-        this->particle_position.push_back(glm::vec4(tmp_position,0));
-        this->particle_velocity.push_back(glm::vec4(tmp_velocity,0));
+        this->particle_position.push_back(glm::vec4(tmp_position, 0));
+        this->particle_velocity.push_back(glm::vec4(tmp_velocity, 0));
         this->particle_acceleration.push_back(glm::vec4(0.0f));
         this->particle_mass.push_back(tmp_mass);
     }
 
     this->n_particle += n;
     this->setup_summary.append("Disc: " + std::to_string(n) + ' ' + this->format_string_vec3(offset) + ' ' + std::to_string(radius) + ' ' + std::to_string(width) + " (" + std::to_string(min_mass) + ", " + std::to_string(max_mass) + ") " + "(" + std::to_string(min_velocity) + ", " + std::to_string(max_velocity) + ") " + std::to_string(is_spiral) + "\n");
+
+    ParticleDiscSetupData log;
+    log.num_particles = n;
+    log.offset = offset;
+    log.radius = radius;
+    log.width = width;
+    log.min_mass = min_mass;
+    log.max_mass = max_mass;
+    log.min_velocity = min_velocity;
+    log.max_velocity = max_velocity;
+    log.is_spiral = is_spiral;
+    log.is_dense_center = dense_center;
+    this->particle_disc_log.push_back(log);
 }
 
 std::string ParticleBuilder::get_summary()
