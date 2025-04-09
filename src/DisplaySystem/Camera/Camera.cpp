@@ -43,11 +43,31 @@ void Camera::rotate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
     glm::quat rotation_pitch = glm::angleAxis(glm::radians(pitch), right);
     glm::quat rotation = rotation_pitch * rotation_yaw;
 
+    glm::vec3 eye_origin = this->eye - this->center;
+    glm::vec3 new_eye = rotation * eye_origin;
 
+    // Move eye
+    this->eye = new_eye + this->center;
+    
+    // Recalculate up
+    direction = glm::normalize(this->center - this->eye);   
+    right = glm::normalize(glm::cross(direction, this->up));
+    this->up = glm::normalize(glm::cross(right, direction));
 
-    this->eye = rotation * this->eye;
-    this->up = rotation * this->up;
     this->build_view_matrix();
+
+    // DEBUG stuffs
+    // GLfloat dotfwd = glm::dot(glm::normalize(this->center - this->eye), glm::normalize(this->up)) ;
+    // GLfloat dtc = glm::distance(this->center,this->eye);
+    // std::cout << dtc << std::endl;
+    // std::cout << "dot foward-up:" << dotfwd << std::endl;
+    // flip detect 
+    // if (dotfwd > 0.999 || dotfwd < -0.999){
+    //     std::cout << this->eye.x << this->eye.y << this->eye.z <<std::endl;
+    //     std::cout << this->center.x << this->center.y << this->center.z <<std::endl;
+    //     std::cout << this->up.x << this->up.y << this->up.z <<std::endl;
+    //     std::cout << "---------" << std::endl;
+    // }
 }
 
 void Camera::zoom(GLfloat mouse_delta_y)
@@ -118,8 +138,14 @@ void Camera::free_rotate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
     glm::vec3 new_eye = rotation * eye_origin;
     glm::vec3 direction_to_old = eye_origin - new_eye;
 
+    // Move center
     this->center = this->center + direction_to_old;
-    this->up = rotation * this->up;
+
+    // Recalculate up
+    direction = glm::normalize(this->center - this->eye);
+    right = glm::normalize(glm::cross(direction, this->up)); 
+    this->up = glm::normalize(glm::cross(right, direction)); 
+
     this->build_view_matrix();
 }
 
