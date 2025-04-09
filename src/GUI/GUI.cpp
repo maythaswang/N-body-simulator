@@ -1,10 +1,12 @@
 #include "GUI.h"
 #include <iostream>
 
-GUI::GUI(GLFWwindow *window, InputProcessor *input_processor)
+GUI::GUI(GLFWwindow *window, InputProcessor *input_processor, ParticleBuilder *particle_builder)
 {
     this->window = window;
     this->input_processor = input_processor;
+    this->particle_builder = particle_builder;
+    this->setup_data_panel_on = false;
     this->init();
 }
 
@@ -40,6 +42,10 @@ void GUI::render_gui()
     if (this->input_processor->get_gui_on())
     {
         this->control_panel();
+        if (this->setup_data_panel_on)
+        {
+            this->setup_data_panel();
+        }
     }
 
     ImGui::Render();
@@ -82,6 +88,8 @@ void GUI::control_panel()
     {
         this->input_processor->imm_handle_pause();
     }
+
+    ImGui::Checkbox("Setup Information Panel", &this->setup_data_panel_on);
 
     // Camera Section
     //-------------------------------------------
@@ -166,6 +174,214 @@ void GUI::control_panel()
 
     ImGui::Columns(1);
 
+    ImGui::End();
+}
+
+void GUI::setup_data_panel()
+{
+    HeadSetupData setup_data = this->particle_builder->head_setup_data;
+
+    ImGui::Begin("Setup Information Panel", &this->setup_data_panel_on);
+
+    // General Details Section
+    //-------------------------------------------
+    ImGui::SeparatorText("GENERAL DETAILS");
+
+    ImGui::Text("GPU Implementation: %s", (setup_data.use_GPU) ? "ON" : "OFF");
+    ImGui::Text("Integrator: %s", (setup_data.integrator) ? "Velocity-Verlet" : "Euler");
+    ImGui::Text("Particle Setup: %s", (setup_data.use_default) ? "Default Setup" : "Manual Setup");
+    if (setup_data.use_default)
+    {
+        ImGui::SameLine();
+        ImGui::Text("ID: %d", setup_data.default_test_number);
+    }
+    ImGui::Text("Gravitational Constant: %f", setup_data.gravitational_constant);
+    ImGui::Text("Timestep Size: %f", setup_data.timestep_size);
+    ImGui::Text("Total Particles: %d", setup_data.num_particle);
+
+    ImGui::SeparatorText("PARTICLE SETUP");
+    ImGui::Text("The following data is the list of cluster spawned for the current setup.");
+
+    // Tmp variables
+    glm::vec3 offset;
+
+    // Disc
+    if (this->particle_builder->particle_disc_log.size() > 0)
+    {
+        ImGui::SeparatorText("Disc Cluster");
+        if (ImGui::BeginTable("Disc Cluster", 10))
+        {
+            // Headers
+            ImGui::TableSetupColumn("num particles");
+            ImGui::TableSetupColumn("offset");
+            ImGui::TableSetupColumn("radius");
+            ImGui::TableSetupColumn("width");
+            ImGui::TableSetupColumn("min-mass");
+            ImGui::TableSetupColumn("max-mass");
+            ImGui::TableSetupColumn("min-velocity");
+            ImGui::TableSetupColumn("max-velocity");
+            ImGui::TableSetupColumn("spiral");
+            ImGui::TableSetupColumn("dense center");
+            ImGui::TableHeadersRow();
+
+            // Row content
+            for (int i = 0; i < this->particle_builder->particle_disc_log.size(); i++) // Let's say we want 5 rows
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("%d", this->particle_builder->particle_disc_log[i].num_particles);
+                ImGui::TableNextColumn();
+                offset = this->particle_builder->particle_disc_log[i].offset;
+                ImGui::Text("<%.3f, %.3f, %.3f>", offset.x, offset.y, offset.z);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_disc_log[i].radius);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_disc_log[i].width);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_disc_log[i].min_mass);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_disc_log[i].max_mass);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_disc_log[i].min_velocity);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_disc_log[i].max_velocity);
+                ImGui::TableNextColumn();
+                ImGui::Text("%d", this->particle_builder->particle_disc_log[i].is_spiral);
+                ImGui::TableNextColumn();
+                ImGui::Text("%d", this->particle_builder->particle_disc_log[i].is_dense_center);
+            }
+            ImGui::EndTable();
+        }
+    }
+
+    // Random
+    if (this->particle_builder->particle_random_log.size() > 0)
+    {   
+        ImGui::SeparatorText("Random Cluster");
+        if (ImGui::BeginTable("Random Cluster", 7))
+        {
+            // Headers
+            ImGui::TableSetupColumn("num particles");
+            ImGui::TableSetupColumn("offset");
+            ImGui::TableSetupColumn("radius");
+            ImGui::TableSetupColumn("min-mass");
+            ImGui::TableSetupColumn("max-mass");
+            ImGui::TableSetupColumn("min-velocity");
+            ImGui::TableSetupColumn("max-velocity");
+            ImGui::TableHeadersRow();
+
+            // Row content
+            for (int i = 0; i < this->particle_builder->particle_random_log.size(); i++) // Let's say we want 5 rows
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("%d", this->particle_builder->particle_random_log[i].num_particles);
+                ImGui::TableNextColumn();
+                offset = this->particle_builder->particle_random_log[i].offset;
+                ImGui::Text("<%.3f, %.3f, %.3f>", offset.x, offset.y, offset.z);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_random_log[i].radius);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_random_log[i].min_mass);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_random_log[i].max_mass);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_random_log[i].min_velocity);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_random_log[i].max_velocity);
+            }
+            ImGui::EndTable();
+        }
+    }
+
+    // Globular Cluster 
+    if (this->particle_builder->particle_globular_cluster_log.size() > 0)
+    {
+        ImGui::SeparatorText("Globular Cluster");
+        if (ImGui::BeginTable("Globular Cluster", 9))
+        {
+            // Headers
+            ImGui::TableSetupColumn("num particles");
+            ImGui::TableSetupColumn("offset");
+            ImGui::TableSetupColumn("radius");
+            ImGui::TableSetupColumn("center-radius");
+            ImGui::TableSetupColumn("min-mass");
+            ImGui::TableSetupColumn("max-mass");
+            ImGui::TableSetupColumn("min-velocity");
+            ImGui::TableSetupColumn("max-velocity");
+            ImGui::TableSetupColumn("spiral");
+            ImGui::TableHeadersRow();
+
+            // Row content
+            for (int i = 0; i < this->particle_builder->particle_globular_cluster_log.size(); i++) // Let's say we want 5 rows
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("%d", this->particle_builder->particle_globular_cluster_log[i].num_particles);
+                ImGui::TableNextColumn();
+                offset = this->particle_builder->particle_globular_cluster_log[i].offset;
+                ImGui::Text("<%.3f, %.3f, %.3f>", offset.x, offset.y, offset.z);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_globular_cluster_log[i].radius);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_globular_cluster_log[i].center_radius);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_globular_cluster_log[i].min_mass);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_globular_cluster_log[i].max_mass);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_globular_cluster_log[i].min_velocity);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_globular_cluster_log[i].max_velocity);
+                ImGui::TableNextColumn();
+                ImGui::Text("%d", this->particle_builder->particle_globular_cluster_log[i].is_spiral);
+            }
+            ImGui::EndTable();
+        }
+    }
+
+    // Spherical Cluster 
+    if (this->particle_builder->particle_sphere_surface_log.size() > 0)
+    {
+        ImGui::SeparatorText("Spherical Surface Cluster");
+        if (ImGui::BeginTable("Spherical Cluster", 9))
+        {
+            // Headers
+            ImGui::TableSetupColumn("num particles");
+            ImGui::TableSetupColumn("offset");
+            ImGui::TableSetupColumn("radius");
+            ImGui::TableSetupColumn("min-mass");
+            ImGui::TableSetupColumn("max-mass");
+            ImGui::TableSetupColumn("min-velocity");
+            ImGui::TableSetupColumn("max-velocity");
+            ImGui::TableSetupColumn("spiral");
+            ImGui::TableHeadersRow();
+
+            // Row content
+            for (int i = 0; i < this->particle_builder->particle_sphere_surface_log.size(); i++) // Let's say we want 5 rows
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("%d", this->particle_builder->particle_sphere_surface_log[i].num_particles);
+                ImGui::TableNextColumn();
+                offset = this->particle_builder->particle_sphere_surface_log[i].offset;
+                ImGui::Text("<%.3f, %.3f, %.3f>", offset.x, offset.y, offset.z);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_sphere_surface_log[i].radius);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_sphere_surface_log[i].min_mass);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_sphere_surface_log[i].max_mass);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_sphere_surface_log[i].min_velocity);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.3f", this->particle_builder->particle_sphere_surface_log[i].max_velocity);
+                ImGui::TableNextColumn();
+                ImGui::Text("%d", this->particle_builder->particle_sphere_surface_log[i].is_spiral);
+            }
+            ImGui::EndTable();
+        }
+    }
     ImGui::End();
 }
 

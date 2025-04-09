@@ -187,9 +187,10 @@ void CallbackManager::set_keyboard_callback()
                     callback_manager->input_processor->imm_handle_show_help_msg();
                     break;
 
-                case GLFW_KEY_I: // Show Setup log
-                    callback_manager->input_processor->imm_handle_show_setup_log();
-                    break;
+                // TODO: Remove this (this is now GUI exclusive)
+                // case GLFW_KEY_I: // Show Setup log
+                //     callback_manager->input_processor->imm_handle_show_setup_log();
+                //     break;
                 
                 case GLFW_KEY_O: // Toggle Orbit Mode
                     callback_manager->input_processor->imm_handle_camera_orbit_toggle();

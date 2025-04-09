@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
 	}
 
 	// Storing particle information
-	GLuint particle_position_SSBO, particle_mass_SSBO;
+	// GLuint particle_position_SSBO, particle_mass_SSBO;
 	Simulator *simulator;
 
 	// Sphere mesh
@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
 	InputProcessor input_processor = InputProcessor(simulator, &renderer, &bloom, &camera);
 	
 	CallbackManager callback_manager = CallbackManager(window, &camera, &input_processor, &bloom);
-	GUI gui = GUI(window, &input_processor);
+	GUI gui = GUI(window, &input_processor, &particle_builder);
 	// Begin Render Loop
 	// ----------------------------------------------------------------------------
 

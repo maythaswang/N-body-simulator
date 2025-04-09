@@ -215,6 +215,7 @@ bool ParticleBuilder::populate_vectors(GLuint *n, std::vector<glm::vec4> *partic
     *particle_velocity = this->particle_velocity;
     *particle_acceleration = this->particle_acceleration;
     *particle_mass = this->particle_mass;
+    this->head_setup_data.num_particle = this->n_particle;
     return 1;
 }
 
