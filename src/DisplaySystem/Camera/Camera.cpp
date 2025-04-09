@@ -21,7 +21,7 @@ void Camera::set_default_camera()
     this->z_near = 0.1;
     this->z_far = 200000000.0;
 
-    this->rotation_sensitivity = 0.9;
+    this->rotation_sensitivity = 1;
     this->zoom_sensitivity = 1;
     this->translation_sensitivity = 0.000001;
 
@@ -34,19 +34,13 @@ void Camera::rotate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
 {
     glm::vec3 direction = glm::normalize(this->center - this->eye);
     glm::vec3 right = glm::normalize(glm::cross(direction, this->up));
+    glm::vec3 norm_up = glm::normalize(this->up);
     GLfloat yaw = -mouse_delta_x * rotation_sensitivity;  // along up-axis
     GLfloat pitch = mouse_delta_y * rotation_sensitivity; // along right-axis
-    // roll: along the center-axis
 
-    if (pitch > 89.0f)
-        pitch = 89.0f;
-    if (pitch < -89.0f)
-        pitch = -89.0f;
-
-    // Rotation Matrix
-    glm::mat4 rotationYaw = glm::rotate(glm::mat4(1.0f), glm::radians(yaw), this->up);
-    glm::mat4 rotationPitch = glm::rotate(rotationYaw, glm::radians(pitch), right);
-    glm::mat3 rotation = glm::mat3(rotationPitch);
+    glm::quat rotation_yaw = glm::angleAxis(glm::radians(yaw), norm_up);
+    glm::quat rotation_pitch = glm::angleAxis(glm::radians(pitch), right);
+    glm::quat rotation = rotation_pitch * rotation_yaw;
 
     this->eye = rotation * this->eye;
     this->up = rotation * this->up;
@@ -104,19 +98,13 @@ void Camera::free_rotate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
 {
     glm::vec3 direction = glm::normalize(this->center - this->eye);
     glm::vec3 right = glm::normalize(glm::cross(direction, this->up));
+    glm::vec3 norm_up = glm::normalize(this->up);
     GLfloat yaw = -mouse_delta_x * rotation_sensitivity;  // along up-axis
     GLfloat pitch = mouse_delta_y * rotation_sensitivity; // along right-axis
-    // roll: along the center-axis
 
-    if (pitch > 89.0f)
-        pitch = 89.0f;
-    if (pitch < -89.0f)
-        pitch = -89.0f;
-
-    // Rotation Matrix
-    glm::mat4 rotationYaw = glm::rotate(glm::mat4(1.0f), glm::radians(yaw), this->up);
-    glm::mat4 rotationPitch = glm::rotate(rotationYaw, glm::radians(pitch), right);
-    glm::mat3 rotation = glm::mat3(rotationPitch);
+    glm::quat rotation_yaw = glm::angleAxis(glm::radians(yaw), norm_up);
+    glm::quat rotation_pitch = glm::angleAxis(glm::radians(pitch), right);
+    glm::quat rotation = rotation_pitch * rotation_yaw;
 
     glm::vec3 eye_origin = this->eye - this->center;
     glm::vec3 new_eye = rotation * eye_origin;
