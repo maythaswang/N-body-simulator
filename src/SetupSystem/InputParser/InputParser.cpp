@@ -162,7 +162,7 @@ void InputParser::populate_disc()
         std::cout << ":" << std::flush;
         getline(std::cin, input);
     } while (!(std::stringstream(input) >> is_spiral >> dense_center));
-    particle_builder->spawn_disc(n_particle, offset, radius, width, min_mass, max_mass, min_velocity, max_velocity, is_spiral, dense_center);
+    particle_builder->legacy_spawn_disc(n_particle, offset, radius, width, min_mass, max_mass, min_velocity, max_velocity, is_spiral, dense_center);
 }
 
 void InputParser::populate_random()
@@ -188,7 +188,7 @@ void InputParser::populate_random()
         getline(std::cin, input);
     } while (!(std::stringstream(input) >> min_mass >> max_mass >> min_velocity >> max_velocity));
 
-    particle_builder->spawn_random(n_particle, offset, radius, min_mass, max_mass, min_velocity, max_velocity);
+    particle_builder->legacy_spawn_random(n_particle, offset, radius, min_mass, max_mass, min_velocity, max_velocity);
 }
 
 void InputParser::populate_globular_cluster()
@@ -222,7 +222,7 @@ void InputParser::populate_globular_cluster()
         getline(std::cin, input);
     } while (!(std::stringstream(input) >> is_spiral));
 
-    particle_builder->spawn_globular_cluster(n_particle, offset, radius, center_radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral, 0);
+    particle_builder->legacy_spawn_globular_cluster(n_particle, offset, radius, center_radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral, 0);
 }
 
 void InputParser::populate_sphere_surface()
@@ -256,7 +256,7 @@ void InputParser::populate_sphere_surface()
         getline(std::cin, input);
     } while (!(std::stringstream(input) >> is_spiral));
 
-    particle_builder->spawn_sphere(n_particle, offset, radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral);
+    particle_builder->legacy_spawn_sphere(n_particle, offset, radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral);
 }
 
 bool InputParser::get_use_GPU()

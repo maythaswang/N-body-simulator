@@ -63,7 +63,7 @@ set(PROJECT_SOURCES
     src/ProgramInit/ProgramInit.cpp
     src/Shader/Shader.cpp
     src/ParticleSystem/Simulator/Simulator.cpp
-    src/ParticleSystem/ParticleBuilder/ParticleBuilder.cpp
+    src/SetupSystem/ParticleBuilder/ParticleBuilder.cpp
     src/Renderer/Renderer.cpp
     src/ParticleSystem/ParticleParticleCPU/ParticleParticleCPU.cpp
     src/ParticleSystem/ParticleParticleGPU/ParticleParticleGPU.cpp

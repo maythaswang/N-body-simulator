@@ -3,7 +3,7 @@
 #pragma once    
 
 #include <GLCommon.h>
-#include <ParticleSystem/ParticleBuilder/ParticleBuilder.h>
+#include <SetupSystem/ParticleBuilder/ParticleBuilder.h>
 
 /**
  * @brief Load default test of choice to the particle builder

@@ -6,7 +6,7 @@
 #include <CallbackManager/CallbackManager.h>
 #include <DisplaySystem/Camera/Camera.h>
 #include <DisplaySystem/WindowFactory/WindowFactory.h>
-#include <ParticleSystem/ParticleBuilder/ParticleBuilder.h>
+#include <SetupSystem/ParticleBuilder/ParticleBuilder.h>
 #include <ParticleSystem/Simulator/Simulator.h>
 
 #include <Renderer/Renderer.h>
