@@ -37,14 +37,19 @@ void ParticleParticleGPU::update_position()
     this->compute_shader_program.set_int("n_particle", this->n_particle);
 
     if (this->implementation == PP_GPU_OPTIMIZE)
-    {
-        // WE BALL, WHO NEEDS SYNCING ANYWAY!!
-        // this->compute_shader_program.set_bool("is_first_pass", true);
-        glDispatchCompute(this->n_particle, 1, 1);
+    {   
+        // glDispatchCompute(this->n_work_groups, 1, 1);
 
-        // glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
-        // this->compute_shader_program.set_bool("is_first_pass", false);
-        // glDispatchCompute(this->n_particle, 1, 1);
+        // OLD VERSION HERE
+        // -------------------------------------------------
+
+        // WE BALL, WHO NEEDS SYNCING ANYWAY!!
+        this->compute_shader_program.set_bool("first_pass", true);
+        glDispatchCompute(this->n_work_groups, 1, 1);
+
+        glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+        this->compute_shader_program.set_bool("first_pass", false);
+        glDispatchCompute(this->n_particle, 1, 1);
 
         // glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
     }
@@ -71,6 +76,10 @@ void ParticleParticleGPU::load_particles(GLuint n, std::vector<glm::vec4> positi
     std::copy(mass.begin(), mass.end(), this->particle_mass.begin());
 
     this->n_work_groups = (GLuint)std::ceil(((GLfloat)this->n_particle) / 64);
+    if (this->implementation == PP_GPU_OPTIMIZE)
+    {
+        this->n_work_groups = (GLuint)std::ceil(((GLfloat)this->n_particle) / 256);
+    }
     this->init_compute_shader();
     this->init_SSBOs();
 }
