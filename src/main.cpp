@@ -95,14 +95,13 @@ int main(int argc, char *argv[])
 	GLfloat timestep_size = particle_builder.head_setup_data.timestep_size;
 
 	// TODO: CHANGE THIS TO SMART POINTER LATER ON
-	if (particle_builder.head_setup_data.simulator_implementation == PP_CPU_NAIVE)
+	if (!particle_builder.head_setup_data.simulator_implementation)
 	{
-		simulator = new ParticleParticleCPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
+		simulator = new ParticleParticleCPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator, particle_builder.head_setup_data.simulator_implementation);
 	}
 	else
 	{
-		ParticleParticleGPU simulator_GPU = ParticleParticleGPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
-		simulator = new ParticleParticleGPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
+		simulator = new ParticleParticleGPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator, particle_builder.head_setup_data.simulator_implementation);
 	}
 
 	simulator->load_particles(n_particles, particle_position, particle_velocity, particle_acceleration, particle_mass);

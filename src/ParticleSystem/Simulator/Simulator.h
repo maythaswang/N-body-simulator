@@ -113,6 +113,7 @@ protected:
     GLuint particle_mass_SSBO; 
     
     SimulatorIntegrator integrator;
+    SimulatorImplementation implementation;
     
     std::string setup_log;
 
@@ -127,7 +128,7 @@ protected:
      * @param timestep_size timestep size (per frame)
      * @param integrator integrator
      */
-    Simulator(GLfloat, GLfloat, GLfloat, GLfloat, SimulatorIntegrator);
+    Simulator(GLfloat, GLfloat, GLfloat, GLfloat, SimulatorIntegrator, SimulatorImplementation);
 
 
 

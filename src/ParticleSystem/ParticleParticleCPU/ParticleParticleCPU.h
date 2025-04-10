@@ -7,7 +7,7 @@
 class ParticleParticleCPU : public Simulator
 {
 public:
-    ParticleParticleCPU(GLfloat, GLfloat, GLfloat, GLfloat, SimulatorIntegrator);
+    ParticleParticleCPU(GLfloat, GLfloat, GLfloat, GLfloat, SimulatorIntegrator, SimulatorImplementation);
 
 private:
     std::vector<glm::vec4> particle_acceleration;

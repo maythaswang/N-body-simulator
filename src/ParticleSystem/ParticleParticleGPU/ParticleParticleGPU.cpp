@@ -1,6 +1,6 @@
 #include "ParticleParticleGPU.h"
 
-ParticleParticleGPU::ParticleParticleGPU(GLfloat n_particle, GLfloat gravitational_constant, GLfloat softening_factor, GLfloat timestep_size, SimulatorIntegrator integrator) : Simulator(n_particle, gravitational_constant, softening_factor, timestep_size, integrator)
+ParticleParticleGPU::ParticleParticleGPU(GLfloat n_particle, GLfloat gravitational_constant, GLfloat softening_factor, GLfloat timestep_size, SimulatorIntegrator integrator, SimulatorImplementation simulator_implementation) : Simulator(n_particle, gravitational_constant, softening_factor, timestep_size, integrator, simulator_implementation)
 {
 }
 
