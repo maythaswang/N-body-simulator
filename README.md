@@ -66,8 +66,8 @@ Please refer to the `"Window Controls"` when running the program.
 |middle mouse drag + left shift | pan the camera in the mouse drag direction.                                                           |
 |middle mouse drag + left ctrl  | zoom in/out by dragging mouse forward and vice versa. (free-flying mode: move forward / backwards.)   |
 |middle mouse drag              | orbit the camera about the center in the mouse drag direction. (free-flying mode: rotate the center.) |
-|middle mouse scroll            | same action as middle mouse drag.        
-※ps. mass-size and wireframe mode only shows when instancing is on|
+|middle mouse scroll            | same action as middle mouse drag.                                                                     |        
+※ps. mass-size and wireframe mode only shows when instancing is on
 ----------
 ### Known Issues
 
