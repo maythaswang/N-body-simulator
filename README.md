@@ -22,6 +22,7 @@ Default Test 12
 - Velocity-Verlet and Euler Integrator
 - Dual mode camera for orbiting and free-flying
 - Bloom (post-processing)
+- Mass-Size/Color particle mapping
 - CLI setup system
 - GUI for setting effects and reading informations
 - Spawning cluster of bodies into multiple geometries such as discs and globular clusters.
@@ -31,6 +32,12 @@ Default Test 12
 
 ----------
 ## Performance: 
+The performance test is done solely on my machine so just use it as a reference 
+
+| Implementation | #Particles | FPS |
+|-------------------------------|--------------------------------------------------|-----------------------------------------------------|
+| | | 
+
 
 ----------
 ## Instructions
@@ -66,6 +73,9 @@ Setting up a simulation is simple, you can either use one of the pre-written def
 ## Controls
 Please refer to the `"Window Controls"` or the GUI help menu when running the program.
 
+### Window Controls
+To use these hotkeys, please make sure you are focusing on the simulation screen.
+
 |Controls|Action|
 |-------------------------------|-------------------------------------------------------------------------------------------------------|
 |esc                            | exit simulation                                                                                       |
@@ -80,6 +90,12 @@ Please refer to the `"Window Controls"` or the GUI help menu when running the pr
 |m                              | toggle mass-size.                                                                                     |
 |c                              | toggle mass-color.                                                                                    |
 |n                              | toggle GUI.                                                                                           |
+
+### Camera Controls
+To use these camera controls, please make sure you are focusing on the simulation screen.
+
+|Controls|Action|
+|-------------------------------|-------------------------------------------------------------------------------------------------------|
 |middle mouse drag + left shift | pan the camera in the mouse drag direction.                                                           |
 |middle mouse drag + left ctrl  | zoom in/out by dragging mouse forward and vice versa. (free-flying mode: move forward / backwards.)   |
 |middle mouse drag              | orbit the camera about the center in the mouse drag direction. (free-flying mode: rotate the center.) |
@@ -108,7 +124,10 @@ Default Test 30
 </div>
 
 ----------
-## Known Issues
+## Future Implementations (Maybe one day...)
+- Further optimization on the particle interaction calculations (use oct-tree, FMM...)
+- More effects?
+- Save-Load system
 
 ----------
 ## References
