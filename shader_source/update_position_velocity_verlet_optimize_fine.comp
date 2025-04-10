@@ -1,0 +1,115 @@
+#version 430 core
+// Version <2>
+layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+layout (std430, binding=0) buffer particle_position{
+	vec4 position[];
+};
+
+layout (std430, binding=1) buffer particle_velocity{
+	vec4 velocity[];
+};
+
+layout (std430, binding=2) buffer particle_acceleration{
+	vec4 acceleration[];
+};
+
+layout (std430, binding=3) buffer particle_mass{
+	float mass[];
+};
+
+uniform float gravitational_constant;
+uniform float softening_factor; 
+uniform float timestep_size; 
+uniform int n_particle;
+uniform bool first_pass;
+
+// We can dispatch n_particle workgroup then use 256 internal threads to fine grain parallelize the acceleration calculation.
+
+shared vec4 local_acceleration_accumulator[256];
+
+vec4 calculate_acceleration(uint id) {
+    vec4 acc_tmp = vec4(0.0f);
+    vec4 temp_distance;
+    vec4 direction;
+    float sq_distance;
+    float sq_soften = pow(softening_factor, 2);
+
+    for (int i = 0; i < n_particle; i++){
+        temp_distance = position[id] - position[i];
+        if(temp_distance != vec4(0.0f)){
+            direction = -normalize(temp_distance);
+            sq_distance = dot(temp_distance,temp_distance);
+            acc_tmp += (mass[i]/sqrt(sq_distance+sq_soften)) * direction;
+        }
+    }
+    return acc_tmp;
+}
+
+
+void main() {
+
+
+    // Stage 0
+    if(first_pass){
+
+
+	uint global_id = gl_GlobalInvocationID.x;   
+
+        if (global_id >= n_particle) return ;
+        velocity[global_id] += acceleration[global_id] * timestep_size * 0.5;
+        position[global_id] += velocity[global_id] * timestep_size;
+    
+
+    memoryBarrier();
+    barrier();
+    } else {
+    // Stage 1
+        // ID setup
+        uint particle_id = gl_WorkGroupID.x;   
+        uint local_id = gl_LocalInvocationID.x;
+        if (particle_id >= n_particle) return ;
+
+    // Local Acceleration Accumulator
+    vec4 local_acceleration_sum = vec4(0.0);
+    vec4 tmp_distance;
+    vec4 tmp_direction;
+    float sq_distance;
+    float sq_soften = pow(softening_factor, 2);
+
+    // This should hopefully help with coalesced access with HOPEFULLY contiguous memory access??
+    for (uint i = local_id; i < uint(n_particle); i+= 256){
+        tmp_distance = position[particle_id] - position[i];
+        if(tmp_distance != vec4(0.0)){
+            tmp_direction = -normalize(tmp_distance);
+            sq_distance = dot(tmp_distance,tmp_distance);
+            local_acceleration_sum += (mass[i]/sqrt(sq_distance+sq_soften)) * tmp_direction;
+        }
+    }
+
+    local_acceleration_accumulator[local_id] = local_acceleration_sum;
+    barrier();
+
+    // Tree based reduction (doing stride*2 as offset introduces warp underutilization)
+    // divergence free mapping
+    // Maybe try warp shuffle once I understand it...
+    for (uint stride = 128; stride > 0; stride >>=1) {
+        if(local_id < stride){
+            local_acceleration_accumulator[local_id] += local_acceleration_accumulator[local_id + stride];
+        }
+        barrier();
+    }
+
+
+    // Update acceleration
+    if(local_id == 0){
+        // SEQUENTIAL ACCESS
+        // for(int i = 0; i < 256; i++){
+        //     acceleration[particle_id] += local_acceleration_accumulator[i];
+        // }
+
+        acceleration[particle_id] = local_acceleration_accumulator[local_id] * gravitational_constant;
+        velocity[particle_id] += acceleration[particle_id] * timestep_size * 0.5; 
+    }
+    }
+}

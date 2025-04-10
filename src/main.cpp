@@ -90,19 +90,18 @@ int main(int argc, char *argv[])
 	// Simulator setup
 	// ----------------------------------------------------------------------------
 	Simulator *simulator;
-	SimulatorIntegrator integrator = (particle_builder.head_setup_data.integrator) ? INTEGRATOR_VELOCITY_VERLET : INTEGRATOR_EULER;
+	SimulatorIntegrator integrator = particle_builder.head_setup_data.simulator_integrator;
 	GLfloat gravitational_constant = particle_builder.head_setup_data.gravitational_constant;
 	GLfloat timestep_size = particle_builder.head_setup_data.timestep_size;
 
 	// TODO: CHANGE THIS TO SMART POINTER LATER ON
-	if (!particle_builder.head_setup_data.use_GPU)
+	if (!particle_builder.head_setup_data.simulator_implementation)
 	{
-		simulator = new ParticleParticleCPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
+		simulator = new ParticleParticleCPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator, particle_builder.head_setup_data.simulator_implementation);
 	}
 	else
 	{
-		ParticleParticleGPU simulator_GPU = ParticleParticleGPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
-		simulator = new ParticleParticleGPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator);
+		simulator = new ParticleParticleGPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator, particle_builder.head_setup_data.simulator_implementation);
 	}
 
 	simulator->load_particles(n_particles, particle_position, particle_velocity, particle_acceleration, particle_mass);
