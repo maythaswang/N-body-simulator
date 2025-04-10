@@ -1,6 +1,6 @@
 Last Modified by: Maythas Wangcharoenwong 20250410
 
-# CURRENTLY IN THE PROCESS OF RE-WRITING README (WIP)
+# CURRENTLY IN THE PROCESS OF RE-WRITING README (WIP) THE IMAGES HERE ARE STILL OLD VERSIONS BTW
 # N-body-simulator
 
 A visual simulation engine for simulating the interactions of large cluster of celestial bodies in real-time.
@@ -10,6 +10,9 @@ A visual simulation engine for simulating the interactions of large cluster of c
 
 ## Preface: 
 This project is basically an educational project for me to learn how to properly use compute shaders, OpenGL, Post processing effects to make a visually stunning particle simulations. First, I must say that Physics is not my strong suit. With that given, the real aim of this project is to produce visually interesting simulation, not full physics accuracy (although I tried to be as accurate as possible). In a sense, the value in those of default test cases are extremely exaggerated so please be aware of this fact. As per the geometries of stellar clusters and how mass are mapped to colors, these are not fully accurate as well (To any physicist out there I am sorry (´；ω；｀)). With that being said, the project provides multiple controllable variables for those who want to try setup the simulation for themselves as well as multiple default test cases to pick from so enjoy!! (\*´ω｀\*)
+<br> 
+<br>
+For the write up of the implementation process, please visit this article on my website here　(｀･ω･´)ゞ !! \<TBD\>
 
 ![](images/default_12.gif)
 <div align="center">
@@ -34,10 +37,12 @@ Default Test 12
 ## Performance: 
 The performance test is done solely on my machine so just use it as a reference 
 
-| Implementation | #Particles | FPS |
-|-------------------------------|--------------------------------------------------|-----------------------------------------------------|
-| | | 
-
+| # Particles / Implementation (FPS)        | CPU Naive Particle-Particle | GPU Naive Particle-Particle |
+|-----------------------------|---------|----------|
+|n = 100                      | 120     | 120      | 
+|n = 1000                     |         | 120      | 
+|n = 10000                    |         | 120      |
+\<TBD I might try something... \>
 
 ----------
 ## Instructions
