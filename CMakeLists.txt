@@ -69,7 +69,6 @@ set(PROJECT_SOURCES
     src/ParticleSystem/ParticleParticleGPU/ParticleParticleGPU.cpp
     src/SetupSystem/InputParser/InputParser.cpp
     src/SetupSystem/DefaultTestLoader/DefaultTestLoader.cpp
-    src/SetupSystem/SimulationLoader/SimulationLoader.cpp
     src/Mesh/MeshBuilder.cpp
     src/Bloom/Bloom.cpp
     src/GUI/GUI.cpp

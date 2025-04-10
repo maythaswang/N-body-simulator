@@ -3,7 +3,6 @@
 #pragma once
 #include <GLCommon.h>
 #include <ParticleSystem/Simulator/Simulator.h>
-#include <SetupSystem/SimulationLoader/SimulationLoader.h>
 #include <Renderer/Renderer.h>
 #include <Bloom/Bloom.h>
 
@@ -17,7 +16,7 @@
 class InputProcessor
 {
 public:
-    InputProcessor(Simulator *simulator, Renderer *renderer, Bloom *bloom, Camera *camera, SimulationLoader *simulation_loader);
+    InputProcessor(Simulator *simulator, Renderer *renderer, Bloom *bloom, Camera *camera);
     ~InputProcessor();
 
     // Put on public so ImGui can edit this directly
@@ -60,7 +59,6 @@ public:
     void imm_update_renderer_exposure();
     void imm_reset_renderer();
     void imm_reset_bloom();
-    bool imm_save_simulator(std::string file_name);
 
     /**
      * @brief Handle simulation pausing
@@ -81,7 +79,6 @@ private:
     Renderer *renderer;
     Bloom *bloom;
     Camera *camera;
-    SimulationLoader * simulation_loader;
 
     // Read only form outside
     bool simulator_running = 0;
