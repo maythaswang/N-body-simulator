@@ -191,7 +191,6 @@ void CallbackManager::set_keyboard_callback()
                     callback_manager->input_processor->imm_handle_camera_orbit_toggle();
                     break;
 
-                // TODO: Add all below this to README and the help message
                 case GLFW_KEY_R: // Reset camera origin
                     callback_manager->input_processor->imm_handle_camera_reset();
                     break;

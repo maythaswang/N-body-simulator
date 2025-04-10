@@ -21,8 +21,6 @@ public:
      *
      */
     void bind_default_FBO();
-    // GLuint add_effect(); // TODO: return effect ID and take in the effect pointers
-    // void apply_effect();
 
     void apply_effect();
 
