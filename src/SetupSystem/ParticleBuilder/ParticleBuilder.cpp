@@ -7,7 +7,6 @@
 ParticleBuilder::ParticleBuilder()
 {
     this->n_particle = 0;
-    this->setup_summary = "";
     time_t t;
     std::srand((unsigned)time(&t));
 }
@@ -136,14 +135,10 @@ void ParticleBuilder::legacy_spawn_globular_cluster(GLuint n, glm::vec3 offset, 
     log.is_spiral = is_spiral;
 
     this->spawn_globular_cluster(log);
-    // this->setup_summary.append("Globular Cluster: " + std::to_string(n) + ' ' + this->format_string_vec3(offset) + ' ' + std::to_string(radius) + ' ' + std::to_string(center_radius) + " (" + std::to_string(min_mass) + ", " + std::to_string(max_mass) + ") " + "(" + std::to_string(min_velocity) + ", " + std::to_string(max_velocity) + ") " + std::to_string(is_spiral) + ' ' + std::to_string(outer_only) + "\n");
 }
 
 void ParticleBuilder::legacy_spawn_sphere(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity, bool is_spiral)
 {
-    // this->legacy_spawn_globular_cluster(n, offset, 0, radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral, 1);
-    // this->setup_summary.append("Sphere Surface: " + std::to_string(n) + ' ' + this->format_string_vec3(offset) + ' ' + std::to_string(radius) + ' ' + " (" + std::to_string(min_mass) + ", " + std::to_string(max_mass) + ") " + "(" + std::to_string(min_velocity) + ", " + std::to_string(max_velocity) + ") " + std::to_string(is_spiral) + "\n");
-
     ParticleSphereSurfaceSetupData log;
     log.num_particles = n;
     log.offset = offset;
@@ -160,7 +155,7 @@ void ParticleBuilder::legacy_spawn_sphere(GLuint n, glm::vec3 offset, GLfloat ra
 void ParticleBuilder::legacy_spawn_double_sphere(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat center_radius, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity, bool is_spiral)
 {   
     ParticleSphereSurfaceSetupData payload_1, payload_2;
-    // this->legacy_spawn_sphere((int)std::ceil(n / 2), offset, radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral);
+    // Payload 1 setup
     payload_1.num_particles = (int)std::ceil(n / 2);
     payload_1.offset = offset;
     payload_1.radius = radius;
@@ -182,13 +177,10 @@ void ParticleBuilder::legacy_spawn_double_sphere(GLuint n, glm::vec3 offset, GLf
 
     this->spawn_sphere(payload_1);
     this->spawn_sphere(payload_2);
-
-    // this->legacy_spawn_sphere((int)std::floor(n / 2), offset, center_radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral);
 }
 
 void ParticleBuilder::legacy_spawn_disc(GLuint n, glm::vec3 offset, GLfloat radius, GLfloat width, GLfloat min_mass, GLfloat max_mass, GLfloat min_velocity, GLfloat max_velocity, bool is_spiral, bool dense_center)
 {
-    // this->setup_summary.append("Disc: " + std::to_string(n) + ' ' + this->format_string_vec3(offset) + ' ' + std::to_string(radius) + ' ' + std::to_string(width) + " (" + std::to_string(min_mass) + ", " + std::to_string(max_mass) + ") " + "(" + std::to_string(min_velocity) + ", " + std::to_string(max_velocity) + ") " + std::to_string(is_spiral) + "\n");
     ParticleDiscSetupData log;
     log.num_particles = n;
     log.offset = offset;
@@ -250,14 +242,4 @@ glm::vec3 ParticleBuilder::sample_velocity(glm::vec3 position, glm::vec3 offset,
     }
 
     return glm::vec3(random_number(min_velocity, max_velocity), random_number(min_velocity, max_velocity), random_number(min_velocity, max_velocity));
-}
-
-std::string ParticleBuilder::get_summary()
-{
-    return "Total number of particles: " + std::to_string(this->n_particle) + "\n" + this->setup_summary;
-}
-
-std::string ParticleBuilder::format_string_vec3(glm::vec3 input)
-{
-    return "(" + std::to_string(input.x) + ", " + std::to_string(input.y) + ", " + std::to_string(input.z) + ")";
 }

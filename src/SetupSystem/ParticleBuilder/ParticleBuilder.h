@@ -122,13 +122,6 @@ public:
      */
     bool populate_vectors(GLuint *, std::vector<glm::vec4> *, std::vector<glm::vec4> *, std::vector<glm::vec4> *, std::vector<GLfloat> *);
 
-    /**
-     * @brief provide summary string of the simulation setup
-     *
-     * @return simulation setup information
-     */
-    std::string get_summary();
-
     // Setup Summary (publicly accessible for GUI to handle more stuffs)
     // In summary, I am getting lazy...
     HeadSetupData head_setup_data;
@@ -143,9 +136,6 @@ private:
     std::vector<glm::vec4> particle_acceleration;
     std::vector<GLfloat> particle_mass;
     GLuint n_particle;
-
-    // Setup Summary
-    std::string setup_summary;
 
     /**
      * @brief Number Randomizer
@@ -173,13 +163,6 @@ private:
      * @return vector of particle's velocity
      */
     glm::vec3 sample_velocity(glm::vec3, glm::vec3, GLfloat, GLfloat, bool);
-
-    /**
-     * @brief format vec3 into string (x, y ,z)
-     *
-     * @return vec3 information in terms of string
-     */
-    std::string format_string_vec3(glm::vec3);
 
     /**
      * @brief Spawn particles into the form of globular cluster and stores it into the intermediate vector.

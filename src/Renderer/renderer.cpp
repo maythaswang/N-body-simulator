@@ -108,15 +108,6 @@ bool Renderer::get_use_wireframe()
 void Renderer::set_use_wireframe(bool use_wireframe)
 {
     this->use_wireframe = use_wireframe;
-
-    // if (use_wireframe)
-    // {
-    //     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    // }
-    // else
-    // {
-    //     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    // }
 }
 
 bool Renderer::get_use_msize()
