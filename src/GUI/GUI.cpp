@@ -402,18 +402,20 @@ void GUI::help_panel()
     ImGui::SeparatorText("WELCOME TO SIMPLE REAL-TIME N-BODY SIMULATOR!");
     ImGui::Text(
         "For this application, we perform real time n-body gravitational simulation\n"
-        "between numerous bodies. The method currently used is particle-particle\n"
-        "This method of computation has a complexity of O(n^2) but luckily we are using\n"
-        "GPU to accelerate it!");
+        "where every bodies interact with each other gravitationally.\n"
+        "The method currently used is particle-particle. \\(^0^)/\n"
+    );
     ImGui::SeparatorText("HOW TO USE");
     ImGui::BulletText("The GUI screen can be toggled at any time with the key (N)");
+    ImGui::BulletText("To physicists out there, I really am sorry about the units lol..(;w;)");
     ImGui::BulletText(
         "To use the windows controls, please click on the simulation\n"
         "screen before pressing the keys.");
     ImGui::BulletText("The simulation setup can be viewed by pressing the 'Setup Information Panel'\n"
-                "on the control panel");
+                      "on the control panel");
     ImGui::BulletText("To close this page, click the x button in the corner");
     ImGui::BulletText("The state logs of the application can be viewed on your terminal");
+    ImGui::BulletText("The mass-size/color mode scales the bodies' components based on mass");
     ImGui::SeparatorText("WINDOWS CONTROLS");
     ImGui::Text("   esc                             : exit simulation.\n"
                 "   h                               : display controls on the terminal.\n"
