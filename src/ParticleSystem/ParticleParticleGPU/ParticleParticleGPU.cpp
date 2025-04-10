@@ -36,27 +36,29 @@ void ParticleParticleGPU::update_position()
     this->compute_shader_program.set_float("timestep_size", this->timestep_size);
     this->compute_shader_program.set_int("n_particle", this->n_particle);
 
-    if (this->implementation == PP_GPU_OPTIMIZE)
-    {   
-        // glDispatchCompute(this->n_work_groups, 1, 1);
-
-        // OLD VERSION HERE
-        // -------------------------------------------------
-
-        // WE BALL, WHO NEEDS SYNCING ANYWAY!!
+    switch (this->implementation)
+    {
+    case PP_GPU_FINE:
         this->compute_shader_program.set_bool("first_pass", true);
         glDispatchCompute(this->n_work_groups, 1, 1);
-
         glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
         this->compute_shader_program.set_bool("first_pass", false);
         glDispatchCompute(this->n_particle, 1, 1);
-
-        // glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
-    }
-    else // PP_GPU_NAIVE
-    {
+        break;
+    case PP_GPU_TILE:
+        this->compute_shader_program.set_bool("first_pass", true);
+        glDispatchCompute(this->n_work_groups, 1, 1);
+        glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+        this->compute_shader_program.set_bool("first_pass", false);
+        glDispatchCompute(this->n_work_groups, 1, 1);
+        break;
+    case PP_GPU_NAIVE:
+        glDispatchCompute(this->n_work_groups, 1, 1);
+        break;
+    default:
         glDispatchCompute(this->n_work_groups, 1, 1);
     }
+
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }
 
@@ -76,7 +78,7 @@ void ParticleParticleGPU::load_particles(GLuint n, std::vector<glm::vec4> positi
     std::copy(mass.begin(), mass.end(), this->particle_mass.begin());
 
     this->n_work_groups = (GLuint)std::ceil(((GLfloat)this->n_particle) / 64);
-    if (this->implementation == PP_GPU_OPTIMIZE)
+    if (this->implementation == PP_GPU_FINE || this->implementation == PP_GPU_TILE)
     {
         this->n_work_groups = (GLuint)std::ceil(((GLfloat)this->n_particle) / 256);
     }
@@ -119,13 +121,20 @@ void ParticleParticleGPU::init_compute_shader()
         compute_shader = shader_program.compile_shader("./shader_source/update_position_euler.comp", GL_COMPUTE_SHADER);
         break;
     case INTEGRATOR_VELOCITY_VERLET:
-        if (this->implementation == PP_GPU_OPTIMIZE)
+        switch (this->implementation)
         {
-            compute_shader = shader_program.compile_shader("./shader_source/update_position_velocity_verlet_optimize.comp", GL_COMPUTE_SHADER);
-        }
-        else // PP_GPU_NAIVE (just in case something went very wrong we go here)
-        {
+        case PP_GPU_FINE:
+            compute_shader = shader_program.compile_shader("./shader_source/update_position_velocity_verlet_optimize_fine.comp", GL_COMPUTE_SHADER);
+            break;
+        case PP_GPU_TILE:
+            compute_shader = shader_program.compile_shader("./shader_source/update_position_velocity_verlet_optimize_tile.comp", GL_COMPUTE_SHADER);
+            break;
+        case PP_GPU_NAIVE:
             compute_shader = shader_program.compile_shader("./shader_source/update_position_velocity_verlet.comp", GL_COMPUTE_SHADER);
+            break;
+        default:
+            compute_shader = shader_program.compile_shader("./shader_source/update_position_velocity_verlet.comp", GL_COMPUTE_SHADER);
+            break;
         }
         break;
     default:

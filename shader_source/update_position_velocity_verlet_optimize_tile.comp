@@ -1,0 +1,87 @@
+#version 430 core
+
+layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+layout (std430, binding=0) buffer particle_position{
+	vec4 position[];
+};
+
+layout (std430, binding=1) buffer particle_velocity{
+	vec4 velocity[];
+};
+
+layout (std430, binding=2) buffer particle_acceleration{
+	vec4 acceleration[];
+};
+
+layout (std430, binding=3) buffer particle_mass{
+	float mass[];
+};
+
+uniform float gravitational_constant;
+uniform float softening_factor; 
+uniform float timestep_size; 
+uniform int n_particle;
+uniform bool first_pass;
+
+// IDEA: 
+// We fetch the stuffs down in chunk and let all particles here process it
+// Also store each local position locally so we don't need to keep fetching them.
+
+
+// Tile chunk
+const int CHUNK_SIZE = 512;
+shared vec4 shared_position[CHUNK_SIZE];
+shared float shared_mass[CHUNK_SIZE];
+
+vec4 calculate_acceleration(uint id) {
+    vec4 acc_tmp = vec4(0.0f);
+    vec4 temp_distance;
+    vec4 direction;
+    float sq_distance;
+    float sq_soften = pow(softening_factor, 2);
+    vec4 position_self = position[id];
+
+    int max_load = CHUNK_SIZE;
+    uint local_id = gl_LocalInvocationID.x;
+
+    for (int offset = 0; offset <= (n_particle + CHUNK_SIZE); offset+=CHUNK_SIZE){
+        for(int i = 0; i < 2; i++){
+            if(local_id * i + offset < n_particle){
+                shared_position[local_id * i + offset] = position[local_id * i + offset];
+                shared_mass[local_id * i + offset] = mass[local_id * i + offset];
+            }
+        }
+        barrier();
+
+        max_load = offset - max(offset - n_particle, 0);
+
+        for (int i = 0; i < CHUNK_SIZE; i++){
+            if(i < max_load){
+            temp_distance = position_self - position[i];
+                if(temp_distance != vec4(0.0f)){
+                    direction = -normalize(temp_distance);
+                    sq_distance = dot(temp_distance,temp_distance);
+                    acc_tmp += (mass[i]/sqrt(sq_distance+sq_soften)) * direction;
+                }
+            }
+        }
+    }
+    return acc_tmp;
+}
+
+
+void main() {
+	uint id = gl_GlobalInvocationID.x;   
+	if (id >= n_particle) return ;
+    if(first_pass){
+        velocity[id] += acceleration[id] * timestep_size * 0.5;
+        position[id] += velocity[id] * timestep_size;
+
+        memoryBarrier();
+        barrier();
+    } else {
+    acceleration[id] = calculate_acceleration(id) * gravitational_constant;
+    velocity[id] += acceleration[id] * timestep_size * 0.5; 
+    }
+}
