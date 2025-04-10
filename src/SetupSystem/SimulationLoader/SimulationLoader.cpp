@@ -24,13 +24,13 @@ void SimulationLoader::gui_setup()
 
 bool SimulationLoader::save_simulation(std::string file_name)
 {
-    if (this->simulator != NULL)
+    if (this->simulator == NULL)
     {
-        this->write_file(file_name);
-        return true;
+        std::cerr << "File saving error: simulator not docked" << std::endl;
+        return false;
     }
 
-    return false;
+    return this->write_file(file_name);
 }
 
 bool SimulationLoader::write_file(std::string file_name)
@@ -39,20 +39,25 @@ bool SimulationLoader::write_file(std::string file_name)
     {
         return false;
     }
-    
-    std::filesystem::path file_path(file_name);
-    std::ofstream output_file(file_path);
-    if ((output_file).is_open())
+
+    std::filesystem::path file_path(this->folder_path / file_name);
+
+    if (std::filesystem::exists(file_path))
     {
-        output_file << "Hello, this is a test message!" << std::endl;
-        output_file.close();
-        std::cout << "File written successfully!" << std::endl;
+        std::cerr << "File saving error: file name '" << file_path << "' is already taken." <<  std::endl;
+        return false;
     }
-    else
+
+    std::ofstream output_file(file_path);
+
+    if (!output_file)
     {
         std::cerr << "Failed to open the file for writing!" << std::endl;
-        return false; 
+        return false;
     }
+
+    output_file << "Hello, this is a test message!" << std::endl;
+    std::cout << "File written successfully!" << std::endl;
 
     return true;
 }
