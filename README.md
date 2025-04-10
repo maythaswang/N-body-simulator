@@ -1,4 +1,4 @@
-Modified by: Maythas Wangcharoenwong 20240722
+Last Modified by: Maythas Wangcharoenwong 20250410
 # N-body-simulator
 ----------
 This project aims to Simulate interactions of N-bodies in using Particle-Particle Method implemented with `OpenGL` and `C++`. The project provides option to use either Compute Shaders written in `glsl` or simple CPU implementation.
@@ -54,6 +54,13 @@ Please refer to the `"Window Controls"` when running the program.
 |p                              | pause / continue the simulation.                                                                      |
 |i                              | display setup log.                                                                                    |
 |o                              | toggle orbit / free-flying mode.                                                                      |
+|r                              | reset camera to origin."                                                                              |
+|k                              | toggle instancing."                                                                                   |
+|f                              | toggle wireframe mode."                                                                               |
+|b                              | toggle bloom."                                                                                        |
+|m                              | toggle mass-size."                                                                                    |
+|c                              | toggle mass-color."                                                                                   |
+|n                              | toggle GUI."                                                                                          |
 |middle mouse drag + left shift | pan the camera in the mouse drag direction.                                                           |
 |middle mouse drag + left ctrl  | zoom in/out by dragging mouse forward and vice versa. (free-flying mode: move forward / backwards.)   |
 |middle mouse drag              | orbit the camera about the center in the mouse drag direction. (free-flying mode: rotate the center.) |
