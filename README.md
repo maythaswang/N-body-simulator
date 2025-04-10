@@ -31,7 +31,11 @@ Default Test 12
 - Spawning cluster of bodies into multiple geometries such as discs and globular clusters.
 - GPU Acceleration for particle-particle method.
 
-### Geometries Image HERE!
+![](images/setup_geometries.png)
+<div align="center">
+Cluster Types
+</div>
+<br>
 
 ----------
 ## Performance: 
@@ -114,6 +118,8 @@ To use these camera controls, please make sure you are focusing on the simulatio
 |middle mouse scroll            | same action as middle mouse drag.                                                                     |        
 
 ※ps. mass-size and wireframe mode only shows when instancing is on
+<br>
+※ps2. The random geometry is basically a cube (might need to add more variables)
 
 ----------
 ## Examples 
@@ -140,6 +146,9 @@ Default Test 30
 - Further optimization on the particle interaction calculations (use oct-tree, FMM...)
 - More effects?
 - Save-Load system
+
+### Known Issues
+- If you set the force or mass to some crazy stuffs and you start to see some void ball in the middle of your screen, fear not for the stuffs is actually flying off the camera limit... 😂
 
 ----------
 ## References
