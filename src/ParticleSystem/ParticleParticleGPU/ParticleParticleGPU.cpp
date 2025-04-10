@@ -35,7 +35,19 @@ void ParticleParticleGPU::update_position()
     this->compute_shader_program.set_float("softening_factor", this->softening_factor);
     this->compute_shader_program.set_float("timestep_size", this->timestep_size);
     this->compute_shader_program.set_int("n_particle", this->n_particle);
-    glDispatchCompute(this->n_work_groups, 1, 1);
+
+    if (this->implementation == PP_GPU_OPTIMIZE)
+    {   
+        this->compute_shader_program.set_bool("is_first_pass", true);
+        glDispatchCompute(this->n_particle, 1, 1);
+        
+        // this->compute_shader_program.set_bool("is_first_pass", false);
+        // glDispatchCompute(this->n_particle, 1, 1);
+    }
+    else // PP_GPU_NAIVE
+    {
+        glDispatchCompute(this->n_work_groups, 1, 1);
+    }
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 }
 
@@ -94,7 +106,14 @@ void ParticleParticleGPU::init_compute_shader()
         compute_shader = shader_program.compile_shader("./shader_source/update_position_euler.comp", GL_COMPUTE_SHADER);
         break;
     case INTEGRATOR_VELOCITY_VERLET:
-        compute_shader = shader_program.compile_shader("./shader_source/update_position_velocity_verlet.comp", GL_COMPUTE_SHADER);
+        if (this->implementation == PP_GPU_OPTIMIZE)
+        {
+            compute_shader = shader_program.compile_shader("./shader_source/update_position_velocity_verlet_optimize.comp", GL_COMPUTE_SHADER);
+        }
+        else // PP_GPU_NAIVE (just in case something went very wrong we go here)
+        {
+            compute_shader = shader_program.compile_shader("./shader_source/update_position_velocity_verlet.comp", GL_COMPUTE_SHADER);
+        }
         break;
     default:
         compute_shader = shader_program.compile_shader("./shader_source/update_position_velocity_verlet.comp", GL_COMPUTE_SHADER);
