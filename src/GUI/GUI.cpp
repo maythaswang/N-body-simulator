@@ -7,6 +7,7 @@ GUI::GUI(GLFWwindow *window, InputProcessor *input_processor, ParticleBuilder *p
     this->input_processor = input_processor;
     this->particle_builder = particle_builder;
     this->setup_data_panel_on = false;
+    this->help_panel_on = true;
     this->init();
 }
 
@@ -46,6 +47,10 @@ void GUI::render_gui()
         {
             this->setup_data_panel();
         }
+        if (this->help_panel_on)
+        {
+            this->help_panel();
+        }
     }
 
     ImGui::Render();
@@ -68,7 +73,6 @@ void GUI::control_panel()
 {
     ImGui::Begin("Control Panel");
     std::string msg;
-    char filename[256] = "";
 
     // Information Section
     //-------------------------------------------
@@ -76,6 +80,9 @@ void GUI::control_panel()
     ImGui::Text("If you wish to disable GUI, press (N)");
     ImGui::TextColored(ImVec4(1.0, 0.9, 0.7, 1.0), "Performance: %.3f ms/frame (%.1f FPS)", 1000.0f / this->io->Framerate, this->io->Framerate);
 
+    ImGui::Text("Current step %d", this->input_processor->imm_get_current_sim_step());
+    ImGui::Text("Time elapsed (timestep) %f", this->input_processor->imm_get_current_sim_step() * this->particle_builder->head_setup_data.timestep_size);
+    ImGui::Text("Time elapsed (program) %.2f", glfwGetTime());
     // Pause / Resume Status
     ImGui::Text("Simulator Status:");
     ImGui::SameLine();
@@ -90,7 +97,10 @@ void GUI::control_panel()
         this->input_processor->imm_handle_pause();
     }
 
+    // Show other panels section
+    //-------------------------------------------
     ImGui::Checkbox("Setup Information Panel", &this->setup_data_panel_on);
+    ImGui::Checkbox("Help Panel", &this->help_panel_on);
 
     // Camera Section
     //-------------------------------------------
@@ -383,6 +393,46 @@ void GUI::setup_data_panel()
             ImGui::EndTable();
         }
     }
+    ImGui::End();
+}
+
+void GUI::help_panel()
+{
+    ImGui::Begin("Help and Instructions", &this->help_panel_on);
+    ImGui::SeparatorText("WELCOME TO SIMPLE REAL-TIME N-BODY SIMULATOR!");
+    ImGui::Text(
+        "For this application, we perform real time n-body gravitational simulation\n"
+        "between numerous bodies. The method currently used is particle-particle\n"
+        "This method of computation has a complexity of O(n^2) but luckily we are using\n"
+        "GPU to accelerate it!");
+    ImGui::SeparatorText("HOW TO USE");
+    ImGui::BulletText("The GUI screen can be toggled at any time with the key (N)");
+    ImGui::BulletText(
+        "To use the windows controls, please click on the simulation\n"
+        "screen before pressing the keys.");
+    ImGui::BulletText("The simulation setup can be viewed by pressing the 'Setup Information Panel'\n"
+                "on the control panel");
+    ImGui::BulletText("To close this page, click the x button in the corner");
+    ImGui::BulletText("The state logs of the application can be viewed on your terminal");
+    ImGui::SeparatorText("WINDOWS CONTROLS");
+    ImGui::Text("   esc                             : exit simulation.\n"
+                "   h                               : display controls on the terminal.\n"
+                "   p                               : pause / continue the simulation.\n"
+                "   o                               : toggle orbit / free-flying mode.\n"
+                "   r                               : reset camera to origin.\n"
+                "   k                               : toggle instancing.\n"
+                "   f                               : toggle wireframe mode.\n"
+                "   b                               : toggle bloom.\n"
+                "   m                               : toggle mass-size.\n"
+                "   c                               : toggle mass-color.\n"
+                "   n                               : toggle GUI.\n"
+                "\nps. mass-size and wireframe mode only shows when instancing is on\n");
+    ImGui::SeparatorText("CAMERA CONTROLS");
+    ImGui::Text("   middle mouse drag + left shift  : pan the camera in the mouse drag direction.\n"
+                "   middle mouse drag + left ctrl   : zoom in/out by dragging mouse forward and vice \n"
+                "                                     versa. (free-flying mode: move forward / backwards.)\n"
+                "   middle mouse drag               : orbit the camera about the center in the mouse drag \n"
+                "                                     direction. (free-flying mode: rotate the center.)");
     ImGui::End();
 }
 

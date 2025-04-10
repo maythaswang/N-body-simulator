@@ -73,6 +73,7 @@ public:
     glm::vec3 get_camera_center();
     glm::vec3 get_camera_up();
     bool get_camera_is_orbiting();
+    GLuint imm_get_current_sim_step();
 
 private:
     Simulator *simulator;
