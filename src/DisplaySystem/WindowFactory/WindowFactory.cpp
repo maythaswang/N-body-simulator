@@ -18,6 +18,5 @@ GLFWwindow *WindowFactory::create_window(int screen_width, int screen_height, co
 
     glfwMakeContextCurrent(window);
     glfwSetWindowAttrib(window, GLFW_RESIZABLE, true);
-    // glfwSetWindowAspectRatio(window, screen_width, screen_height);
     return window;
 }

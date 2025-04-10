@@ -6,10 +6,13 @@ Camera::Camera()
 {
     this->aspect_w = 640;
     this->aspect_h = 480;
+    this->is_orbiting = true;
+    this->camera_mode = CAMERA_IDLE;
     this->set_default_camera();
 }
 
-void Camera::set_default_camera(){
+void Camera::set_default_camera()
+{
     this->eye = glm::vec3(0, 0, 200.0);
     this->center = glm::vec3(0, 0, 0);
     this->up = glm::vec3(0, 1.0, 0);
@@ -18,9 +21,10 @@ void Camera::set_default_camera(){
     this->z_near = 0.1;
     this->z_far = 200000000.0;
 
-    this->rotation_sensitivity = 0.9;
+    this->rotation_sensitivity = 1;
     this->zoom_sensitivity = 1;
-    this->translation_sensitivity = 0.000001;
+    this->translation_sensitivity = 1;
+    this->free_forward_sensitivity = 0.001;
 
     this->build_model_matrix();
     this->build_view_matrix();
@@ -31,22 +35,25 @@ void Camera::rotate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
 {
     glm::vec3 direction = glm::normalize(this->center - this->eye);
     glm::vec3 right = glm::normalize(glm::cross(direction, this->up));
+    glm::vec3 norm_up = glm::normalize(this->up);
     GLfloat yaw = -mouse_delta_x * rotation_sensitivity;  // along up-axis
     GLfloat pitch = mouse_delta_y * rotation_sensitivity; // along right-axis
-    // roll: along the center-axis
 
-    if (pitch > 89.0f)
-        pitch = 89.0f;
-    if (pitch < -89.0f)
-        pitch = -89.0f;
+    glm::quat rotation_yaw = glm::angleAxis(glm::radians(yaw), norm_up);
+    glm::quat rotation_pitch = glm::angleAxis(glm::radians(pitch), right);
+    glm::quat rotation = rotation_pitch * rotation_yaw;
 
-    // Rotation Matrix
-    glm::mat4 rotationYaw = glm::rotate(glm::mat4(1.0f), glm::radians(yaw), this->up);
-    glm::mat4 rotationPitch = glm::rotate(rotationYaw, glm::radians(pitch), right);
-    glm::mat3 rotation = glm::mat3(rotationPitch);
+    glm::vec3 eye_origin = this->eye - this->center;
+    glm::vec3 new_eye = rotation * eye_origin;
 
-    this->eye = rotation * this->eye;
-    this->up = rotation * this->up;
+    // Move eye
+    this->eye = new_eye + this->center;
+    
+    // Recalculate up
+    direction = glm::normalize(this->center - this->eye);   
+    right = glm::normalize(glm::cross(direction, this->up));
+    this->up = glm::normalize(glm::cross(right, direction));
+
     this->build_view_matrix();
 }
 
@@ -78,8 +85,13 @@ void Camera::translate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
     glm::vec3 direction = glm::normalize(this->center - this->eye);
     glm::vec3 right = glm::normalize(glm::cross(direction, this->up));
 
-    GLfloat x_translate = -mouse_delta_x * this->translation_sensitivity * std::min(distance, 100000000.0f);
-    GLfloat y_translate = mouse_delta_y * this->translation_sensitivity * std::min(distance, 100000000.0f);
+    // Calculate sensitivity (log)
+    GLfloat scale = 5.0f;
+    GLfloat rate_of_growth = 0.000001f;
+    GLfloat sensitivity = glm::max(scale * glm::log2(rate_of_growth * distance + 1), 0.01f);
+
+    GLfloat x_translate = -mouse_delta_x * sensitivity;
+    GLfloat y_translate = mouse_delta_y * sensitivity;
     glm::vec3 translation_vector = glm::normalize(right) * x_translate + glm::normalize(this->up) * y_translate;
 
     this->eye += translation_vector;
@@ -101,30 +113,28 @@ void Camera::free_rotate(GLfloat mouse_delta_x, GLfloat mouse_delta_y)
 {
     glm::vec3 direction = glm::normalize(this->center - this->eye);
     glm::vec3 right = glm::normalize(glm::cross(direction, this->up));
+    glm::vec3 norm_up = glm::normalize(this->up);
     GLfloat yaw = -mouse_delta_x * rotation_sensitivity;  // along up-axis
     GLfloat pitch = mouse_delta_y * rotation_sensitivity; // along right-axis
-    // roll: along the center-axis
 
-    if (pitch > 89.0f)
-        pitch = 89.0f;
-    if (pitch < -89.0f)
-        pitch = -89.0f;
-
-    // Rotation Matrix
-    glm::mat4 rotationYaw = glm::rotate(glm::mat4(1.0f), glm::radians(yaw), this->up);
-    glm::mat4 rotationPitch = glm::rotate(rotationYaw, glm::radians(pitch), right);
-    glm::mat3 rotation = glm::mat3(rotationPitch);
+    glm::quat rotation_yaw = glm::angleAxis(glm::radians(yaw), norm_up);
+    glm::quat rotation_pitch = glm::angleAxis(glm::radians(pitch), right);
+    glm::quat rotation = rotation_pitch * rotation_yaw;
 
     glm::vec3 eye_origin = this->eye - this->center;
     glm::vec3 new_eye = rotation * eye_origin;
     glm::vec3 direction_to_old = eye_origin - new_eye;
 
+    // Move center
     this->center = this->center + direction_to_old;
-    this->up = rotation * this->up;
+
+    // Recalculate up
+    direction = glm::normalize(this->center - this->eye);
+    right = glm::normalize(glm::cross(direction, this->up)); 
+    this->up = glm::normalize(glm::cross(right, direction)); 
+
     this->build_view_matrix();
 }
-
-// The only mutator method avaliable for use as of now is SetAspect.
 
 void Camera::set_eye(glm::vec3 eye)
 {
@@ -193,10 +203,43 @@ void Camera::build_projection_matrix()
     this->projection_mat = glm::perspective(glm::radians(this->fovy), this->aspect_w / this->aspect_h, this->z_near, this->z_far);
 }
 
-GLfloat Camera::get_aspect_w(){
+GLfloat Camera::get_aspect_w()
+{
     return this->aspect_w;
 }
 
-GLfloat Camera::get_aspect_h(){
+GLfloat Camera::get_aspect_h()
+{
     return this->aspect_h;
+}
+
+CameraMode Camera::get_camera_mode()
+{
+    return this->camera_mode;
+}
+void Camera::set_camera_mode(CameraMode camera_mode)
+{
+    this->camera_mode = camera_mode;
+}
+
+bool Camera::get_is_orbiting()
+{
+    return this->is_orbiting;
+}
+void Camera::set_is_orbiting(bool is_orbiting)
+{
+    this->is_orbiting = is_orbiting;
+}
+
+glm::vec3 Camera::get_eye()
+{
+    return this->eye;
+}
+glm::vec3 Camera::get_center()
+{
+    return this->center;
+}
+glm::vec3 Camera::get_up()
+{
+    return this->up;
 }

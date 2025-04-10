@@ -8,6 +8,9 @@ layout (location = 1) out vec4 FragColorThreshold;
 uniform bool bloom_enabled;
 uniform bool use_mass_color;
 
+uniform float u_exposure;
+uniform float u_gamma;
+
 // Just fun stuffs (colour based on depth)
 vec3 color_by_linearized_depth(float depth) 
 {
@@ -70,11 +73,11 @@ void main(){
 
     if(!bloom_enabled){
         // Exposure tone mapping
-        float u_exposure = 1.0;
+        // float u_exposure = 1.0;
         color = vec3(1.0) - exp(-color * u_exposure);
 
         // Gamma correction
-        float u_gamma = 2.2;
+        // float u_gamma = 2.2;
         color = pow(color, vec3(1.0/u_gamma));
         FragColor = vec4(color,1.0f);
     }
