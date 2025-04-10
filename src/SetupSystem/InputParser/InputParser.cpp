@@ -29,13 +29,13 @@ void InputParser::accept_input()
     int simulation_implementation;
     while (true)
     {
-        std::cout << "Please input the ID of the implementation you would want to use {0: PP-CPU, 1: PP-GPU, 2: PP-GPU_optimized}" << std::endl;
+        std::cout << "Please input the ID of the implementation you would want to use {0: PP-CPU, 1: PP-GPU, 2: PP-GPU_tile, 3: PP-GPU_fine_grained}" << std::endl;
         std::cout << ":" << std::flush;
         getline(std::cin, input);
 
         if (std::stringstream(input) >> simulation_implementation)
         {
-            if (simulation_implementation <= 2 && simulation_implementation >= 0)
+            if (simulation_implementation <= 3 && simulation_implementation >= 0)
                 break;
         }
     }
@@ -48,18 +48,15 @@ void InputParser::accept_input()
         this->simulator_implementaion = PP_GPU_NAIVE;
         break;
     case 2:
-        this->simulator_implementaion = PP_GPU_OPTIMIZE;
+        this->simulator_implementaion = PP_GPU_TILE;
+        break;
+    case 3:
+        this->simulator_implementaion = PP_GPU_FINE;
         break;
     default:
-        this->simulator_implementaion = PP_GPU_OPTIMIZE;
+        this->simulator_implementaion = PP_GPU_NAIVE;
+        break;
     }
-
-    // Use GPU check
-    // this->input_YN(this->use_GPU, "Would you like to use the GPU implementation. (Y/N).");
-    // if (this->use_GPU)
-    // {
-    //     default_cap = TESTCASE_CAP_GPU; // Maximum number of GPU testers.
-    // }
 
     // Use default tests check.
     this->input_YN(this->use_default_test, "Would you like to load one of the default tests (Y/N).");

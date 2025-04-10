@@ -1,5 +1,5 @@
 #version 430 core
-
+// Version <2>
 layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
 
 layout (std430, binding=0) buffer particle_position{
@@ -24,12 +24,7 @@ uniform float timestep_size;
 uniform int n_particle;
 uniform bool first_pass;
 
-// OK this attempt might actually not work lol...
-
 // We can dispatch n_particle workgroup then use 256 internal threads to fine grain parallelize the acceleration calculation.
-// TODO: We might need to break this into multiple stage and do multiple dispatch from CPU to provide global memory barrier
-// Maybe 2 stages?? 
-// OK breaking it up is terrible for performance, we can do the whp (ball-parking with faith) we ball...
 
 shared vec4 local_acceleration_accumulator[256];
 

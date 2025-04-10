@@ -12,7 +12,8 @@ enum SimulatorImplementation
 {
     PP_CPU_NAIVE,
     PP_GPU_NAIVE,
-    PP_GPU_OPTIMIZE,
+    PP_GPU_TILE,
+    PP_GPU_FINE,
 };
 
 #endif 

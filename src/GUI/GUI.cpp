@@ -208,8 +208,11 @@ void GUI::setup_data_panel()
     case PP_GPU_NAIVE:
         implementation = "Particle-Particle GPU Naive";
         break;
-    case PP_GPU_OPTIMIZE:
-        implementation = "Particle-Particle GPU Optimize";
+    case PP_GPU_FINE:
+        implementation = "Particle-Particle GPU Fine-Grained Optimize";
+        break;
+    case PP_GPU_TILE:
+        implementation = "Particle-Particle GPU Tile-Chunk Optimize";
         break;
     default:
         implementation = "unknown?";
