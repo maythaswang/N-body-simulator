@@ -1,7 +1,7 @@
 #include "Simulator.h"
 // TODO: Implement Save/Load (both setup only and current state)
 
-Simulator::Simulator(GLfloat n_particle, GLfloat gravitational_constant, GLfloat softening_factor, GLfloat timestep_size, SimulatorIntegrator integrator)
+Simulator::Simulator(GLfloat n_particle, GLfloat gravitational_constant, GLfloat softening_factor, GLfloat timestep_size, SimulatorIntegrator integrator, SimulatorImplementation simulator_implementation)
 {
     this->gravitational_constant = gravitational_constant;
     this->softening_factor = softening_factor;
@@ -10,6 +10,7 @@ Simulator::Simulator(GLfloat n_particle, GLfloat gravitational_constant, GLfloat
     this->running_state = 0;
     this->integrator = integrator;
     this->setup_log = "";
+    this->implementation = simulator_implementation;
 }
 
 void Simulator::next_step()
