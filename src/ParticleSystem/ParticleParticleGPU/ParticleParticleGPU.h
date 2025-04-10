@@ -8,7 +8,7 @@
 class ParticleParticleGPU : public Simulator
 {
 public:
-    ParticleParticleGPU(GLfloat, GLfloat, GLfloat, GLfloat, SimulatorIntegrator);
+    ParticleParticleGPU(GLfloat, GLfloat, GLfloat, GLfloat, SimulatorIntegrator, SimulatorImplementation);
     void terminate() override;
 
 private:

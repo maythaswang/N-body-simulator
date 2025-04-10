@@ -222,6 +222,10 @@ void load_default_test(ParticleBuilder *particle_builder, int test_id)
         particle_builder->legacy_spawn_disc(10000, glm::vec3(0, 200000, 0), 100, 1000000, 10000, 100000000, 100000, 500000, true, false);
         break;
 
+    case 34:
+        particle_builder->legacy_spawn_globular_cluster(100000, glm::vec3(0.0f), 20000, 10, 10000, 1000000, 10000, 100000, true, false);
+        break;
+
     default:
         break;
     }

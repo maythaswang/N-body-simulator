@@ -3,6 +3,7 @@
 #pragma once
 #include <GLCommon.h>
 #include <glm/glm.hpp>
+#include <ParticleSystem/Simulator/SimulatorEnum.h>
 
 /**
  * @brief Multiple type of setup data payloads
@@ -10,7 +11,10 @@
  */
 
 struct HeadSetupData{
-    bool use_GPU, use_default, integrator; // <integrator 0: Euler, 1: Velocity verlet>
+    // bool use_GPU, use_default, integrator; // <integrator 0: Euler, 1: Velocity verlet>
+    bool use_default;
+    SimulatorIntegrator simulator_integrator; 
+    SimulatorImplementation simulator_implementation;
     GLuint default_test_number, num_particle;
     GLfloat gravitational_constant, timestep_size;
 };

@@ -71,7 +71,9 @@ public:
 private:
     ParticleBuilder *particle_builder;
     GLuint default_test, n_particle;
-    bool use_GPU, use_default_test, use_velocity_verlet; // Well do this since there are only 2 integrators available.
+    SimulatorImplementation simulator_implementaion;
+    SimulatorIntegrator simulator_integrator;
+    bool use_default_test; 
     GLfloat gravitational_constant;
     GLfloat timestep_size;
 

@@ -1,6 +1,6 @@
 #include "ParticleParticleCPU.h"
 
-ParticleParticleCPU::ParticleParticleCPU(GLfloat n_particle, GLfloat gravitational_constant, GLfloat softening_factor, GLfloat timestep_size, SimulatorIntegrator integrator) : Simulator(n_particle, gravitational_constant, softening_factor, timestep_size, integrator)
+ParticleParticleCPU::ParticleParticleCPU(GLfloat n_particle, GLfloat gravitational_constant, GLfloat softening_factor, GLfloat timestep_size, SimulatorIntegrator integrator, SimulatorImplementation simulator_implementation) : Simulator(n_particle, gravitational_constant, softening_factor, timestep_size, integrator, simulator_implementation)
 {
 }
 
@@ -17,7 +17,7 @@ glm::vec4 ParticleParticleCPU::calculate_acceleration(uint32_t current, uint32_t
     glm::vec3 direction = -glm::normalize(temp_distance);
     GLfloat sq_distance = glm::dot(temp_distance, temp_distance);
     GLfloat sq_soften = std::pow(this->softening_factor, 2);
-    return glm::vec4((this->particle_mass[other] / std::sqrt(sq_distance + sq_soften)) * direction,0);
+    return glm::vec4((this->particle_mass[other] / std::sqrt(sq_distance + sq_soften)) * direction, 0);
 }
 
 void ParticleParticleCPU::update_position_euler()
@@ -74,7 +74,7 @@ void ParticleParticleCPU::update_position_velocity_verlet()
 
         // Update Velocity by 1 step
         this->particle_velocity[i] += particle_acceleration[i] * this->timestep_size * (GLfloat)0.5 * this->gravitational_constant;
-        
+
         // Store Acceleration for next step.
         this->particle_previous_acceleration[i] = this->particle_acceleration[i];
     }
@@ -98,7 +98,7 @@ void ParticleParticleCPU::load_particles(GLuint n, std::vector<glm::vec4> positi
     this->particle_previous_acceleration = previous_acceleration;
     this->particle_mass = mass;
     this->particle_acceleration.resize(this->n_particle);
-    
+
     this->init_SSBOs();
 }
 
@@ -117,7 +117,8 @@ void ParticleParticleCPU::init_SSBOs()
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 }
 
-void ParticleParticleCPU::update_SSBO(){
+void ParticleParticleCPU::update_SSBO()
+{
     glBindBuffer(GL_ARRAY_BUFFER, this->particle_position_SSBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * this->n_particle * 4, &this->particle_position[0]);
 }
