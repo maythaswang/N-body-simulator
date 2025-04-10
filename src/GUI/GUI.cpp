@@ -198,8 +198,25 @@ void GUI::setup_data_panel()
     //-------------------------------------------
     ImGui::SeparatorText("GENERAL DETAILS");
 
-    ImGui::Text("GPU Implementation: %s", (setup_data.use_GPU) ? "ON" : "OFF");
-    ImGui::Text("Integrator: %s", (setup_data.integrator) ? "Velocity-Verlet" : "Euler");
+    // IMPLEMENTATIONS
+    std::string implementation = "";
+    switch (setup_data.simulator_implementation)
+    {
+    case PP_CPU_NAIVE:
+        implementation = "Particle-Particle CPU Naive";
+        break;
+    case PP_GPU_NAIVE:
+        implementation = "Particle-Particle GPU Naive";
+        break;
+    case PP_GPU_OPTIMIZE:
+        implementation = "Particle-Particle GPU Optimize";
+        break;
+    default:
+        implementation = "unknown?";
+    }
+
+    ImGui::Text("Implementation: %s", implementation.c_str());
+    ImGui::Text("Integrator: %s", (setup_data.simulator_integrator == INTEGRATOR_VELOCITY_VERLET) ? "Velocity-Verlet" : "Euler");
     ImGui::Text("Particle Setup: %s", (setup_data.use_default) ? "Default Setup" : "Manual Setup");
     if (setup_data.use_default)
     {
@@ -403,8 +420,7 @@ void GUI::help_panel()
     ImGui::Text(
         "For this application, we perform real time n-body gravitational simulation\n"
         "where every bodies interact with each other gravitationally.\n"
-        "The method currently used is particle-particle. \\(^0^)/\n"
-    );
+        "The method currently used is particle-particle. \\(^0^)/\n");
     ImGui::SeparatorText("HOW TO USE");
     ImGui::BulletText("The GUI screen can be toggled at any time with the key (N)");
     ImGui::BulletText("To physicists out there, I really am sorry about the units lol..(;w;)");

@@ -19,17 +19,47 @@ void InputParser::accept_input()
     this->timestep_size = DEFAULT_TIMESTEP_SIZE;
     this->gravitational_constant = DEFAULT_GRAVITATIONAL_CONSTANT;
 
-    int default_cap = TESTCASE_CAP_CPU; // Maximum umber of CPU testers
+    // int default_cap = TESTCASE_CAP_CPU; // Maximum umber of CPU testers
+    int default_cap = TESTCASE_CAP_GPU; 
     std::string input;
 
     std::cout << "You can now begin by setting up the simulator." << std::endl;
 
-    // Use GPU check
-    this->input_YN(this->use_GPU, "Would you like to use the GPU implementation. (Y/N).");
-    if (this->use_GPU)
+    // Simulator Implementation Check
+    int simulation_implementation;
+    while (true)
     {
-        default_cap = TESTCASE_CAP_GPU; // Maximum number of GPU testers.
+        std::cout << "Please input the ID of the implementation you would want to use {0: PP-CPU, 1: PP-GPU, 2: PP-GPU_optimized}" << std::endl;
+        std::cout << ":" << std::flush;
+        getline(std::cin, input);
+
+        if (std::stringstream(input) >> simulation_implementation)
+        {
+            if (simulation_implementation <= 2 && simulation_implementation >= 0)
+                break;
+        }
     }
+    switch (simulation_implementation)
+    {
+    case 0:
+        this->simulator_implementaion = PP_CPU_NAIVE;
+        break;
+    case 1:
+        this->simulator_implementaion = PP_GPU_NAIVE;
+        break;
+    case 2:
+        this->simulator_implementaion = PP_GPU_OPTIMIZE;
+        break;
+    default:
+        this->simulator_implementaion = PP_GPU_OPTIMIZE;
+    }
+
+    // Use GPU check
+    // this->input_YN(this->use_GPU, "Would you like to use the GPU implementation. (Y/N).");
+    // if (this->use_GPU)
+    // {
+    //     default_cap = TESTCASE_CAP_GPU; // Maximum number of GPU testers.
+    // }
 
     // Use default tests check.
     this->input_YN(this->use_default_test, "Would you like to load one of the default tests (Y/N).");
@@ -68,7 +98,7 @@ void InputParser::accept_input()
 void InputParser::manual_setup()
 {
     GLfloat gravitational_constant, timestep_size;
-    bool integrator;
+    GLuint integrator;
     std::string input;
     bool add_object;
 
@@ -82,7 +112,7 @@ void InputParser::manual_setup()
 
     this->gravitational_constant = gravitational_constant;
     this->timestep_size = timestep_size;
-    this->use_velocity_verlet = integrator;
+    this->simulator_integrator = (integrator) ? INTEGRATOR_VELOCITY_VERLET : INTEGRATOR_EULER;
 
     std::cout << this->gravitational_constant << ' ' << this->timestep_size << std::endl;
 
@@ -265,15 +295,15 @@ void InputParser::populate_sphere_surface()
     particle_builder->legacy_spawn_sphere(n_particle, offset, radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral);
 }
 
-bool InputParser::get_use_GPU()
-{
-    return this->use_GPU;
-}
+// bool InputParser::get_use_GPU()
+// {
+//     return this->use_GPU;
+// }
 
-bool InputParser::get_use_velocity_verlet()
-{
-    return this->use_velocity_verlet;
-}
+// bool InputParser::get_use_velocity_verlet()
+// {
+//     return this->use_velocity_verlet;
+// }
 
 GLfloat InputParser::get_timestep_size()
 {
@@ -285,24 +315,24 @@ GLfloat InputParser::get_gravitational_constant()
     return this->gravitational_constant;
 }
 
-std::string InputParser::get_summary()
-{
-    std::cout << std::boolalpha;
-    std::string rtn = "";
-    rtn.append("Using GPU: " + std::to_string(this->use_GPU) + "\n");
-    rtn.append("Using default test: " + std::to_string(this->use_default_test));
-    if (this->use_default_test)
-    {
-        rtn.append('[' + std::to_string(this->default_test) + ']');
-    }
-    rtn.append("\n");
+// std::string InputParser::get_summary()
+// {
+//     std::cout << std::boolalpha;
+//     std::string rtn = "";
+//     rtn.append("Using GPU: " + std::to_string(this->use_GPU) + "\n");
+//     rtn.append("Using default test: " + std::to_string(this->use_default_test));
+//     if (this->use_default_test)
+//     {
+//         rtn.append('[' + std::to_string(this->default_test) + ']');
+//     }
+//     rtn.append("\n");
 
-    rtn.append("Gravitational Constant: " + std::to_string(this->gravitational_constant) + "\n");
-    rtn.append("Timestep Size: " + std::to_string(this->timestep_size) + "\n");
-    std::string integrator_name = (this->use_velocity_verlet) ? "Velocity-Verlet" : "Euler";
-    rtn.append("Integrator: " + integrator_name + "\n\n");
-    return rtn;
-}
+//     rtn.append("Gravitational Constant: " + std::to_string(this->gravitational_constant) + "\n");
+//     rtn.append("Timestep Size: " + std::to_string(this->timestep_size) + "\n");
+//     std::string integrator_name = (this->use_velocity_verlet) ? "Velocity-Verlet" : "Euler";
+//     rtn.append("Integrator: " + integrator_name + "\n\n");
+//     return rtn;
+// }
 
 void InputParser::input_basic_information(GLuint *n_particle, glm::vec3 *offset)
 {
@@ -350,9 +380,9 @@ void InputParser::clear_cin()
 
 void InputParser::update_particle_builder_setup_log()
 {
-    this->particle_builder->head_setup_data.use_GPU = this->use_GPU;
+    this->particle_builder->head_setup_data.simulator_implementation = this->simulator_implementaion;
     this->particle_builder->head_setup_data.use_default = this->use_default_test;
-    this->particle_builder->head_setup_data.integrator = this->use_velocity_verlet;
+    this->particle_builder->head_setup_data.simulator_integrator = this->simulator_integrator;
     this->particle_builder->head_setup_data.default_test_number = this->default_test;
     this->particle_builder->head_setup_data.gravitational_constant = this->gravitational_constant;
     this->particle_builder->head_setup_data.timestep_size = this->timestep_size;
