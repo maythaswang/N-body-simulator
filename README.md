@@ -3,11 +3,17 @@ Last Modified by: Maythas Wangcharoenwong 20250410
 # CURRENTLY IN THE PROCESS OF RE-WRITING README (WIP)
 # N-body-simulator
 ----------
-A visual particle simualtor 
+A visual simulation engine for simulating the interactions of large amount of celestial bodies in real-time.
+<br>
+<br>
+**Aims:** This project aims to Simulate interactions of N-bodies in using Particle-Particle Method implemented with `OpenGL` and `C++`. The project provides option to use either Compute Shaders written in `glsl` or simple CPU implementation.
+<br>
 
-----------
-### About:
-This project aims to Simulate interactions of N-bodies in using Particle-Particle Method implemented with `OpenGL` and `C++`. The project provides option to use either Compute Shaders written in `glsl` or simple CPU implementation.
+![](images/default_12.gif)
+<div align="center">
+Default Test 12 
+</div>
+<br>
 
 ----------
 ### Preface: 
@@ -16,13 +22,14 @@ This project is basically an educational project for me to learn how to properly
 ----------
 ### Features:
 - Velocity-Verlet and Euler Integrator
+- Dual mode camera for orbiting and free-flying
+- Bloom (post-processing)
+- CLI setup system
+- GUI for setting effects and reading informations
 - Spawning cluster of bodies into multiple geometries such as discs and globular clusters.
-- Although the project does not support taking arguments yet, setups can be done after launching the program.
+- GPU Acceleration for particle-particle method.
 
-![](images/default_12.gif)
-<div align="center">
-Default Test 12 
-</div>
+
 
 ----------
 ### Geometries:
