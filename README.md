@@ -3,17 +3,29 @@ Last Modified by: Maythas Wangcharoenwong 20250410
 # CURRENTLY IN THE PROCESS OF RE-WRITING README (WIP)
 # N-body-simulator
 ----------
+A visual particle simualtor 
+
+----------
+### About:
 This project aims to Simulate interactions of N-bodies in using Particle-Particle Method implemented with `OpenGL` and `C++`. The project provides option to use either Compute Shaders written in `glsl` or simple CPU implementation.
 
+----------
+### Preface: 
+This project is basically an educational project for me to learn how to properly use compute shaders, OpenGL, Post processing effects to make a visually stunning particle simulations. First, I must say that Physics is not my strong suit. With that given, the real aim of this project is to produce visually interesting simulation, not full physics accuracy (although I tried to be as accurate as possible). In a sense, the value in those of default test cases are extremely exaggerated so please be aware of this fact. As per the geometries of stellar clusters and how mass are mapped to colors, these are not fully accurate as well (To any physicist out there I am sorry (´；ω；｀)). With that being said, the project provides multiple controllable variables for those who want to try setup the simulation for themselves as well as multiple default test cases to pick from so enjoy!! (\*´ω｀\*)
+
+----------
 ### Features:
 - Velocity-Verlet and Euler Integrator
-- Spawning cluster of bodies into shape such as discs and globular clusters.
+- Spawning cluster of bodies into multiple geometries such as discs and globular clusters.
 - Although the project does not support taking arguments yet, setups can be done after launching the program.
 
 ![](images/default_12.gif)
 <div align="center">
 Default Test 12 
 </div>
+
+----------
+### Geometries:
 
 ----------
 ### Build and Run
@@ -67,9 +79,15 @@ Please refer to the `"Window Controls"` when running the program.
 |middle mouse drag + left ctrl  | zoom in/out by dragging mouse forward and vice versa. (free-flying mode: move forward / backwards.)   |
 |middle mouse drag              | orbit the camera about the center in the mouse drag direction. (free-flying mode: rotate the center.) |
 |middle mouse scroll            | same action as middle mouse drag.                                                                     |        
+
+
 ※ps. mass-size and wireframe mode only shows when instancing is on
 ----------
 ### Known Issues
+
+
+----------
+### Performance
 
 ----------
 ### Examples 
