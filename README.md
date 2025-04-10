@@ -42,6 +42,7 @@ The performance test is done solely on my machine so just use it as a reference
 |n = 100                      | 120     | 120      | 
 |n = 1000                     |         | 120      | 
 |n = 10000                    |         | 120      |
+|n = 100000                   |         | 23       |
 \<TBD I might try something... \>
 
 ----------
