@@ -22,7 +22,9 @@ uniform float gravitational_constant;
 uniform float softening_factor; 
 uniform float timestep_size; 
 uniform int n_particle;
-// uniform bool is_first_pass;
+uniform bool first_pass;
+
+// OK this attempt might actually not work lol...
 
 // We can dispatch n_particle workgroup then use 256 internal threads to fine grain parallelize the acceleration calculation.
 // TODO: We might need to break this into multiple stage and do multiple dispatch from CPU to provide global memory barrier
@@ -51,22 +53,27 @@ vec4 calculate_acceleration(uint id) {
 
 
 void main() {
-    // ID setup
-	uint particle_id = gl_WorkGroupID.x;   
-    uint local_id = gl_LocalInvocationID.x;
-	if (particle_id >= n_particle) return ;
 
-    // Stage 0 (Maybe we lower the work group just for this one??)
-    // if(is_first_pass){
-        if (local_id == 0){
-            velocity[particle_id] += acceleration[particle_id] * timestep_size * 0.5;
-            position[particle_id] += velocity[particle_id] * timestep_size;
-        }
 
-        memoryBarrier();
-        barrier();
-    // } else {
+    // Stage 0
+    if(first_pass){
+
+
+	uint global_id = gl_GlobalInvocationID.x;   
+
+        if (global_id >= n_particle) return ;
+        velocity[global_id] += acceleration[global_id] * timestep_size * 0.5;
+        position[global_id] += velocity[global_id] * timestep_size;
+    
+
+    memoryBarrier();
+    barrier();
+    } else {
     // Stage 1
+        // ID setup
+        uint particle_id = gl_WorkGroupID.x;   
+        uint local_id = gl_LocalInvocationID.x;
+        if (particle_id >= n_particle) return ;
 
     // Local Acceleration Accumulator
     vec4 local_acceleration_sum = vec4(0.0);
@@ -106,17 +113,8 @@ void main() {
         //     acceleration[particle_id] += local_acceleration_accumulator[i];
         // }
 
-
         acceleration[particle_id] = local_acceleration_accumulator[local_id] * gravitational_constant;
         velocity[particle_id] += acceleration[particle_id] * timestep_size * 0.5; 
     }
-
-    // acceleration[particle_id] = calculate_acceleration(particle_id) * gravitational_constant;
-    
-    // memoryBarrier();
-    // barrier();
-
-    // if( local_id == 0){
-    // }
-    // }
+    }
 }

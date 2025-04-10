@@ -82,6 +82,7 @@ void InputParser::accept_input()
         }
 
         this->default_test = input_test;
+        this->simulator_integrator = INTEGRATOR_VELOCITY_VERLET;
         load_default_test(this->particle_builder, input_test);
     }
 
