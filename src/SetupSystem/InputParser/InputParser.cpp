@@ -5,6 +5,10 @@ int TESTCASE_CAP_GPU = 33;
 GLfloat DEFAULT_TIMESTEP_SIZE = 0.001;
 GLfloat DEFAULT_GRAVITATIONAL_CONSTANT = 0.8;
 
+InputParser::InputParser()
+{
+}
+
 InputParser::InputParser(ParticleBuilder *particle_builder)
 {
     this->particle_builder = particle_builder;
@@ -57,6 +61,8 @@ void InputParser::accept_input()
         std::cout << "The manual setup will now begin..." << std::endl;
         this->manual_setup();
     }
+
+    this->update_particle_builder_setup_log();
 }
 
 void InputParser::manual_setup()
@@ -162,7 +168,7 @@ void InputParser::populate_disc()
         std::cout << ":" << std::flush;
         getline(std::cin, input);
     } while (!(std::stringstream(input) >> is_spiral >> dense_center));
-    particle_builder->spawn_disc(n_particle, offset, radius, width, min_mass, max_mass, min_velocity, max_velocity, is_spiral, dense_center);
+    particle_builder->legacy_spawn_disc(n_particle, offset, radius, width, min_mass, max_mass, min_velocity, max_velocity, is_spiral, dense_center);
 }
 
 void InputParser::populate_random()
@@ -188,7 +194,7 @@ void InputParser::populate_random()
         getline(std::cin, input);
     } while (!(std::stringstream(input) >> min_mass >> max_mass >> min_velocity >> max_velocity));
 
-    particle_builder->spawn_random(n_particle, offset, radius, min_mass, max_mass, min_velocity, max_velocity);
+    particle_builder->legacy_spawn_random(n_particle, offset, radius, min_mass, max_mass, min_velocity, max_velocity);
 }
 
 void InputParser::populate_globular_cluster()
@@ -222,7 +228,7 @@ void InputParser::populate_globular_cluster()
         getline(std::cin, input);
     } while (!(std::stringstream(input) >> is_spiral));
 
-    particle_builder->spawn_globular_cluster(n_particle, offset, radius, center_radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral, 0);
+    particle_builder->legacy_spawn_globular_cluster(n_particle, offset, radius, center_radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral, 0);
 }
 
 void InputParser::populate_sphere_surface()
@@ -256,7 +262,7 @@ void InputParser::populate_sphere_surface()
         getline(std::cin, input);
     } while (!(std::stringstream(input) >> is_spiral));
 
-    particle_builder->spawn_sphere(n_particle, offset, radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral);
+    particle_builder->legacy_spawn_sphere(n_particle, offset, radius, min_mass, max_mass, min_velocity, max_velocity, is_spiral);
 }
 
 bool InputParser::get_use_GPU()
@@ -340,4 +346,14 @@ void InputParser::input_YN(bool &output, std::string message)
 void InputParser::clear_cin()
 {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the remaining \n
+}
+
+void InputParser::update_particle_builder_setup_log()
+{
+    this->particle_builder->head_setup_data.use_GPU = this->use_GPU;
+    this->particle_builder->head_setup_data.use_default = this->use_default_test;
+    this->particle_builder->head_setup_data.integrator = this->use_velocity_verlet;
+    this->particle_builder->head_setup_data.default_test_number = this->default_test;
+    this->particle_builder->head_setup_data.gravitational_constant = this->gravitational_constant;
+    this->particle_builder->head_setup_data.timestep_size = this->timestep_size;
 }

@@ -21,8 +21,6 @@ public:
      *
      */
     void bind_default_FBO();
-    // GLuint add_effect(); // TODO: return effect ID and take in the effect pointers
-    // void apply_effect();
 
     void apply_effect();
 
@@ -45,8 +43,22 @@ public:
     void set_enabled(bool);
 
     void terminate();
+    
+    void set_exposure(GLfloat exposure);
+    void set_gamma(GLfloat gamma);
+    void set_blur_intensity(GLfloat blur_intensity);
+    GLfloat get_exposure();
+    GLfloat get_gamma();
+    GLfloat get_blur_intensity();
+    void reset_default();
 private:
     bool enabled;
+
+    // Default values
+    GLfloat default_exposure = 2.0;
+    GLfloat default_gamma = 2.2;
+    GLfloat default_blur_intensity = 0.4;
+    GLfloat exposure, gamma, blur_intensity;
 
     // Rectangle for drawing to screen
     GLuint rect_VAO, rect_VBO;

@@ -3,8 +3,8 @@
 #pragma once
 
 #include <GLcommon.h>
-#include <ParticleSystem/ParticleBuilder/ParticleBuilder.h>
-#include <DefaultTestLoader/DefaultTestLoader.h>
+#include <SetupSystem/ParticleBuilder/ParticleBuilder.h>
+#include <SetupSystem/DefaultTestLoader/DefaultTestLoader.h>
 
 #include <iostream>
 #include <string>
@@ -17,6 +17,9 @@
 class InputParser
 {
 public:
+    // So that it stops screaming
+    InputParser();
+
     /**
      * @brief Construct a new InputParser object
      *
@@ -129,6 +132,12 @@ private:
      *
      */
     void clear_cin();
+
+    /**
+     * @brief Update particle builder setup log
+     *
+     */
+    void update_particle_builder_setup_log();
 };
 
 #endif

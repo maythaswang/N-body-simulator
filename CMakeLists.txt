@@ -45,6 +45,16 @@ FetchContent_Declare(
 # Fetch Dependencies
 FetchContent_MakeAvailable(glfw glm glad)
 
+set(IMGUI_DIR external_dependencies/imgui)
+set(IMGUI_SOURCES
+    ${IMGUI_DIR}/src/imgui_draw.cpp 
+    ${IMGUI_DIR}/src/imgui_impl_glfw.cpp 
+    ${IMGUI_DIR}/src/imgui_impl_opengl3.cpp 
+    ${IMGUI_DIR}/src/imgui_tables.cpp 
+    ${IMGUI_DIR}/src/imgui_widgets.cpp 
+    ${IMGUI_DIR}/src/imgui.cpp
+)
+
 set(PROJECT_SOURCES
     src/main.cpp
     src/DisplaySystem/WindowFactory/WindowFactory.cpp
@@ -53,22 +63,25 @@ set(PROJECT_SOURCES
     src/ProgramInit/ProgramInit.cpp
     src/Shader/Shader.cpp
     src/ParticleSystem/Simulator/Simulator.cpp
-    src/ParticleSystem/ParticleBuilder/ParticleBuilder.cpp
+    src/SetupSystem/ParticleBuilder/ParticleBuilder.cpp
     src/Renderer/Renderer.cpp
     src/ParticleSystem/ParticleParticleCPU/ParticleParticleCPU.cpp
     src/ParticleSystem/ParticleParticleGPU/ParticleParticleGPU.cpp
-    src/InputParser/InputParser.cpp
-    src/DefaultTestLoader/DefaultTestLoader.cpp
+    src/SetupSystem/InputParser/InputParser.cpp
+    src/SetupSystem/DefaultTestLoader/DefaultTestLoader.cpp
     src/Mesh/MeshBuilder.cpp
     src/Bloom/Bloom.cpp
+    src/GUI/GUI.cpp
+    src/InputProcessor/InputProcessor.cpp
 )
 
 set(INCLUDE_DIRS
     include/
+    ${IMGUI_DIR}/headers/
     src/
 )
 
-add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
+add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${IMGUI_SOURCES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} glfw glm glad)

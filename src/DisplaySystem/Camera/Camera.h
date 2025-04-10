@@ -5,6 +5,8 @@
 #include <GLCommon.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include "CameraEnum.h"
 
 /**
  * @brief Stores position of camera, handle camera transformations, and construct matrix to transform polygons accordingly.
@@ -134,7 +136,20 @@ public:
     GLfloat get_aspect_w();
     GLfloat get_aspect_h();
 
+    CameraMode get_camera_mode();
+    void set_camera_mode(CameraMode);
+
+    bool get_is_orbiting();
+    void set_is_orbiting(bool);
+
+    glm::vec3 get_eye();
+    glm::vec3 get_center();
+    glm::vec3 get_up();
+
 private:
+    CameraMode camera_mode;
+    bool is_orbiting;
+
     glm::vec3 eye;
     glm::vec3 center;
     glm::vec3 up;
@@ -152,6 +167,7 @@ private:
     GLfloat rotation_sensitivity;
     GLfloat translation_sensitivity;
     GLfloat zoom_sensitivity;
+    GLfloat free_forward_sensitivity;
 
     /**
      * @brief Build model matrix.

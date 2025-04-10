@@ -96,6 +96,8 @@ void Bloom::init()
     bloom_combine_shader.use();
     bloom_combine_shader.set_int("u_color_texture", 0);
     bloom_combine_shader.set_int("u_blur_texture", 1);
+
+    this->reset_default();
 }
 
 void Bloom::setup_texture(GLuint tex_id)
@@ -250,11 +252,12 @@ bool Bloom::check_FBO()
     return !failed;
 }
 
-void Bloom::terminate(){
+void Bloom::terminate()
+{
     // Rectangle
     glDeleteVertexArrays(1, &this->rect_VAO);
     glDeleteBuffers(1, &this->rect_VBO);
-    
+
     // FBO
     glDeleteFramebuffers(1, &this->render_FBO);
     glDeleteFramebuffers(2, this->pingpong_FBO);
@@ -271,3 +274,50 @@ void Bloom::terminate(){
     this->gaussian_blur_shader.delete_shader();
     this->bloom_combine_shader.delete_shader();
 }
+
+void Bloom::set_gamma(GLfloat gamma)
+{
+    this->bloom_combine_shader.use();
+    this->bloom_combine_shader.set_float("u_gamma", gamma);
+    this->gamma = gamma;
+}
+
+void Bloom::set_exposure(GLfloat exposure)
+{
+    this->bloom_combine_shader.use();
+    this->bloom_combine_shader.set_float("u_exposure", exposure);
+    this->exposure = exposure;
+}
+
+void Bloom::set_blur_intensity(GLfloat blur_intensity)
+{
+    this->bloom_combine_shader.use();
+    this->bloom_combine_shader.set_float("u_blur_intensity", blur_intensity);
+    this->blur_intensity = blur_intensity;
+}
+
+
+
+void Bloom::reset_default()
+{
+    this->bloom_combine_shader.use();
+    this->bloom_combine_shader.set_float("u_gamma", default_gamma);
+    this->bloom_combine_shader.set_float("u_exposure", default_exposure);
+    this->bloom_combine_shader.set_float("u_blur_intensity", default_blur_intensity);
+    this->exposure = default_exposure;
+    this->gamma = default_gamma;
+    this->blur_intensity = default_blur_intensity;
+}
+
+GLfloat Bloom::get_gamma(){
+    return this->gamma;
+}
+
+GLfloat Bloom::get_exposure(){
+    return this->exposure;
+}
+
+GLfloat Bloom::get_blur_intensity(){
+    return this->blur_intensity;
+}
+
