@@ -37,12 +37,16 @@ void ParticleParticleGPU::update_position()
     this->compute_shader_program.set_int("n_particle", this->n_particle);
 
     if (this->implementation == PP_GPU_OPTIMIZE)
-    {   
-        this->compute_shader_program.set_bool("is_first_pass", true);
+    {
+        // WE BALL, WHO NEEDS SYNCING ANYWAY!!
+        // this->compute_shader_program.set_bool("is_first_pass", true);
         glDispatchCompute(this->n_particle, 1, 1);
-        
+
+        // glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
         // this->compute_shader_program.set_bool("is_first_pass", false);
         // glDispatchCompute(this->n_particle, 1, 1);
+
+        // glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
     }
     else // PP_GPU_NAIVE
     {
