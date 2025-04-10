@@ -200,3 +200,7 @@ void InputProcessor::imm_handle_camera_reset()
     std::cout << "Camera is reset to origin." << std::endl;
     this->camera->set_default_camera();
 }
+
+GLuint InputProcessor::imm_get_current_sim_step(){
+    return this->simulator->get_current_step();
+}

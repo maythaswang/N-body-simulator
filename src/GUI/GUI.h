@@ -26,9 +26,11 @@ private:
     ImGuiIO* io;
 
     bool setup_data_panel_on;
+    bool help_panel_on;
 
     void control_panel();
     void setup_data_panel();
+    void help_panel();
 };
 
 #endif
