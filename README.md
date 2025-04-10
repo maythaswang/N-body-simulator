@@ -1,4 +1,6 @@
 Last Modified by: Maythas Wangcharoenwong 20250410
+
+# CURRENTLY IN THE PROGRESS OF RE-WRITING README (WIP)
 # N-body-simulator
 ----------
 This project aims to Simulate interactions of N-bodies in using Particle-Particle Method implemented with `OpenGL` and `C++`. The project provides option to use either Compute Shaders written in `glsl` or simple CPU implementation.
