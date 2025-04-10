@@ -1,6 +1,6 @@
 #include "InputProcessor.h"
 
-InputProcessor::InputProcessor(Simulator *simulator, Renderer *renderer, Bloom *bloom, Camera *camera, SimulationLoader *simulation_loader)
+InputProcessor::InputProcessor(Simulator *simulator, Renderer *renderer, Bloom *bloom, Camera *camera)
 {
     this->simulator = simulator;
     this->renderer = renderer;
@@ -199,8 +199,4 @@ void InputProcessor::imm_handle_camera_reset()
 {
     std::cout << "Camera is reset to origin." << std::endl;
     this->camera->set_default_camera();
-}
-
-bool InputProcessor::imm_save_simulator(std::string file_name){
-    return this->simulation_loader->save_simulation(file_name);
 }

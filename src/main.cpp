@@ -14,7 +14,6 @@
 #include <ParticleSystem/ParticleParticleCPU/ParticleParticleCPU.h>
 #include <ParticleSystem/ParticleParticleGPU/ParticleParticleGPU.h>
 #include <SetupSystem/InputParser/InputParser.h>
-#include <SetupSystem/SimulationLoader/SimulationLoader.h>
 #include <Mesh/MeshBuilder.h>
 #include <Bloom/Bloom.h>
 #include <InputProcessor/InputProcessor.h>
@@ -35,8 +34,8 @@ int main(int argc, char *argv[])
 	// ----------------------------------------------------------------------------
 	std::cout << g_welcome_message << std::endl;
 	ParticleBuilder particle_builder = ParticleBuilder();
-	SimulationLoader simulation_loader = SimulationLoader(&particle_builder);
-	simulation_loader.cli_setup();
+	InputParser input_parser = InputParser(&particle_builder);
+	input_parser.accept_input();
 
 	// Initialization Subroutine
 	// ----------------------------------------------------------------------------
@@ -70,6 +69,7 @@ int main(int argc, char *argv[])
 	Camera camera = Camera();
 
 	// Initialize particle data
+	// ----------------------------------------------------------------------------
 	std::vector<glm::vec4> particle_position;
 	std::vector<glm::vec4> particle_velocity;
 	std::vector<glm::vec4> particle_acceleration;
@@ -106,8 +106,9 @@ int main(int argc, char *argv[])
 	}
 
 	simulator->load_particles(n_particles, particle_position, particle_velocity, particle_acceleration, particle_mass);
-	simulation_loader.link_simulator(simulator);
 	
+	// Setup Renderer
+	// ----------------------------------------------------------------------------
 	Renderer renderer = Renderer(window, &shader_program, &camera, simulator, &render_components);
 
 	// Post Processor
@@ -116,7 +117,7 @@ int main(int argc, char *argv[])
 
 	// Input Management
 	// ----------------------------------------------------------------------------
-	InputProcessor input_processor = InputProcessor(simulator, &renderer, &bloom, &camera, &simulation_loader);
+	InputProcessor input_processor = InputProcessor(simulator, &renderer, &bloom, &camera);
 	CallbackManager callback_manager = CallbackManager(window, &camera, &input_processor, &bloom);
 	GUI gui = GUI(window, &input_processor, &particle_builder);
 
