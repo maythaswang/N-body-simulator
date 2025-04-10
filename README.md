@@ -73,6 +73,12 @@ Setting up a simulation is simple, you can either use one of the pre-written def
 ## Controls
 Please refer to the `"Window Controls"` or the GUI help menu when running the program.
 
+![](images/GUI_example.png)
+<div align="center">
+GUI Example
+</div>
+<br>
+
 ### Window Controls
 To use these hotkeys, please make sure you are focusing on the simulation screen.
 
