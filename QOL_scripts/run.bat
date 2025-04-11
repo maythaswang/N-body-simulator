@@ -1,3 +1,3 @@
 cd ..
 cls
-.\build\bin\release\N_body_simulator.exe
+.\build\bin\Release\N_body_simulator.exe
