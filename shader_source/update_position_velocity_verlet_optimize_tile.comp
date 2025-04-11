@@ -31,57 +31,116 @@ uniform bool first_pass;
 
 // Tile chunk
 const int CHUNK_SIZE = 512;
-shared vec4 shared_position[CHUNK_SIZE];
-shared float shared_mass[CHUNK_SIZE];
+shared vec4 chunk_position[CHUNK_SIZE];
+shared float chunk_mass[CHUNK_SIZE];
 
-vec4 calculate_acceleration(uint id) {
+vec4 calculate_acceleration(uint particle_id, uint local_id) {
     vec4 acc_tmp = vec4(0.0f);
     vec4 temp_distance;
     vec4 direction;
     float sq_distance;
     float sq_soften = pow(softening_factor, 2);
-    vec4 position_self = position[id];
+    vec4 position_self = position[particle_id];
 
     int max_load = CHUNK_SIZE;
-    uint local_id = gl_LocalInvocationID.x;
+    uint half_chunk = 256;
+    uint fetch_id = 0;
 
-    for (int offset = 0; offset <= (n_particle + CHUNK_SIZE); offset+=CHUNK_SIZE){
-        for(int i = 0; i < 2; i++){
-            if(local_id * i + offset < n_particle){
-                shared_position[local_id * i + offset] = position[local_id * i + offset];
-                shared_mass[local_id * i + offset] = mass[local_id * i + offset];
-            }
+    for (uint offset = 0; offset < (n_particle + CHUNK_SIZE); offset+=CHUNK_SIZE){
+
+
+
+        // THIS WORKS
+        // for(int i = 0; i < CHUNK_SIZE; i++){
+        //     if(i + offset < n_particle){
+        //         shared_mass[i] = mass[i + offset];
+        //         shared_position[i] = position[i + offset];
+        //     }
+        // }
+
+        // THESE DOESN"T
+        // uint new_id = 0;
+        // new_id = local_id + (offset*uint(i));
+        
+
+        if(local_id + offset < n_particle){
+            chunk_mass[local_id] = mass[local_id+offset];
+            chunk_position[local_id] = position[local_id+offset];
         }
+
+        memoryBarrier();
         barrier();
 
-        max_load = offset - max(offset - n_particle, 0);
+        if(local_id + offset + 256 < n_particle){
+            chunk_mass[local_id + 256] = mass[256 +local_id + offset];
+            chunk_position[local_id + 256] = position[256 +local_id + offset];
+        }
 
-        for (int i = 0; i < CHUNK_SIZE; i++){
-            if(i < max_load){
-            temp_distance = position_self - shared_position[i];
+        // for(int i = 64; i < CHUNK_SIZE; i++){
+        //     if(i + offset < n_particle){
+        //         chunk_mass[i] = mass[i + offset];
+        //         chunk_position[i] = position[i + offset];
+        //     }
+        // }
+
+        // Fetch position and mass
+        // for(int i = 0; i < 2; i++){
+        //     fetch_id = local_id + (i*half_chunk);
+        //     if(fetch_id + offset < n_particle){
+        //         shared_position[fetch_id] = position[fetch_id + offset];
+        //         shared_mass[fetch_id] = mass[fetch_id + offset];
+        //     }
+        // }
+
+        // if(local_id + offset < n_particle){
+        //     shared_mass[local_id] = mass[local_id + offset];
+        //     shared_position[local_id] = position[local_id + offset];
+        // } 
+
+        // if(local_id + offset + 256 < n_particle){
+        //     shared_mass[local_id + 256] = mass[256 +local_id + offset];
+        //     shared_position[local_id + 256] = position[256 +local_id + offset];
+        // }
+
+        memoryBarrier();
+        barrier();
+
+        // if(chunk_mass[local_id+256] == 0.0f){
+        //     mass[particle_id] = 70000.0f;
+        // }
+
+        // ensure the read size is not going to be over n_particle
+        max_load = CHUNK_SIZE - max(int(offset) - n_particle, 0);
+
+        // Accumulate CHUNK_SIZE particle per round
+        for (int i = 0; i < max_load; i++){
+            // if(i < max_load){
+                temp_distance = position_self - chunk_position[i];
                 if(temp_distance != vec4(0.0f)){
                     direction = -normalize(temp_distance);
                     sq_distance = dot(temp_distance,temp_distance);
-                    acc_tmp += (shared_mass[i]/sqrt(sq_distance+sq_soften)) * direction;
+                    acc_tmp += (chunk_mass[i]/sqrt(sq_distance+sq_soften)) * direction;
                 }
             }
         }
-    }
+
+        if(local_id == 307){// && local_id < 256){
+            mass[particle_id] = 50000.0f;
+        }
+    
     return acc_tmp;
 }
 
 
 void main() {
-	uint id = gl_GlobalInvocationID.x;   
-	if (id >= n_particle) return ;
+	uint particle_id = gl_GlobalInvocationID.x;   
+    uint local_id = gl_LocalInvocationID.x;
+	if (particle_id >= n_particle) return ;
     if(first_pass){
-        velocity[id] += acceleration[id] * timestep_size * 0.5;
-        position[id] += velocity[id] * timestep_size;
-
-        memoryBarrier();
-        barrier();
+        velocity[particle_id] += acceleration[particle_id] * timestep_size * 0.5;
+        position[particle_id] += velocity[particle_id] * timestep_size;
     } else {
-    acceleration[id] = calculate_acceleration(id) * gravitational_constant;
-    velocity[id] += acceleration[id] * timestep_size * 0.5; 
+        acceleration[particle_id] = calculate_acceleration(particle_id, local_id) * gravitational_constant;
+        velocity[particle_id] += acceleration[particle_id] * timestep_size * 0.5; 
     }
 }

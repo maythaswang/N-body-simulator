@@ -24,7 +24,7 @@ out float star_mass;
 
 float calculate_mass_scaler(int id){
   float scale = mass[id] / 1000000;
-  return min(scale, 15.0f);
+  return max(min(scale, 15.0f),0.0f);
 }
 
 void main() {

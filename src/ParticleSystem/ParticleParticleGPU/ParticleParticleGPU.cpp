@@ -57,6 +57,7 @@ void ParticleParticleGPU::update_position()
         break;
     default:
         glDispatchCompute(this->n_work_groups, 1, 1);
+        break;
     }
 
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
