@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
 	GLfloat timestep_size = particle_builder.head_setup_data.timestep_size;
 
 	// TODO: CHANGE THIS TO SMART POINTER LATER ON
-	if (!particle_builder.head_setup_data.simulator_implementation)
+	if (particle_builder.head_setup_data.simulator_implementation == PP_CPU_NAIVE)
 	{
 		simulator = new ParticleParticleCPU(n_particles, gravitational_constant, SOFTENING_FACTOR, timestep_size, integrator, particle_builder.head_setup_data.simulator_implementation);
 	}
