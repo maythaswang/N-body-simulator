@@ -37,39 +37,6 @@ else()
     message(STATUS "UNKNOWN BUILD TYPE")
 endif()
 
-# Set fetch content directory
-set(FETCHCONTENT_BASE_DIR "${CMAKE_SOURCE_DIR}/packages")
-set(FETCHCONTENT_QUIET FALSE)
-message(STATUS "FETCHING REQUIRED PACKAGES")
-
-# glfw
-set(GLFW_BUILD_EXAMPLES FALSE)
-set(GLFW_BUILD_TESTS FALSE)
-
-FetchContent_Declare(
-    glfw
-    GIT_REPOSITORY https://github.com/glfw/glfw.git
-    GIT_TAG 3.4
-    GIT_PROGRESS TRUE)
-
-# glm
-FetchContent_Declare(
-    glm
-    GIT_REPOSITORY https://github.com/g-truc/glm
-    GIT_TAG 1.0.0
-    GIT_PROGRESS TRUE)
-
-# glad
-FetchContent_Declare(
-    glad
-    GIT_REPOSITORY https://github.com/Dav1dde/glad/
-    GIT_TAG v0.1.36
-    GIT_PROGRESS TRUE
-)
-
-# Fetch Dependencies
-FetchContent_MakeAvailable(glfw glm glad)
-
 set(IMGUI_DIR external_dependencies/imgui)
 set(IMGUI_SOURCES
     ${IMGUI_DIR}/src/imgui_draw.cpp 
@@ -100,13 +67,22 @@ set(PROJECT_SOURCES
     src/InputProcessor/InputProcessor.cpp
 )
 
+set(EXTERNAL_SOURCES
+    external_dependencies/glad/src/glad.c
+)
+
 set(INCLUDE_DIRS
+    external_dependencies/glfw/
+    external_dependencies/glad/include/
+    external_dependencies/glm/
     include/
     ${IMGUI_DIR}/headers/
     src/
 )
 
-add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${IMGUI_SOURCES})
+link_directories(external_dependencies/glfw/lib)
+
+add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${IMGUI_SOURCES} ${EXTERNAL_SOURCES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} glfw glm glad)
+target_link_libraries(${PROJECT_NAME} glfw3)
