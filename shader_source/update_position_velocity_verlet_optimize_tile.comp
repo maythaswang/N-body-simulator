@@ -58,11 +58,11 @@ vec4 calculate_acceleration(uint id) {
 
         for (int i = 0; i < CHUNK_SIZE; i++){
             if(i < max_load){
-            temp_distance = position_self - position[i];
+            temp_distance = position_self - shared_position[i];
                 if(temp_distance != vec4(0.0f)){
                     direction = -normalize(temp_distance);
                     sq_distance = dot(temp_distance,temp_distance);
-                    acc_tmp += (mass[i]/sqrt(sq_distance+sq_soften)) * direction;
+                    acc_tmp += (shared_mass[i]/sqrt(sq_distance+sq_soften)) * direction;
                 }
             }
         }
