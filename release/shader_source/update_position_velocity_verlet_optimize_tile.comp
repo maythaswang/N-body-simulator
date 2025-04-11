@@ -1,0 +1,107 @@
+#version 430 core
+
+layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+layout (std430, binding=0) buffer particle_position{
+	vec4 position[];
+};
+
+layout (std430, binding=1) buffer particle_velocity{
+	vec4 velocity[];
+};
+
+layout (std430, binding=2) buffer particle_acceleration{
+	vec4 acceleration[];
+};
+
+layout (std430, binding=3) buffer particle_mass{
+	float mass[];
+};
+
+uniform float gravitational_constant;
+uniform float softening_factor; 
+uniform float timestep_size; 
+uniform int n_particle;
+uniform bool first_pass;
+
+// IDEA: 
+// We fetch the stuffs down in chunk and let all particles here process it
+// Also store each local position locally so we don't need to keep fetching them.
+
+// PAST ISSUE SUMMARY: 
+// Since we delegate the computation to each threads where each thread load 2 
+// particle data each, by returning early for some threads, some data are not 
+// loaded to the chunk creating very weird behaviour 
+
+
+// Tile chunk
+const int CHUNK_SIZE = 512;
+shared vec4 chunk_position[CHUNK_SIZE];
+shared float chunk_mass[CHUNK_SIZE];
+
+vec4 calculate_acceleration(uint particle_id, uint local_id) {
+    vec4 acc_tmp = vec4(0.0f);
+    vec4 temp_distance;
+    vec4 direction;
+    float sq_distance;
+    float sq_soften = pow(softening_factor, 2);
+
+    // Pre-load position of current particle if valid
+    vec4 position_self = vec4(1.0f);
+    if(particle_id < n_particle){
+        position_self = position[particle_id];
+    }
+
+    int max_load = CHUNK_SIZE;
+    uint half_chunk = 256;
+    uint fetch_id = 0;
+
+    for (uint offset = 0; offset < (n_particle + CHUNK_SIZE); offset+=CHUNK_SIZE){
+
+        // Load chunk
+        chunk_mass[local_id*2] = mass[local_id*2 + offset];
+        chunk_position[local_id*2] = position[local_id*2 + offset];
+        chunk_mass[local_id*2+1] = mass[local_id*2 +1 + offset];
+        chunk_position[local_id*2+1] = position[local_id*2 + 1+ offset];
+
+        memoryBarrier();
+        barrier();
+
+        // Calculate only for valid particles
+        if(particle_id < n_particle){
+            // ensure the read size is not going to be over n_particle
+            max_load = CHUNK_SIZE - max(int(offset) - n_particle, 0);
+
+            // Accumulate CHUNK_SIZE particle per round
+            for (int i = 0; i < max_load; i++){
+                if(i < max_load){
+                    temp_distance = position_self - chunk_position[i];
+                    if(temp_distance != vec4(0.0f)){
+                        direction = -normalize(temp_distance);
+                        sq_distance = dot(temp_distance,temp_distance);
+                        acc_tmp += (chunk_mass[i]/sqrt(sq_distance+sq_soften)) * direction;
+                    }
+                }
+            }
+        }
+
+        memoryBarrier();
+        barrier();    
+    }
+    return acc_tmp;
+}
+
+void main() {
+	uint particle_id = gl_GlobalInvocationID.x;   
+    uint local_id = gl_LocalInvocationID.x;
+    if(first_pass){
+	    if (particle_id >= n_particle) return ;
+        velocity[particle_id] += acceleration[particle_id] * timestep_size * 0.5;
+        position[particle_id] += velocity[particle_id] * timestep_size;
+    } else {
+        vec4 tmp_acc = calculate_acceleration(particle_id, local_id);
+	    if (particle_id >= n_particle) return ;
+        acceleration[particle_id] = tmp_acc * gravitational_constant;
+        velocity[particle_id] += acceleration[particle_id] * timestep_size * 0.5; 
+    }
+}
