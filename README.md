@@ -18,10 +18,11 @@ This project is basically an educational project for me to learn how to properly
 <br>
 For the write up of the implementation process, please visit this article on my website here　(｀･ω･´)ゞ !! \<TBD\>
 
-![](images/default_22.gif)
-<div align="center">
+<p align="center">
+<img src="images/default_22.gif">
+<br>
 Default Test 22
-</div>
+</p>
 <br>
 
 ----------
@@ -35,11 +36,11 @@ Default Test 22
 - Spawning cluster of bodies into multiple geometries such as discs and globular clusters.
 - GPU Acceleration for particle-particle method.
 
-![](images/setup_geometries.png)
-<div align="center">
-Cluster Types
-</div>
+<p align="center">
+<img src="images/setup_geometries.png">
 <br>
+Cluster Types
+</p>
 
 ----------
 ## Performance: 
@@ -121,11 +122,11 @@ Setting up a simulation is simple, you can either use one of the pre-written def
 ## Controls
 Please refer to the `"Window Controls"` or the GUI help menu when running the program.
 
-![](images/GUI_example.png)
-<div align="center">
-GUI Example
-</div>
+<p align="center">
+<img src="images/GUI_example.png">
 <br>
+GUI Example
+</p>
 
 ### Window Controls
 To use these hotkeys, please make sure you are focusing on the simulation screen.
@@ -162,28 +163,35 @@ To use these camera controls, please make sure you are focusing on the simulatio
 
 ----------
 ## Examples 
+※gif compression makes things looks pretty off...
 
-![](images/default_25.gif)
-<div align="center">
+<p align="center">
+<img src="images/default_25.gif">
+<br>
 Default Test 25
-</div>
+</p>
 <br>
 
-![](images/default_24.gif)
-<div align="center">
+<p align="center">
+<img src="images/default_24.gif">
+<br>
 Default Test 24 
-</div>
+</p>
 <br>
 
-![](images/default_16.gif)
-<div align="center">
+<p align="center">
+<img src="images/default_16.gif">
+<br>
 Default Test 16 
-</div>
+</p>
+<br>
 
-![](images/default_30.gif)
-<div align="center">
-Default Test 30 
-</div>
+<p align="center">
+<img src="images/default_30.gif">
+<br>
+Default Test 30
+</p>
+<br>
 
 ----------
 ## Future Implementations (Maybe one day...)
