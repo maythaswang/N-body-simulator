@@ -1,6 +1,5 @@
-Last Modified by: Maythas Wangcharoenwong 20250411
+Last Modified by: Maythas Wangcharoenwong 20250412
 
-# CURRENTLY IN THE PROCESS OF RE-WRITING README (WIP) THE IMAGES HERE ARE STILL OLD VERSIONS BTW
 # N-body-simulator
 
 A visual simulation engine for simulating the interactions of large cluster of celestial bodies in real-time.
@@ -19,9 +18,9 @@ This project is basically an educational project for me to learn how to properly
 <br>
 For the write up of the implementation process, please visit this article on my website here　(｀･ω･´)ゞ !! \<TBD\>
 
-![](images/default_12.gif)
+![](images/default_22.gif)
 <div align="center">
-Default Test 12 
+Default Test 22
 </div>
 <br>
 
@@ -65,7 +64,7 @@ The FPS are written in format \<Effects ON - Effects OFF\>. These numbers should
 ## Instructions
 
 ### Running the program
-If you don't want to build your own executable, there is one available under `release` directory. 
+If you don't want to build your own executable, there is one available under `release/20250412` directory. 
 
 Make sure the program `N_body_simulator.exe` is ran when the directory structure looks like this. This is mandatory because I didn't bake the shaders into the program, in-case anyone want to edit for fun (plus its easier to debug this way.)
 
@@ -164,17 +163,22 @@ To use these camera controls, please make sure you are focusing on the simulatio
 ----------
 ## Examples 
 
+![](images/default_25.gif)
+<div align="center">
+Default Test 25
+</div>
+<br>
+
 ![](images/default_24.gif)
 <div align="center">
 Default Test 24 
 </div>
 <br>
 
-![](images/default_25.gif)
+![](images/default_16.gif)
 <div align="center">
-Default Test 25
+Default Test 16 
 </div>
-<br>
 
 ![](images/default_30.gif)
 <div align="center">
