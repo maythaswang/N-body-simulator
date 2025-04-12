@@ -5,7 +5,7 @@ Last Modified by: Maythas Wangcharoenwong 20250412
 A visual simulation engine for simulating the interactions of large cluster of celestial bodies in real-time.
 <br>
 <br>
-**Aims:** This project aims to Simulate interactions of N-bodies in using Particle-Particle Method implemented with `OpenGL` and `C++`. The project provides option to use either GPU Compute Shaders written in `glsl` or simple CPU implementation.
+**Aims:** This project aims to Simulate interactions of N-bodies in using Particle-Particle Method implemented with `OpenGL` and `C++`. The project provides option to use either `glsl` Compute Shader implementations for GPU acceleration or simple CPU implementation.
 
 ### System requirements: 
 - Windows 10-11
@@ -195,7 +195,7 @@ Default Test 30
 
 ----------
 ## Future Implementations (Maybe one day...)
-- Further optimization on the particle interaction calculations (use oct-tree, FMM...)
+- Further optimization on the particle interaction calculations (use oct-tree, FMM, Barnes-Hut...)
 - More effects?
 - Save-Load system
 
@@ -204,4 +204,15 @@ Default Test 30
 - The sphere is sampled using `glm::sphericalRand` so there is a gaping hole and a line on some position...
 
 ----------
-## References
+## References and Reading Resources
+Here are list of resources I read while researching on how to build this simulator, you will probably find them useful if you want to dive deeper into this subject!
+- https://learnopengl.com/
+- https://www.youtube.com/@OnurMutluLectures
+- https://en.wikipedia.org/wiki/n-body problem. (n.d.).
+- https://en.wikipedia.org/wiki/Leapfrog_integration
+- Dehnen, W., & Read, J. (2011). N-body simulations of gravitational dynamics. arxiv:1105.1082v1.
+- Brandt, A. (2022, 03). On distributed gravitational n-body simulations, arxiv:2203.08966. https://arxiv.org/pdf/2203.08966
+- Computation and astrophysics of the n-body problem. (n.d.). Graps, A. (1996). N-body / particle simulation methods. https://www.cs.cmu.edu/afs/cs/academic/class/15850c-s96/www/nbody.html
+- https://www.algorithm-archive.org/contents/verlet_integration/verlet_integration.html
+- https://developer.nvidia.com/gpugems/gpugems/part-vi-beyond-triangles/chapter-37-toolkit-computation-gpus
+- https://developer.nvidia.com/gpugems/gpugems3/part-v-physics-simulation/chapter-31-fast-n-body-simulation-cuda
