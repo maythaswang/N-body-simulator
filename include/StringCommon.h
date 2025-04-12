@@ -23,6 +23,7 @@ inline constexpr char g_controls_help[] =
     "   m                               : toggle mass-size.\n"
     "   c                               : toggle mass-color.\n"
     "   n                               : toggle GUI.\n"
+    "   z                               : toggle Cursor.\n"
     "\nps. mass-size and wireframe mode only shows when instancing is on\n"
     "\n"
     "Camera controls:\n"

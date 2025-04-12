@@ -78,6 +78,7 @@ void GUI::control_panel()
     //-------------------------------------------
     ImGui::SeparatorText("N-BODY SIMULATOR");
     ImGui::Text("If you wish to disable GUI, press (N)");
+    ImGui::Text("Press (Z) to toggle cursor on and off");
     ImGui::TextColored(ImVec4(1.0, 0.9, 0.7, 1.0), "Performance: %.3f ms/frame (%.1f FPS)", 1000.0f / this->io->Framerate, this->io->Framerate);
 
     ImGui::Text("Current step %d", this->input_processor->imm_get_current_sim_step());
@@ -447,6 +448,7 @@ void GUI::help_panel()
                 "   m                               : toggle mass-size.\n"
                 "   c                               : toggle mass-color.\n"
                 "   n                               : toggle GUI.\n"
+                "   z                               : toggle Cursor.\n"
                 "\nps. mass-size and wireframe mode only shows when instancing is on\n");
     ImGui::SeparatorText("CAMERA CONTROLS");
     ImGui::Text("   middle mouse drag + left shift  : pan the camera in the mouse drag direction.\n"

@@ -9,6 +9,7 @@ CallbackManager::CallbackManager(GLFWwindow *window, Camera *camera, InputProces
     this->camera = camera;
     this->input_processor = input_processor;
     this->bloom = bloom;
+    this->cursor_on = true;
 
     // Mouse states
     this->middle_mouse_down = false;
@@ -219,8 +220,25 @@ void CallbackManager::set_keyboard_callback()
                     callback_manager->input_processor->imm_handle_gui_toggle();
                     break;
 
+                case GLFW_KEY_Z: // Toggle Cursor
+                    callback_manager->toggle_cursor();
+                    break; 
+
                 default: 
                     break;
             }
         } });
+}
+
+void CallbackManager::toggle_cursor()
+{
+    this->cursor_on = !this->cursor_on;
+    if (cursor_on)
+    {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
+    else
+    {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
 }
