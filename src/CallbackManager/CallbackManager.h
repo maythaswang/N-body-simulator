@@ -45,6 +45,8 @@ private:
     bool left_shift_down; // for translation
     bool left_ctrl_down;  // for zoom
 
+    bool cursor_on;
+
     // bool camera_orbiting;
 
     double old_mouse_pos_x;
@@ -94,6 +96,8 @@ private:
      *
      */
     void update_camera_position();
+    
+    void toggle_cursor();
 };
 
 #endif

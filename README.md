@@ -145,6 +145,7 @@ To use these hotkeys, please make sure you are focusing on the simulation screen
 |m                              | toggle mass-size.                                                                                     |
 |c                              | toggle mass-color.                                                                                    |
 |n                              | toggle GUI.                                                                                           |
+|z                              | toggle Cursor.                                                                                        |
 
 ### Camera Controls
 To use these camera controls, please make sure you are focusing on the simulation screen.
