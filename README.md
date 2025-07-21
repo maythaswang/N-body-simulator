@@ -16,7 +16,7 @@ A visual simulation engine for simulating the interactions of large cluster of c
 This project is basically an educational project for me to learn how to properly use compute shaders, OpenGL, Post processing effects to make a visually stunning particle simulations. First, I must say that Physics is not my strong suit. With that given, the real aim of this project is to produce visually interesting simulation, not full physics accuracy (although I tried to be as accurate as possible). In a sense, the value in those of default test cases are extremely exaggerated so please be aware of this fact. As per the geometries of stellar clusters and how mass are mapped to colors, these are not fully accurate as well (To any physicist out there I am sorry (´；ω；｀)). With that being said, the project provides multiple controllable variables for those who want to try setup the simulation for themselves as well as multiple default test cases to pick from so enjoy!! (\*´ω｀\*)
 <br> 
 <br>
-For the write up of the implementation process, please visit this article on my website here　(｀･ω･´)ゞ !! \<TBD\>
+For the write up of the implementation process, please visit this article on my website [here](https://maythaswang.github.io/posts/001_n-body-simulation/)　(｀･ω･´)ゞ !!
 
 <p align="center">
 <img src="images/default_22.gif">
