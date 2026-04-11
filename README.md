@@ -37,7 +37,7 @@ Default Test 22
 - GPU Acceleration for particle-particle method.
 
 <p align="center">
-<img src="images/setup_geometries.png">
+<img src="images/setup_geometries.webp">
 <br>
 Cluster Types
 </p>
@@ -123,7 +123,7 @@ Setting up a simulation is simple, you can either use one of the pre-written def
 Please refer to the `"Window Controls"` or the GUI help menu when running the program.
 
 <p align="center">
-<img src="images/GUI_example.png">
+<img src="images/GUI_example.webp">
 <br>
 GUI Example
 </p>
