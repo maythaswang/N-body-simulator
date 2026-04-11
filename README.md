@@ -19,7 +19,7 @@ This project is basically an educational project for me to learn how to properly
 For the write up of the implementation process, please visit this article on my website [here](https://maythaswang.github.io/posts/001_n-body-simulation/)　(｀･ω･´)ゞ !!
 
 <p align="center">
-<img src="images/default_22.gif">
+<img src="images/default_22.webp">
 <br>
 Default Test 22
 </p>
@@ -166,28 +166,28 @@ To use these camera controls, please make sure you are focusing on the simulatio
 ※gif compression makes things looks pretty off...
 
 <p align="center">
-<img src="images/default_25.gif">
+<img src="images/default_25.webp">
 <br>
 Default Test 25
 </p>
 <br>
 
 <p align="center">
-<img src="images/default_24.gif">
+<img src="images/default_24.webp">
 <br>
 Default Test 24 
 </p>
 <br>
 
 <p align="center">
-<img src="images/default_16.gif">
+<img src="images/default_16.webp">
 <br>
 Default Test 16 
 </p>
 <br>
 
 <p align="center">
-<img src="images/default_30.gif">
+<img src="images/default_30.webp">
 <br>
 Default Test 30
 </p>
